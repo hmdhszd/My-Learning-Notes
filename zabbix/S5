@@ -6,6 +6,7 @@ Install TELNET SERVER on terget server:
 
 
 
+
 [root@__targeted_server__ ~]# yum install telnet-server
 
 [root@__targeted_server__ ~]# systemctl start telnet.socket

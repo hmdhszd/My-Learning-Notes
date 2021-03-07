@@ -66,6 +66,7 @@ urlpatterns = [
 
 
 
+
 mysite/urls.py  :
 
 from django.contrib import admin

@@ -280,6 +280,7 @@ UserParameter=mysql.status,if [ $(systemctl is-active mariadb) = active ]; then 
 
 
 
+
 __________________________________________________________________
 
 
