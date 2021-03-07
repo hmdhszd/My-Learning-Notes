@@ -1,0 +1,164 @@
+Installing on Linux
+
+If you’re on Fedora (or any closely-related RPM-based distribution, such as RHEL or CentOS), you can use dnf:
+
+$ sudo dnf install git-all
+
+If you’re on a Debian-based distribution, such as Ubuntu, try apt:
+
+$ sudo apt install git-all
+
+
+--------------------------------------------------------------------------
+
+
+git init
+
+git config --global user.name  *******
+
+git config --global user.email *******
+
+
+--------------------------------------------------------------------------
+
+
+Add to stage:
+
+
+git add test.txt
+
+git add .
+
+
+--------------------------------------------------------------------------
+
+
+Remove from stage:
+
+
+git reset HEAD test.txt
+
+git reset HEAD .
+
+
+--------------------------------------------------------------------------
+
+
+Commit:
+
+
+git commit -m "my very first commit for adding my files"
+
+git log
+
+git status
+
+
+--------------------------------------------------------------------------
+
+
+Change the of latest commit message:
+
+
+git commit --amend -m "the message is changeddddd"
+
+
+--------------------------------------------------------------------------
+
+
+Reverse the changes to the LATEST commit:
+
+
+git checkout -- test.txt
+
+
+--------------------------------------------------------------------------
+
+
+Reverse the changes to the OTHER commits:
+
+
+git reset --hard 53c73383e7c455f049451916ec77edbf9b7ece8f
+
+
+--------------------------------------------------------------------------
+
+
+The difference between Current version and LATEST Commit:
+
+git diff
+
+
+
+See the logs with changes (diff)
+
+git log -p
+
+
+--------------------------------------------------------------------------
+
+
+See the logs with messages only (BRIEF)
+
+git log  --oneline
+
+
+
+f8af5ff (HEAD -> master) lllllllllllllllll
+53c7338 second
+daf7bc8 first
+
+
+--------------------------------------------------------------------------
+
+
+The difference between Current Commit and Other Commits:
+
+git diff daf7bc8
+
+
+--------------------------------------------------------------------------
+
+
+See ALL changes of a file:
+
+git blame test.txt
+
+
+f8af5ff2 (hmdhszd 2021-03-07 12:35:13 +0330 1) sdfasdf
+f8af5ff2 (hmdhszd 2021-03-07 12:35:13 +0330 2) sd
+f8af5ff2 (hmdhszd 2021-03-07 12:35:13 +0330 3) fsd
+f8af5ff2 (hmdhszd 2021-03-07 12:35:13 +0330 4) f
+f8af5ff2 (hmdhszd 2021-03-07 12:35:13 +0330 5) tdddest file 1
+53c73383 (hmdhszd 2021-03-07 11:00:37 +0330 6) 2
+
+
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+
+
+nano .gitignore
+
+password.txt
+mydirectory/*
+
+
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+
+Git Branch:
+
+
+
+show current branch:
+
+git branch -a
+
+
+--------------------------------------------------------------------------
+
+
+
+
+
+
