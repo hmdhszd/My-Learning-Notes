@@ -1,0 +1,43 @@
+
+sudo apt-get update
+
+
+
+sudo apt-get install build-essential libssl-dev libffi-dev python-dev
+sudo apt install python3-pip
+
+
+
+sudo pip3 install virtualenv 
+
+
+==================================================================================
+
+
+
+virtualenv -p python3 env3
+
+
+
+. env3/bin/activate # or source env3/bin/activate which does exactly the same thing
+
+
+
+
+
+
+virtualenv repository
+which python 
+
+
+
+
+pip freeze > requirements.txt
+pip3 install -r requirements
+
+
+
+
+
+deactivate
+ 

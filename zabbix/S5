@@ -1,0 +1,130 @@
+run a command to remote server by TELNET :
+
+
+
+Install TELNET SERVER on terget server:
+
+
+
+[root@__targeted_server__ ~]# yum install telnet-server
+
+[root@__targeted_server__ ~]# systemctl start telnet.socket
+[root@__targeted_server__ ~]# systemctl enable telnet.socket
+
+
+
+
+
+[root@__targeted_server__ ~]# firewall-cmd --add-port=23/udp --permanent
+success
+
+[root@__targeted_server__ ~]# firewall-cmd --reload
+success
+
+
+
+
+
+
+
+
+
+
+
+
+
+[root@__targeted_server__ ~]# useradd anisa
+
+
+
+goto items
+create an item
+type : telnet agent
+
+
+
+
+
+
+
+
+Install TELNET CLIENT on zabbix server:
+
+[root@__zabbix_server__ ~]# yum install telnet
+
+
+
+
+
+
+
+
+
+########################################################################################
+########################################################################################
+
+
+
+
+
+
+
+
+monitor a server by SNMP:
+
+
+
+
+
+
+
+
+install snmp:
+
+[root@__targeted_server__ ~]# yum install net-snmp net-snmp-utils
+
+
+
+
+change config:
+
+[root@__targeted_server__ ~]# nano /etc/snmp/snmpd.conf 
+
+add : view    systemview    included   .1
+change : community
+
+
+
+start service:
+
+[root@__targeted_server__ ~]# systemctl start snmpd
+[root@__targeted_server__ ~]# systemctl enable snmpd
+
+
+
+
+open snmp port
+
+[root@__targeted_server__ ~]# firewall-cmd --add-port=161/udp --permanent
+success
+
+[root@__targeted_server__ ~]# firewall-cmd --reload
+success
+
+
+
+
+
+__________________________________________________________________
+
+
+
+
+test from zabbix server
+
+[root@__zabbix_server__ ~]# yum install net-snmp net-snmp-utils
+
+[root@__zabbix_server__ ~]# snmpwalk -v 2c -c zabbix-snmp 10.10.10.10
+
+
+

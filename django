@@ -1,0 +1,114 @@
+pip3 install django
+django-admin startproject mydjangoproject
+cd mydjangoproject/
+python3 manage.py runserver
+
+
+__________________________________________
+
+
+sync db
+
+python3 manage.py migrate
+
+__________________________________________
+__________________________________________
+__________________________________________
+steps to change :
+
+
+
+hamid@hamid:~/Documents/mydjangoproject$ python3 manage.py makemigrations music
+Migrations for 'music':
+  music/migrations/0001_initial.py
+    - Create model Album
+    - Create model Song
+
+__________________________________________
+
+hamid@hamid:~/Documents/mydjangoproject$ python3 manage.py sqlmigrate music 0001
+BEGIN;
+--
+-- Create model Album
+--
+CREATE TABLE "music_album" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "artist" varchar(250) NOT NULL, "album_title" varchar(500) NOT NULL, "genre" varchar(100) NOT NULL, "album_logo" varchar(1000) NOT NULL);
+--
+-- Create model Song
+--
+CREATE TABLE "music_song" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "file_type" varchar(10) NOT NULL, "song_title" varchar(250) NOT NULL, "album_id" integer NOT NULL REFERENCES "music_album" ("id") DEFERRABLE INITIALLY DEFERRED);
+CREATE INDEX "music_song_album_id_62a413c8" ON "music_song" ("album_id");
+COMMIT;
+
+__________________________________________
+
+hamid@hamid:~/Documents/mydjangoproject$ python3 manage.py migrate
+Operations to perform:
+  Apply all migrations: admin, auth, contenttypes, music, sessions
+Running migrations:
+  Applying music.0001_initial... OK
+
+__________________________________________
+__________________________________________
+__________________________________________
+
+
+hamid@hamid:~/Documents/mydjangoproject$ python3 manage.py shell
+Python 3.6.8 (default, Jan 14 2019, 11:02:34) 
+[GCC 8.0.1 20180414 (experimental) [trunk revision 259383]] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+(InteractiveConsole)
+>>> 
+>>> from music.models import Album , Song
+>>> 
+>>> 
+>>> 
+>>> Album.objects.all()
+<QuerySet []>
+>>> 
+>>> 
+>>> 
+>>> 
+>>> a = Album(artist = "Tylor Swift", album_title= "Red", genre="Country",album_logo="https://r-cf.bstatic.com/images/hotel/max1024x768/869/86980014.jpg")
+>>> a.save()
+>>> 
+>>> 
+>>> 
+>>> 
+>>> a.artist
+'Tylor Swift'
+>>> a.album_title
+'Red'
+>>> 
+>>> a.id
+1
+>>> a.pk
+1
+>>> 
+>>> 
+>>> 
+>>> 
+>>> b = Album()
+>>> b.artist = "Myth"
+>>> b.album_title = "high school"
+>>> b.genre = "Punk"
+>>> b.album_logo = "https://q-cf.bstatic.com/images/hotel/max1024x768/671/67197085.jpg"
+>>> b.id
+>>> 
+>>> b.save()
+>>> 
+>>> b.id
+2
+>>> 
+>>> Album.objects.all()
+<QuerySet [<Album: Album object (1)>, <Album: Album object (2)>]>
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,56 @@
+Monitor a oid by snmp:
+
+
+Find the OID:
+
+
+[root@__zabbix_server__ ~]#  snmpwalk -v 2c -c zabbix-snmp 10.10.10.10 IF-MIB::ifEntry | grep -i ifphys
+IF-MIB::ifPhysAddress.1 = STRING: 
+IF-MIB::ifPhysAddress.2 = STRING: 8:0:27:c6:a0:9d
+IF-MIB::ifPhysAddress.3 = STRING: 8:0:27:b0:bf:6
+
+
+
+[root@__zabbix_server__ ~]# snmptranslate -O n IF-MIB::ifPhysAddress.3
+.1.3.6.1.2.1.2.2.1.6.3
+
+
+
+
+
+
+Check OID Value From server:
+
+
+[root@__zabbix_server__ ~]# snmpwalk -v 2c -c zabbix-snmp 10.10.10.10 .1.3.6.1.2.1.2.2.1.6.3
+IF-MIB::ifPhysAddress.3 = STRING: 8:0:27:b0:bf:6
+
+
+
+
+
+
+
+
+add an item in GUI
+type snmpa gent
+
+
+
+
+
+_______________________________________________________________________________
+
+
+
+
+
+
+
+
+
+
+
+
+
+

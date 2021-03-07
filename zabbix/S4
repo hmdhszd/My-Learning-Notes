@@ -1,0 +1,372 @@
+run a command to remote server by SSH  :
+
+
+
+
+check zabbix home directory:
+
+[root@__zabbix_server__ ~]# cat /etc/passwd | grep zabbix
+zabbix:x:998:996:Zabbix Monitoring System:/home/zabbix:/sbin/nologin
+
+
+
+
+
+
+
+
+change zabbix home directory:
+
+[root@__zabbix_server__ ~]# systemctl stop zabbix-agent.service 
+[root@__zabbix_server__ ~]# systemctl stop zabbix-server.service 
+
+
+[root@__zabbix_server__ ~]# usermod -m -d /home/zabbix zabbix
+
+
+
+
+
+
+
+
+
+
+make a home directory if its snot created automatically:
+
+mkdir /home/zabbix
+
+
+
+
+
+
+
+
+
+[root@__zabbix_server__ ~]# systemctl start zabbix-agent.service 
+[root@__zabbix_server__ ~]# systemctl start zabbix-server.service 
+
+
+
+
+
+
+__________________________________________________________________
+
+
+
+
+
+
+
+
+
+
+
+Create Public/Private key for zabbix user:
+
+[root@__zabbix_server__ ~]# sudo -u zabbix ssh-keygen -t rsa 
+Generating public/private rsa key pair.
+Enter file in which to save the key (/home/zabbix/.ssh/id_rsa): 
+/home/zabbix/.ssh/id_rsa already exists.
+Overwrite (y/n)? y
+Enter passphrase (empty for no passphrase): 
+Enter same passphrase again: 
+Your identification has been saved in /home/zabbix/.ssh/id_rsa.
+Your public key has been saved in /home/zabbix/.ssh/id_rsa.pub.
+The key fingerprint is:
+SHA256:QnI4srAJQlcsWue9E6fDV5z/moQpsbCAiiqqX3t6rw4 zabbix@__zabbix_server__
+The key's randomart image is:
++---[RSA 2048]----+
+| . .o.           |
+|. .o +           |
+|+ + B +   . .    |
+|o= o.* o . +     |
+|o .. .o.S.. .    |
+|. .   .Bo.o o.   |
+|..  E  .+o o ..  |
+|o  . oo   . . .. |
+|B.. o=oo.    o.  |
++----[SHA256]-----+
+
+
+
+
+
+
+
+
+
+
+
+zabbix user can connent to 10.10.10.10 via it's root user  without asking password anymore (with Public/Private key):
+
+[root@__zabbix_server__ ~]# sudo -u zabbix ssh-copy-id root@10.10.10.10
+/bin/ssh-copy-id: INFO: Source of key(s) to be installed: "/home/zabbix/.ssh/id_rsa.pub"
+The authenticity of host '10.10.10.10 (10.10.10.10)' can't be established.
+ECDSA key fingerprint is SHA256:57ohSP7Rn5JpNVLh9k0eFy8NqaEr/p0ejU9oNU2s9pM.
+ECDSA key fingerprint is MD5:69:28:42:be:06:25:82:09:2e:9a:e4:45:1c:00:83:27.
+Are you sure you want to continue connecting (yes/no)? yes
+/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed
+/bin/ssh-copy-id: INFO: 1 key(s) remain to be installed -- if you are prompted now it is to install the new keys
+root@10.10.10.10's password: 
+
+Number of key(s) added: 1
+
+Now try logging into the machine, with:   "ssh 'root@10.10.10.10'"
+and check to make sure that only the key(s) you wanted were added.
+
+
+
+
+
+
+
+
+
+
+login without password:
+
+[root@__zabbix_server__ ~]# sudo -u zabbix ssh root@10.10.10.10
+Last login: Sat Jul 18 19:58:17 2020 from hamid
+[root@__targeted_server__ ~]# 
+
+
+
+
+
+
+
+
+
+
+
+
+__________________________________________________________________
+
+
+
+
+
+
+
+
+
+
+add ssh key location in zabbix_server.conf:
+
+[root@__zabbix_server__ ~]# nano /etc/zabbix/zabbix_server.conf 
+SSHKeyLocation= /home/zabbix/.ssh
+
+
+
+systemctl restart zabbix-server.service
+
+
+
+
+
+
+
+
+
+
+
+
+
+__________________________________________________________________
+
+
+
+in zabbix GUI create a new item:
+
+type : ssh agent
+
+User name : root
+
+Authentication method : Public key
+
+User name :root
+Public key file :id_rsa.pub
+Private key file :id_rsa
+
+
+Executed script:
+if [ $(systemctl is-active mariadb) = active ]; then echo 1;else echo 0 ;fi
+
+
+
+
+
+
+
+########################################################################################
+########################################################################################
+########################################################################################
+########################################################################################
+
+
+
+
+
+
+
+install zabbix agent:
+
+
+rpm -Uvh https://repo.zabbix.com/zabbix/5.0/rhel/7/x86_64/zabbix-release-5.0-1.el7.noarch.rpm
+
+yum clean all
+
+yum install zabbix-agent
+
+vim /etc/zabbix/zabbix_agentd.conf
+
+change :
+
+Server=<Zabbix Server IP>, ......
+ServerActive=<Zabbix Server IP>, ......
+
+Hostname=Sample Mriadb Server
+
+
+
+
+
+
+
+
+[root@__targeted_server__ ~]# cat /etc/zabbix/zabbix_agentd.conf | grep -v "#" | grep -v "^$"
+PidFile=/var/run/zabbix/zabbix_agentd.pid
+LogFile=/var/log/zabbix/zabbix_agentd.log
+LogFileSize=0
+Server=10.10.10.1
+ServerActive=10.10.10.1
+Hostname=DC1-TarGeted-Server-MariaDB
+Include=/etc/zabbix/zabbix_agentd.d/*.conf
+
+
+
+
+
+
+__________________________________________________________________
+
+
+
+
+
+
+
+create a manual item in zabbix agent:
+
+
+[root@__targeted_server__ ~]# nano /etc/zabbix/zabbix_agentd.d/mariadb-zabbix-agent.conf 
+
+UserParameter=mysql.status,if [ $(systemctl is-active mariadb) = active ]; then echo 1;else echo 0 ;fi
+
+[root@__targeted_server__ ~]# systemctl restart zabbix-agent
+
+
+
+
+
+
+
+
+
+
+
+
+
+__________________________________________________________________
+
+
+
+
+
+Check zabbix agent availability  from zabbix server:
+
+
+
+
+when package name and command name are not the same use:
+
+
+too see what package to install:
+[root@__zabbix_server__ ~]# yum provides zabbix_get
+
+
+install the package:
+[root@__zabbix_server__ ~]# yum install zabbix-get
+
+
+
+
+
+
+
+
+[root@__zabbix_server__ ~]# zabbix_get -s 10.10.10.10 -k agent.ping
+1
+
+[root@__zabbix_server__ ~]# zabbix_get -s 10.10.10.10 -k agent.hostname
+DC1-TarGeted-Server-MariaDB
+
+[root@__zabbix_server__ ~]# zabbix_get -s 10.10.10.10 -k mysql.status
+1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+if there is connection error , we could open the firewall:
+
+[root@__targeted_server__ ~]# firewall-cmd --add-port=10050/tcp --permanent
+success
+
+[root@__targeted_server__ ~]# firewall-cmd --reload
+success
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
