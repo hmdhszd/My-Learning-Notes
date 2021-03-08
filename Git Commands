@@ -142,9 +142,20 @@ nano .gitignore
 password.txt
 mydirectory/*
 
- 
+
+--------------------------------------------------------------------------
+
+
+git remote add origin https://github.com/hmdhszd/My-Learning-Notes.git
+
+git remote -v
+
+git push -u origin master
+
+
 --------------------------------------------------------------------------
 --------------------------------------------------------------------------
+
 
 Git Branch:
 
@@ -158,7 +169,76 @@ git branch -a
 --------------------------------------------------------------------------
 
 
-git
+Create a new branch / Change to another branch :
 
+git checkout -b MyNewBranch
+
+
+--------------------------------------------------------------------------
+
+
+Merge MyNewBranch to MASTER branch :
+
+
+1- return to master
+git checkout -b master
+
+2- Merge
+git merge MyNewBranch
+
+
+--------------------------------------------------------------------------
+
+
+Save changes of a branche into "itself" :
+
+
+
+MyNewBranch ✗
+▶ git stash save "my command of stash"
+
+
+MyNewBranch ✔
+▶ git status
+On branch MyNewBranch
+nothing to commit, working tree clean
+
+
+
+--------------------------------------------------------------------------
+
+
+
+MyNewBranch ✔
+▶ git stash pop
+	modified:   ssss
+
+MyNewBranch ✗
+▶ git add .
+▶ git commit -m "changed"
+▶ git checkout master
+▶ git merge MyNewBranch
+
+
+
+
+git stash list
+git stash drop stash@{0}
+
+
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+
+
+get the entire repository:
+
+git clone https://github.com/hmdhszd/My-Learning-Notes
+
+get the changes:
+
+git pull
+
+
+--------------------------------------------------------------------------
 
 
