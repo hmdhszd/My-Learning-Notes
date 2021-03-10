@@ -1,0 +1,37 @@
+Install and Configure the Dependencies
+
+
+sudo yum install curl policycoreutils openssh-server openssh-clients
+sudo systemctl enable sshd
+sudo systemctl start sshd
+sudo yum install postfix
+sudo systemctl enable postfix
+sudo systemctl start postfix
+sudo firewall-cmd --permanent --add-service=http
+sudo systemctl reload firewalld
+
+
+
+
+
+add the GitLab package server.
+
+curl -sS https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.rpm.sh | sudo bash
+
+
+
+
+
+
+Now start the installation.
+
+sudo yum install gitlab-ce
+
+
+
+sudo gitlab-ctl reconfigure
+
+
+
+
+http://your_server_ip

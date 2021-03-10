@@ -1,0 +1,67 @@
+runlevels
+Runlevels define what tasks can be accomplished in the current state (or runlevel) of a Linux system
+
+0- Halt
+1- Single user mode (recovery)
+2- Debian/Ubuntu default
+3- RHEL/Fedora/SUSE text mode
+4- free
+5- RHEL/Fedora/SUSE graphical mode
+6- reboot
+
+
+---------------------------------------------------------------------------
+
+
+# runlevel
+N 3
+# telinit 5 
+# runlevel
+3 5
+
+
+
+
+reboot   ->    # telinit 6
+
+
+---------------------------------------------------------------------------
+
+
+shutdown with message to other users:
+
+shutdown -r 60 Reloading updated kernel
+
+
+
+
+Cencel the shutdown:
+
+shutdown -c
+
+
+
+
+
+shutdown -r 14:42 messssssssssageeeeee
+Shutdown scheduled for Wed 2021-03-10 14:42:00 EST, use 'shutdown -c' to cancel.
+
+
+
+
+---------------------------------------------------------------------------
+
+
+Send message to all users:
+
+Wall helooooooooooooooooo everybody
+
+
+
+
+
+
+---------------------------------------------------------------------------
+
+
+
