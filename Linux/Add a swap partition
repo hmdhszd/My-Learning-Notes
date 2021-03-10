@@ -1,0 +1,18 @@
+Add a swap partition and tweak the swappiness setting
+
+
+sudo dd if=/dev/zero of=/swapfile count=4096 bs=1M
+sudo chmod 600 /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
+echo '/swapfile   none    swap    sw    0   0' | sudo tee -a /etc/fstab
+free -m
+
+
+
+
+For system performance purposes, it is recommended to configure the kernel's swappiness setting to a low value like 10:
+
+echo 'vm.swappiness=10' | sudo tee -a /etc/sysctl.conf
+sudo sysctl -p
+cat /proc/sys/vm/swappiness
