@@ -32,8 +32,185 @@ Complete!
 
 --------------------------------------------------------------------
 
+repository location of YUM:
 
 
+/etc/yum.repos.d/
+
+$ cat /etc/yum.repos.d/fedora-updates.repo
+
+
+--------------------------------------------------------------------
+
+
+
+Removing (erase)
+
+remove without dependencies
+
+# rpm -e bzr
+
+
+
+--------------------------------------------------------------------
+
+
+Upgrading
+(update is done automatically)
+
+
+# yum upgrade
+
+# yum upgrade 'cal*'
+
+
+
+--------------------------------------------------------------------
+
+get info of packages:
+
+
+
+
+befor installation:
+
+# yum list bzr
+Loaded plugins: langpacks
+Available Packages
+bzr.x86_64                                              2.6.0-2.fc20         
+
+
+# yun install bzr
+
+
+after installation:
+
+# yum list bzr
+Loaded plugins: langpacks
+Installed Packages
+bzr.x86_64                                              2.6.0-2.fc20         
+
+
+
+
+
+
+
+
+
+--------------------------------------------------------------------
+
+
+# rpm -q bzr
+bzr-2.6.0-2.fc20.x86_64
+
+# rpm -q emacs
+package emacs is not installed
+
+
+
+--------------------------------------------------------------------
+
+
+
+# yum info bzr
+
+Loaded plugins: langpacks
+Installed Packages
+Name        : bzr
+Arch        : x86_64
+Version     : 2.6.0
+Release     : 2.fc20
+Size        : 29 M
+Repo        : installed
+From repo   : fedora
+Summary     : Friendly distributed version control system
+URL         : http://www.bazaar-vcs.org/
+License     : GPLv2+
+Description : Bazaar is a distributed revision control system that is powerful, friendly,
+            : and scalable.  It is the successor of Baz-1.x which, in turn, was
+            : a user-friendly reimplementation of GNU Arch.
+
+
+
+--------------------------------------------------------------------
+
+
+# yum search hack 
+
+
+Loaded plugins: langpacks
+=================================================== N/S matched: hack ===================================================
+nethack-vultures.x86_64 : NetHack - Vulture's Eye and Vulture's Claw
+python-hacking.noarch : OpenStack Hacking Guideline Enforcement
+...
+...
+wmMatrix.x86_64 : DockApp version of Jamie Zawinski's xmatrix screensaver hack
+
+  Name and summary matches only, use "search all" for everything.
+
+
+
+--------------------------------------------------------------------
+
+
+
+to see all installed packages:
+
+
+# rpm -qa
+
+
+
+
+--------------------------------------------------------------------
+
+
+
+If you need to find files in a installed package:
+
+
+# rpm -ql bzr | head
+
+/etc/bash_completion.d
+/etc/bash_completion.d/bzr
+/usr/bin/bzr
+/usr/lib64/python2.7/site-packages/bzr-2.6.0-py2.7.egg-info
+/usr/lib64/python2.7/site-packages/bzrlib
+...
+...
+
+
+
+
+--------------------------------------------------------------------
+
+
+
+to see this file belongs to what package:
+
+
+
+# rpm -qf bzr /etc/bash_completion.d
+
+
+
+--------------------------------------------------------------------
+
+
+to see dependencies of a package:
+
+
+
+# rpm -qR bzr
+
+
+
+
+
+or use 
+
+ # yum deplist bzr
 
 
 
@@ -43,15 +220,13 @@ Complete!
 
 
 
-
---------------------------------------------------------------------
-
+# yum whatprovides bzr
 
 
 
-
-
---------------------------------------------------------------------
+Loaded plugins: langpacks
+bzr-2.6.0-2.fc20.x86_64 : Friendly distributed version control system
+Repo        : fedora
 
 
 
@@ -61,6 +236,51 @@ Complete!
 --------------------------------------------------------------------
 
 
+check the MD5 or SHA1 of files
+
+
+# rpm -vK bzr-2.6.0-2.fc20.x86_64.rpm
+
+bzr-2.6.0-2.fc20.x86_64.rpm:
+    Header V3 RSA/SHA256 Signature, key ID 246110c1: OK
+    Header SHA1 digest: OK (171c91fbd14416ac44c0f6d396826d583c3840ce)
+    V3 RSA/SHA256 Signature, key ID 246110c1: OK
+    MD5 digest: OK (c4478d64f009d07cb17d018b377677ab)
+
+
+
+--------------------------------------------------------------------
+
+
+
+
+
+it is also possible to check if the installed FILES by a packages is OK:
+
+
+
+
+# rpm -V bzr
+
+# rm /etc/bash_completion.d/bzr
+rm: remove regular file ‘/etc/bash_completion.d/bzr’? y
+
+# rpm -V bzr 
+missing     /etc/bash_completion.d/bzr
+
+
+
+
+
+
+
+
+if anything goes wrong, we can always reinstall a package:
+
+yum reinstall bzr
+
+
+
 
 
 
@@ -69,6 +289,14 @@ Complete!
 
 
 
+this tool will download rpms from repositories but wont install them:
+
+
+yumdownloader --resolve bzr
+
+
+
+after installing, we check the hash with -K 
 
 
 
@@ -77,9 +305,16 @@ Complete!
 
 
 
-
-
---------------------------------------------------------------------
-
+# rpm2cpio bzr-2.6.0-2.fc20.x86_64.rpm | cpio -idv 
+./etc/bash_completion.d
+./etc/bash_completion.d/bzr
+./usr/bin/bzr
+./usr/lib64/python2.7/site-packages/bzr-2.6.0-py2.7.egg-info
+./usr/lib64/python2.7/site-packages/bzrlib
+./usr/lib64/python2.7/site-packages/bzrlib/__init__.py
+./usr/lib64/python2.7/site-packages/bzrlib/_annotator_py.py
+./usr/lib64/python2.7/site-packages/bzrlib/_annotator_pyx.so
+...
+...
 
 
