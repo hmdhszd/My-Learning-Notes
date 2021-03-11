@@ -1,0 +1,207 @@
+
+
+Repositories:
+
+
+$ cat /etc/apt/sources.list
+
+
+
+
+
+$ ls /etc/apt/sources.list.d/
+
+brave-browser-release.list     official-package-repositories.list  teamviewer.list  vscode.list
+noobslab-macbuntu-bionic.list  skype-stable.list                   virtualbox.list
+
+
+
+
+
+
+-----------------------------------------------------------
+
+
+
+Updating sources information:
+
+$ apt-get update
+
+
+
+
+upgrading whatever installed:
+
+$ apt-get upgrade
+
+
+
+
+
+going to a new distribution:
+
+$ apt-get dist-upgrade
+
+
+
+
+reconfiguring packages that is already installed:
+
+$ dpkg-reconfigure bzr
+
+
+
+-----------------------------------------------------------
+
+
+$ sudo apt-get install bzr
+
+
+$ whereis bzr
+
+
+-----------------------------------------------------------
+
+
+
+if you only want a dry-run / simulation:
+
+$ apt-get install -s bzr
+
+
+
+
+-----------------------------------------------------------
+
+
+
+
+and this will only download the files without installing them:
+
+$ apt-get install --download-only bzr
+
+which only ownloaded files are stored them at /var/cache/apt/archive/
+
+
+
+-----------------------------------------------------------
+
+
+
+Removing debian packages:
+
+
+$ apt-get remove bzr
+
+
+
+
+
+
+
+and if you want to remove automatically installed dependencies:
+
+$ apt-get autoremove bzr
+
+or even
+
+$ apt-get autoremove
+
+
+
+
+
+-----------------------------------------------------------
+
+
+searching for packages:
+
+
+$ apt-cache search "tiny window"
+
+$ aptitude search grub2
+
+
+
+-----------------------------------------------------------
+-----------------------------------------------------------
+
+
+
+
+
+
+to see what is inside a .deb file:
+
+$ dpkg --contents bzr_2.6.0+bzr6595-1ubuntu1_all.deb
+
+drwxr-xr-x root/root         0 2014-05-02 18:16 ./
+drwxr-xr-x root/root         0 2014-05-02 18:15 ./etc/
+drwxr-xr-x root/root         0 2014-05-02 18:15 ./etc/bash_completion.d/
+-rw-r--r-- root/root      1467 2010-04-22 11:31 ./etc/bash_completion.d/bzr
+
+
+
+
+
+
+
+-----------------------------------------------------------
+
+
+
+status of a package:
+
+$ dpkg -s bzr
+
+Package: bzr
+Status: deinstall ok config-files
+Priority: optional
+Section: vcs
+Installed-Size: 102
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Architecture: all
+Version: 2.6.0+bzr6595-1ubuntu1
+Config-Version: 2.6.0+bzr6595-1ubuntu1
+Depends: python-bzrlib (<= 2.6.0+bzr6595-1ubuntu1.1~), python-bzrlib (>= 2.6.0+bzr6595-1ubuntu1), python:any
+Recommends: python-gpgme
+ . . . 
+
+
+-----------------------------------------------------------
+
+
+
+purge which will remove the package and all of its configurations.. the switch is -P or --purge.
+
+
+$ dpkg -P bzr
+
+$ dpkg -purge bzr
+
+
+
+
+-----------------------------------------------------------
+
+
+install a .deb file:
+
+
+dpkg -i bzr_2.6.0+bzr6595-1ubuntu1_all.deb
+
+
+
+-----------------------------------------------------------
+
+
+
+
+
+aptitude
+is a newer tool for managing files. It can be used like this:
+
+$ aptitude install jcal
+$ aptitude remove jcal
+$ aptitude search cal 
+$ aptitude show bzr

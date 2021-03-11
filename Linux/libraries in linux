@@ -1,0 +1,30 @@
+/lib
+/lib64
+/usr/lib
+
+
+---------------------------------------------------------------
+
+
+
+to find out that a program is using what library:
+
+▶ whereis ls
+ls: /bin/ls /usr/share/man/man1/ls.1.gz
+
+~                                                                                                                                                
+▶ ldd /bin/ls
+	linux-vdso.so.1 (0x00007ffda3cb4000)
+	libselinux.so.1 => /lib/x86_64-linux-gnu/libselinux.so.1 (0x00007fb062ca9000)
+	libc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007fb0628b8000)
+	libpcre.so.3 => /lib/x86_64-linux-gnu/libpcre.so.3 (0x00007fb062646000)
+	libdl.so.2 => /lib/x86_64-linux-gnu/libdl.so.2 (0x00007fb062442000)
+	/lib64/ld-linux-x86-64.so.2 (0x00007fb0630f3000)
+	libpthread.so.0 => /lib/x86_64-linux-gnu/libpthread.so.0 (0x00007fb062223000)
+
+
+---------------------------------------------------------------
+
+
+
+

@@ -1,0 +1,107 @@
+fdisk /dev/sda
+
+
+Help:
+
+  Generic
+   d   delete a partition
+   F   list free unpartitioned space
+   l   list known partition types
+   n   add a new partition
+   p   print the partition table
+   t   change a partition type
+   v   verify the partition table
+   i   print information about a partition
+
+  Save & Exit
+   w   write table to disk and exit
+   q   quit without saving changes
+
+  Create a new label
+   g   create a new empty GPT partition table
+   G   create a new empty SGI (IRIX) partition table
+   o   create a new empty DOS partition table
+   s   create a new empty Sun partition table
+
+
+
+---------------------------------------------------------------------------------------------
+MBR    limited   2TB
+
+
+Primary, Extended & Logical Partitions
+The partition table is located in the master boot record (MBR) of a disk. The MBR is the first sector on the disk, so the partition table is not a very large part of it. This limits the primary partitions to 4 and the max size of a disk to around 2TBs. If you need more partitions you have a define one extended and then create logicals inside them.
+
+Linux numbers the primary partitions 1, 2, 3 & 4. If you define an extended partitions, logical partitions inside it will be called 5, 6, 7.
+
+
+
+So:
+
+/dev/sda3 is the 3rd primary partition on the first disk
+/dev/sdb5 is the first logical partition on the second disk
+/dev/sda7 is the 3rd logical partition of the first physical disk
+
+
+
+
+
+
+
+
+
+The newer GUID Partition Table (or GPT) solves this problems. If you format your disk with GTP you can have 128 primary partitions (no need to extended and logical).
+
+
+
+---------------------------------------------------------------------------------------------
+
+
+show partitions:
+
+
+
+sudo parted /dev/sda p
+Model: ATA ST320LT000-9VL14 (scsi)
+Disk /dev/sda: 320GB
+Sector size (logical/physical): 512B/512B
+Partition Table: msdos
+Disk Flags: 
+
+Number  Start   End     Size    Type      File system     Flags
+ 1      1049kB  22.1GB  22.1GB  primary   ext4            boot
+ 2      22.1GB  47.1GB  25.1GB  primary   ext4
+ 3      47.1GB  320GB   273GB   extended
+ 5      47.1GB  55.1GB  7999MB  logical   linux-swap(v1)
+ 6      55.1GB  320GB   265GB   logical
+
+
+gparted     ->    graphical parted
+
+
+
+---------------------------------------------------------------------------------------------
+
+
+
+
+LVM
+
+for resize your partitions or even add new disks and add them to your mount points
+
+
+
+LVM helps you create one partition from different disks and add or remove space to them. The main concepts are:
+
+-Physical Volume (pv): a whole drive or a partition. It is better to define partitions and not use whole disks - unpartitioned.
+
+-Volume Groups (vg): this is the collection of one or more pvs. OS will see the vg as one big disk. PVs in one vg, can have different sizes or even be on different physical disks.
+
+-Logical Volumes (lv): OS will see lvs as partitions. You can format an lv wit your OS and use it.
+
+
+
+---------------------------------------------------------------------------------------------
+
+
+
