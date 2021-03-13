@@ -1,0 +1,800 @@
+▶ cat myfile 
+Hello
+
+/tmp                                                                                                                                             
+▶ od -Ad -c myfile
+0000000   H   e   l   l   o  \n
+0000006
+
+Some commands are build in (cd, break, exec) and it uses streams:
+
+stdin is the standard input stream, which provides input to commands.
+stdout is the standard output stream, which displays output from commands.
+stderr is the standard error stream, which displays error output from commands.
+
+
+
+------------------------------------------------------------------------------
+
+all users:
+
+# who
+
+my user:
+
+# whoami
+
+
+------------------------------------------------------------------------------
+
+
+
+Global bash configs are stored at:
+
+
+1)	/etc/profile
+
+
+
+
+and each user has her own config at :
+
+
+2)	~/.profile
+3)	~/.bash_profile
+4)	~/.bash_logout
+
+
+
+------------------------------------------------------------------------------
+
+
+# echo hello
+
+# echo hello #this is my comment
+hello
+
+
+------------------------------------------------------------------------------
+
+
+
+escaped characters:
+
+Escape sequence Function
+\a	Alert (bell)
+\b	Backspace
+\c	Suppress trailing newline (same function as -n option)
+\f	Form feed (clear the screen on a video display)
+\n	New line
+\r	Carriage return
+\t	Horizontal tab
+
+
+
+$ echo -e "hello\nthere"
+
+hello
+there
+
+
+
+
+
+
+$ echo me \& you       
+me & you
+
+
+
+------------------------------------------------------------------------------
+
+
+
+use \ to break a command in many lines:
+
+$ echo but this \
+is another \
+usage
+but this is another usage
+
+
+
+------------------------------------------------------------------------------
+
+
+
+
+
+control operators:
+
+
+
+
+
+
+; (do one by one)
+
+$ echo line 1;echo line 2; echo line 3
+line 1
+line 2
+line 3
+
+
+&& (logical and)
+
+$ echo line 1&&echo line 2&&echo line 3
+line 1
+line 2
+line 3
+
+
+|| (logical or)
+
+$ echo line 1||echo line 2; echo line 3
+line 1
+line 3
+
+
+
+------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+
+
+Environment variables
+Concept of EV.
+
+Every variable has name and a value. echo the name with a $ in front of it.
+
+Some common ones are:
+
+Name	Function
+
+USER		The name of the logged-in user
+UID			The numeric user id of the logged-in user
+HOME		The user's home directory
+PWD			The current working directory
+SHELL		The name of the shell
+$			The process id (or PIDof the running bash shell (or other) process
+PPID		The process id of the process that started this process (the id of the parent process)
+?			The exit code of the last command
+
+
+
+
+
+see all Environment variables:
+
+▶ env
+
+
+
+------------------------------------------------------------------------------
+
+
+
+▶ echo $USER   
+hamid
+
+▶ echo my name is $USER
+my name is hamid
+
+▶ echo $UID
+1000
+
+▶ echo $HOME
+/home/hamid
+
+▶ pwd       
+/home/hamid
+
+▶ echo $SHELL
+/usr/bin/zsh
+
+
+▶ echo $$
+6963
+
+
+▶ echo $PPID
+6956
+
+
+
+
+------------------------------------------------------------------------------
+
+
+                                             
+▶ ping 8.8.8.8
+PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
+64 bytes from 8.8.8.8: icmp_seq=1 ttl=106 time=922 ms
+
+
+▶ echo $?     
+0
+
+
+
+                                                                                                                                             
+▶ ping 5454545
+connect: Invalid argument
+
+▶ echo $?     
+1
+
+
+
+
+------------------------------------------------------------------------------
+
+set a variable:
+
+▶ MyVar="hellllo"
+
+
+▶ echo $MyVar 
+hellllo
+
+
+▶ echo ${MyVar}
+hellllo
+
+
+
+
+delete a variable:
+
+▶ unset MyVar 
+
+
+------------------------------------------------------------------------------
+
+
+if we export a variable, it will be available for other programs starting from that shell.
+
+
+▶ export MyVar="hellllo"
+
+
+------------------------------------------------------------------------------
+
+
+info of os:
+
+▶ uname -a
+Linux hamid 4.15.0-54-generic #58-Ubuntu SMP Mon Jun 24 10:55:24 UTC 2019 x86_64 x86_64 x86_64 GNU/Linux
+
+
+
+------------------------------------------------------------------------------
+
+
+run the last command: 	!!
+
+▶ !!      
+
+▶ history
+
+
+
+
+------------------------------------------------------------------------------
+
+
+run the last command that starts with "echo":  !<word>
+
+▶ !echo
+
+
+------------------------------------------------------------------------------
+
+
+
+run the last command that includes "hell":    !?<word>?
+
+
+▶ !?hell?
+
+
+▶ export MyVar="hellllo"
+
+
+
+------------------------------------------------------------------------------
+
+
+
+history is saved in:
+
+▶ cat /home/hamid/.bash_history
+
+
+
+------------------------------------------------------------------------------
+
+
+where to find command?
+
+▶ echo $path
+/home/hamid/.local/bin /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin /usr/games /usr/local/games
+
+
+
+
+add to path:
+
+▶ PATH=$PATH:/tmp
+
+
+
+------------------------------------------------------------------------------
+
+
+▶ which tar
+/bin/tar
+
+
+▶ whereis tar
+tar: /usr/lib/tar /bin/tar /usr/include/tar.h /usr/share/man/man1/tar.1.gz
+
+
+▶ type tar
+tar is /bin/tar
+
+
+▶ type echo 
+echo is a shell builtin
+
+
+
+------------------------------------------------------------------------------
+
+
+search in man pages:
+
+▶ apropos route
+ip-mroute (8)        - multicast routing cache management
+ip-route (8)         - routing table management
+route (8)            - show / manipulate the IP routing table
+routef (8)           - flush routes
+routel (8)           - list routes with pretty output format
+tc-route (8)         - route traffic control filter
+tor (1)              - The second-generation onion router
+torrc (5)            - The second-generation onion router
+traceroute6 (8)      - traces path to a network host
+traceroute6.iputils (8) - traces path to a network host
+
+
+
+
+
+▶ man route
+
+
+
+------------------------------------------------------------------------------
+
+sort:
+
+▶ ls | sort
+
+
+-r 			reverse sort
+
+
+------------------------------------------------------------------------------
+
+word count
+
+▶ wc file1
+
+
+-l 			line
+-w  		word
+-c  		character
+
+
+------------------------------------------------------------------------------
+
+
+redirect:
+
+
+▶ ping 8.8.8.8 >> myfile.txt
+
+
+
+
+------------------------------------------------------------------------------
+
+
+stdin  			-
+
+▶ cat file1 - file2
+
+
+
+
+
+▶ sort file1 | cat file2 - file3
+
+
+
+------------------------------------------------------------------------------
+
+
+
+
+▶ cat myfile 
+Hello
+
+
+▶ od -Ad -c myfile
+0000000   H   e   l   l   o  \n
+0000006
+
+
+
+
+------------------------------------------------------------------------------
+
+
+split a file:
+
+
+
+every 2 line:
+
+▶ split -l2 pp
+
+▶ ls
+pp  xaa  xab  xac  xad  xae
+
+
+
+
+
+
+every 40 byte:
+
+▶ split -b40  pp
+
+
+
+------------------------------------------------------------------------------
+
+
+
+head -10
+tail -10
+
+tail -f
+
+
+▶ tail -f /var/log/syslog 
+
+
+
+------------------------------------------------------------------------------
+
+
+
+replace TAB  with  SPACE :
+
+▶ expand myfile
+
+
+
+▶ unexpand myfile
+
+
+------------------------------------------------------------------------------
+
+
+prepare for print:
+
+
+▶ pr pp
+
+
+2021-03-12 19:48                        pp                        Page 1
+
+
+PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
+64 bytes from 8.8.8.8: icmp_seq=1 ttl=54 time=42.8 ms
+
+
+
+
+------------------------------------------------------------------------------
+
+
+number of lines:
+
+▶ nl pp
+     1	PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
+     2	64 bytes from 8.8.8.8: icmp_seq=1 ttl=54 time=42.8 ms
+     3	64 bytes from 8.8.8.8: icmp_seq=2 ttl=54 time=36.4 ms
+
+
+
+▶ cat -n pp
+     1	PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
+     2	64 bytes from 8.8.8.8: icmp_seq=1 ttl=54 time=42.8 ms
+     3	64 bytes from 8.8.8.8: icmp_seq=2 ttl=54 time=36.4 ms
+
+
+
+
+------------------------------------------------------------------------------
+
+
+
+find unique data:
+
+▶ sort myfile | uniq
+
+
+
+
+------------------------------------------------------------------------------
+
+
+
+cut:
+
+-f  field number
+-d  delimiter (Default = TAB)
+-c  character
+
+
+▶ cut -f2  -d" " pp
+8.8.8.8
+bytes
+bytes
+bytes
+bytes
+
+
+
+------------------------------------------------------------------------------
+
+
+Paste:  join 2 files   line by line
+
+
+
+▶ paste file1 file2
+
+
+
+------------------------------------------------------------------------------
+
+
+Join:   Join same data on 2 files  (like SQL)         only on sorted files!
+
+
+▶ join file1 file2
+
+
+
+------------------------------------------------------------------------------
+
+
+tr: 				translate
+
+
+
+▶ cat pp | tr '8' '9'        
+PING 9.9.9.9 (9.9.9.9) 56(94) bytes of data.
+64 bytes from 9.9.9.9: icmp_seq=1 ttl=54 time=42.9 ms
+64 bytes from 9.9.9.9: icmp_seq=2 ttl=54 time=36.4 ms
+
+
+
+------------------------------------------------------------------------------
+
+
+sed:
+
+
+s ->  change first match
+
+▶ sed 's/8/9/' pp          
+PING 9.8.8.8 (8.8.8.8) 56(84) bytes of data.
+
+
+
+g  ->  change all matches
+
+▶ sed 's/8/9/g' pp
+PING 9.9.9.9 (9.9.9.9) 56(94) bytes of data.
+64 bytes from 9.9.9.9: icmp_seq=1 ttl=54 time=42.9 ms
+
+
+
+
+------------------------------------------------------------------------------
+
+
+ls -ltrh
+
+
+cp dir1 dir2               (-r)
+
+cp file1 newfile1
+
+mv file1 newfile1
+
+rm file1
+
+rm -rf MyDir
+
+
+------------------------------------------------------------------------------
+
+
+rmdir mydirectory               (-r)
+
+mkdir mydirectory
+
+
+
+
+
+▶ mkdir ddd/333/eee/fff
+mkdir: cannot create directory ‘ddd/333/eee/fff’: No such file or directory
+
+▶ mkdir -p ddd/333/eee/fff
+
+
+
+▶ tree ddd
+ddd
+└── 333
+    └── eee
+        └── fff
+
+3 directories, 0 files
+
+
+
+
+
+
+------------------------------------------------------------------------------
+
+
+
+▶ file pp 
+pp: ASCII text
+
+
+▶ file /bin/bash 
+/bin/bash: ELF 64-bit LSB shared object, 
+
+
+------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,133 @@
+
+Archiving files
+
+Sometimes we need to create an archive file from many files for easier moving or backing up. This is done with 
+- cpio
+and
+- tar
+
+
+
+
+
+-----------------------------------------------------------------------------------
+
+
+
+
+tar
+
+
+
+
+-cf myarchive.tar		create file named myarchive.tar
+-xf myarchive.tar		extract a file called myarchive.tar
+
+-z						compress the archive with gzip after creating it
+-b						compress the archive with bzip2 after creating it
+-v						verbose! print a lot of data about what you are doing
+-r						append new files to the currentyp available archive
+
+
+
+
+-----------------------------------------------------------------------------------
+
+create
+▶ tar -cf myarchive.tar *
+
+extract
+▶ tar xf myarchive.tar 
+
+append
+▶ tar -vrf myarchive.tar newfile 
+
+
+-----------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------
+
+
+cpio
+Gets a list of files and creates archive (one file) of it which can be opened later.
+
+▶ ls | cpio -o > allfilesls.cpio
+
+-o makes cpio to create an output from its input
+
+
+-----------------------------------------------------------------------------------
+
+
+cpio does not goes into the folders. So mostly we use it with find:
+
+▶ find . -name "*" | cpio -o > myarchivefind.cpio
+
+
+-----------------------------------------------------------------------------------
+
+
+to decompress it:
+
+▶ mkdir extract
+▶ mv myarchivefind.cpio extract
+▶ cd extract
+▶ cpio -id < myarchivefind.cpio
+
+
+-d 			will create the folders
+-i 			is for extract
+
+
+
+-----------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------
+
+
+dd
+
+The dd command copies data from one location to another.
+
+
+if 			is In File
+of 			is Out File
+bs 			block size
+
+▶ dd if=/dev/sda of=backup.dd bs=4096
+
+
+
+
+-----------------------------------------------------------------------------------
+
+
+Another common usage is creating files of specific size:
+
+▶ dd if=/dev/zero of=1g.bin bs=1G count=1
+
+
+
+-----------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------
+
+
+
+
+▶ gzip mydata 
+
+
+▶ gunzip mydata.gz
+
+
+
+-----------------------------------------------------------------------------------
+
+
+
+▶ bzip2 mydata 
+
+
+▶ bunzip2 mydata.bz2 
+
+
+
+-----------------------------------------------------------------------------------
