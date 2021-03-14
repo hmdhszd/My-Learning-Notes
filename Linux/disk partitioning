@@ -101,7 +101,243 @@ LVM helps you create one partition from different disks and add or remove space 
 
 
 
+
 ---------------------------------------------------------------------------------------------
+
+
+
+show hard devices:
+
+▶ ls -l /dev/loop1  /dev/sd[a-z] 
+brw-rw---- 1 root disk 7, 1 Mar 10 10:17 /dev/loop1
+brw-rw---- 1 root disk 8, 0 Mar 10 19:54 /dev/sda
+
+
+b = block device
+
+
+---------------------------------------------------------------------------------------------
+
+
+
+
+▶ sudo fdisk -l /dev/sda
+
+Disk /dev/sda: 111.8 GiB, 120034123776 bytes, 234441648 sectors
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disklabel type: gpt
+Disk identifier: 18EF759B-93D3-4A22-9343-2C86F79A7BA1
+
+Device       Start       End   Sectors   Size Type
+/dev/sda1     2048   1050623   1048576   512M EFI System
+/dev/sda2  1050624 234440703 233390080 111.3G Linux filesystem
+
+
+
+
+---------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------
+
+
+
+[root@localhost ~]# fdisk /dev/sdb
+
+
+
+
+
+Command action
+   a   toggle a bootable flag
+   b   edit bsd disklabel
+   c   toggle the dos compatibility flag
+   d   delete a partition
+   g   create a new empty GPT partition table
+   G   create an IRIX (SGI) partition table
+   l   list known partition types
+   m   print this menu
+   n   add a new partition
+   o   create a new empty DOS partition table
+   p   print the partition table
+   q   quit without saving changes
+   s   create a new empty Sun disklabel
+   t   change a partition's system id
+   u   change display/entry units
+   v   verify the partition table
+   w   write table to disk and exit
+   x   extra functionality (experts only)
+
+
+
+
+---------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------
+
+
+Create a new partition:
+
+
+
+
+
+
+
+
+Command (m for help): n
+
+Partition type:
+   p   primary (0 primary, 0 extended, 4 free)
+   e   extended
+Select (default p): p
+
+Partition number (1-4, default 1): 
+First sector (2048-16777215, default 2048): 
+Using default value 2048
+
+Last sector, +sectors or +size{K,M,G} (2048-16777215, default 16777215): +1G
+Partition 1 of type Linux and of size 1 GiB is set
+
+
+
+
+---------------------------------------------------------------------------------------------
+
+
+
+
+
+Command (m for help): p
+
+Disk /dev/sdb: 8589 MB, 8589934592 bytes, 16777216 sectors
+Units = sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disk label type: dos
+Disk identifier: 0xd7e73d9d
+
+   Device Boot      Start         End      Blocks   Id  System
+/dev/sdb1            2048     2099199     1048576   83  Linux
+
+
+
+
+
+---------------------------------------------------------------------------------------------
+
+
+
+change partitoin type:
+
+
+Command (m for help): t
+Selected partition 1
+Hex code (type L to list all codes): b
+
+
+
+Changed type of partition 'Linux' to 'W95 FAT32'
+
+
+
+
+
+   w   write table to disk and exit
+
+
+
+
+
+
+
+
+
+
+
+
+format the partition:
+
+
+[root@localhost ~]# mkfs -t ext3 /dev/sdb
+
+or
+
+[root@localhost ~]# mkfs.ext3 /dev/sdb
+
+
+---------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------
+
+
+make swap:
+
+
+[root@localhost ~]# mkswap -f /dev/sdb
+
+
+
+---------------------------------------------------------------------------------------------
+
+
+
+
+[root@localhost ~]# blkid
+/dev/sda1: UUID="586cafb4-de98-44f1-ac50-f619d4a71d23" TYPE="xfs" 
+/dev/sda2: UUID="bjtm1h-IH4B-8dXy-VsUj-cQhq-SJ51-LVHAz2" TYPE="LVM2_member" 
+/dev/sdb: UUID="59074182-fc08-4f1e-b2bd-f196fe00765b" TYPE="swap" 
+/dev/mapper/centos-root: UUID="923b437c-6b1e-4eb7-bb8d-6adbc5577318" TYPE="xfs" 
+/dev/mapper/centos-swap: UUID="9cc897a2-b4f7-4c6c-aac4-f737c92f56a3" TYPE="swap" 
+
+
+
+
+---------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+---------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+---------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+---------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+---------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+---------------------------------------------------------------------------------------------
+
 
 
 

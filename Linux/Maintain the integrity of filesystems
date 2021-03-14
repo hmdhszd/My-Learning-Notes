@@ -1,0 +1,236 @@
+Maintain the integrity of filesystems
+
+
+check file system   sdb
+
+▶ fsck /dev/sdb
+
+
+
+------------------------------------------------------------------------
+
+
+tune2fs
+
+This is a command to tune ext file systems. It can show information and set many options. The -l option lists the current configs:
+
+
+▶ tune2fs -l /dev/sdb
+
+
+
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+
+
+
+du			disk usage
+
+df			disk free
+
+
+
+
+------------------------------------------------------------------------
+
+
+
+see free space:
+
+
+[root@localhost ~]# df -Th
+Filesystem              Type      Size  Used Avail Use% Mounted on
+devtmpfs                devtmpfs  2.4G     0  2.4G   0% /dev
+tmpfs                   tmpfs     2.4G     0  2.4G   0% /dev/shm
+tmpfs                   tmpfs     2.4G  8.6M  2.4G   1% /run
+tmpfs                   tmpfs     2.4G     0  2.4G   0% /sys/fs/cgroup
+/dev/mapper/centos-root xfs        14G  1.2G   13G   9% /
+/dev/sda1               xfs      1014M  149M  866M  15% /boot
+tmpfs                   tmpfs     488M     0  488M   0% /run/user/0
+
+
+
+------------------------------------------------------------------------
+
+
+ free inodes:
+
+
+[root@localhost ~]# df -hi
+Filesystem              Inodes IUsed IFree IUse% Mounted on
+devtmpfs                  606K   365  606K    1% /dev
+tmpfs                     609K     1  609K    1% /dev/shm
+tmpfs                     609K   497  609K    1% /run
+tmpfs                     609K    16  609K    1% /sys/fs/cgroup
+/dev/mapper/centos-root   6.7M   27K  6.7M    1% /
+/dev/sda1                 512K   327  512K    1% /boot
+tmpfs                     609K     1  609K    1% /run/user/0
+
+
+
+
+------------------------------------------------------------------------
+
+
+du:
+
+
+
+switch 	usage
+-h 				print sizes in powers of 1024 (e.g., 1023M)
+-H 				print sizes in powers of 1000 (e.g., 1.1G)
+-c 				show the grand total
+--max-depth 2 	shows only 2 directories furthur
+-s 				Only shows the summary and not all the directories one by one
+
+
+
+
+
+
+▶ du -hc --max-depth 1 /home/hamid/Downloads 
+
+1009M	/home/hamid/Downloads/pycharm-2019.3.3
+364K	/home/hamid/Downloads/arabic_reshaper-2.0.15
+2.4M	/home/hamid/Downloads/java_v1.0-master
+652K	/home/hamid/Downloads/persian-subtitle-the-da-vinci-code-2006-All
+15M		/home/hamid/Downloads/Dictionary in csv
+4.0K	/home/hamid/Downloads/Compréhension orale 3 iranfrench.ir
+3.0M	/home/hamid/Downloads/.Net-master
+404K	/home/hamid/Downloads/little.nicholas-2009
+996K	/home/hamid/Downloads/Once.Upon.A.Time.In.Hollywood.2019_WorldSubtitle
+2.8M	/home/hamid/Downloads/Pictures
+6.6G	/home/hamid/Downloads
+6.6G	total
+
+
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+
+
+
+debugfs:
+
+
+
+root@funlife:~# debugfs /dev/sda2
+
+
+
+
+------------------------------------------------------------------------
+
+
+
+info of a partition:
+
+
+
+[root@localhost ~]# mke2fs -n /dev/sdb1
+mke2fs 1.42.9 (28-Dec-2013)
+Filesystem label=
+OS type: Linux
+Block size=4096 (log=2)
+Fragment size=4096 (log=2)
+Stride=0 blocks, Stripe width=0 blocks
+524288 inodes, 2096896 blocks
+104844 blocks (5.00%) reserved for the super user
+First data block=0
+Maximum filesystem blocks=2147483648
+64 block groups
+32768 blocks per group, 32768 fragments per group
+8192 inodes per group
+Superblock backups stored on blocks: 
+	32768, 98304, 163840, 229376, 294912, 819200, 884736, 1605632
+
+
+
+
+
+------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+------------------------------------------------------------------------
+
+
+
+
+
