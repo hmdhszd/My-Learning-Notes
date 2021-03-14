@@ -1,0 +1,92 @@
+vi has 2 different modes:
+
+    Command mode is where you go around the file, search, delete text, copy paste, replace, ... and give other commands to the vi. Some commands start with a : and some are only a keypress.
+    Insert mode is where what you type, goes into the file at the cursors position.
+
+    If you want to go to the Command mode from the Insert mode, press ESC key. There are several ways to go to the Insert mode from Command mode (including the 'i' key).
+
+
+
+
+-------------------------------------------------------------------------------------
+
+
+
+
+key 		function
+h 			One character to the left (only current line)
+j 			One line down
+k 			One line up
+l 			One character to the right (only current line)
+w 			Next word on the current line
+e 			Next end of word on the current line
+b 			Previous beginning of the word on the current line
+Ctrl-f 		Scroll forward one page
+Ctrl-b 		Scroll backward one page
+
+
+
+
+-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------
+
+
+
+Editing text
+
+These command during the command mode will help you enter, edit, replace, .. test:
+key 			function
+i 			Enter the insert mode
+a 			Enter the insert mode after the current position of the cursor
+r 			replace only one character
+o 			open a new line below the cursor and go to the insert mode
+O 			open a new line above the cursor and go to the insert mode
+c 			clear to a location and go to the insert mode the replace till there and then normal insert (cw will overwrite the current word)
+d 			delete. you can mix with w (dw) to delete a word. Same as cw but dw does not to to the insert mode
+dd 			Delete the current line
+x 			Delete character at the position of the cursor
+p 			Paste the last deleted text after the cursor
+P 			Paste the last deleted text before the cursor
+xp 			swaps the character at the cursor position with the one on its right
+
+
+
+-------------------------------------------------------------------------------------
+
+
+
+Searching
+
+key 			function
+/ 				Search forward (/happiness will find the next happiness)
+? 				Search backward
+n 				repeat previous search. You can also use / and ? without any parameters)
+
+
+
+
+-------------------------------------------------------------------------------------
+
+
+
+Exiting
+
+
+key 			function
+:q! 			Quit editing without saving = runaway after any mistake
+:w! 			Write the file.
+:w myfile.txt 	Write to a new name
+ZZ 				Exit and save the file if modified
+:e! 			Reload the file from disk
+:! 				Run a shell command
+
+
+-------------------------------------------------------------------------------------
+
+
+
+$ vi --version
+
+$ vi file.txt
+
+
