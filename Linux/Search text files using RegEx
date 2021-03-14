@@ -1,0 +1,227 @@
+Repeating
+
+    The * means repeating the previous character for 0 or more
+    The + means repeating the previous character for 1 or more
+    the ? means zero or one repeats
+    {n,m} The item is matched at least n times, but not more than m times
+
+
+
+-----------------------------------------------------------------------------------------
+
+
+
+
+Regex 	Will match
+
+a*b 	ab, aaab, aaaaab, aaabthis
+a*b 	b, mobser
+a+b 	ab, aab, aaabenz
+a?b 	ab, aab, b, batman (zero a then b), ...
+
+
+
+
+-----------------------------------------------------------------------------------------
+
+
+
+Ranges
+
+There are easy ways to commonly used classes. Named classes open with [: and close with :]
+Range 								Meaning
+[:alnum:] 					Alphanumeric characters
+[:blank:] 					Space and tab characters
+[:digit:] 					The digits 0 through 9 (equivalent to 0-9)
+[:upper:] and [:lower:] 	Upper and lower case letters, respectively.
+^ (negation) 				As the first character after [ in a character class negates the sense of the remaining characters
+
+
+
+-----------------------------------------------------------------------------------------
+
+
+
+    A common form is .* which matches any character (zero or any length).
+
+
+
+-----------------------------------------------------------------------------------------
+
+
+
+Matching specific locations
+
+    The caret ^ means beginning of the string
+   
+    The dollar $ means the end of the string
+
+
+
+
+-----------------------------------------------------------------------------------------
+
+
+Samples
+
+    ^a.* 			Matches anything that starts with a
+    ^a.*b$ 			Matches anything that starts with a and ends with b
+    ^a.*\d+.*b$ 	Matches anything starting with a, have some digits in the middle and end with b
+    ^(l|b)oo 		Matches anything starts with l or b and then have oo
+    [f-h]|[A-K]$ 	The last character should be f to h (capital or small)
+
+
+
+
+-----------------------------------------------------------------------------------------
+
+
+
+extended grep
+
+
+▶ egrep "^r.*" mydata
+rtt min/avg/max/mdev = 91.810/109.692/166.992/26.672 ms
+
+
+
+-----------------------------------------------------------------------------------------
+
+
+grep
+
+The grep command can search inside the files.
+
+▶ grep p friends 
+payam
+pedram
+
+
+
+
+
+
+There are the most important switches:
+switch 	meaning
+-c 	just show the count
+-v 	reverse the search
+-n 	show line numbers
+-l 	show only file names
+-i 	case insensitive
+
+
+
+-----------------------------------------------------------------------------------------
+
+
+search in all files and return file name:
+
+
+▶ grep -l ping *
+
+Fffffffff
+myarchive.tar
+mydata
+myfileoutput
+myoutput
+
+
+
+-----------------------------------------------------------------------------------------
+
+
+
+Fixed grep
+
+If you need to search the exact string
+
+
+
+▶ grep -F "d$" mydata
+mahmooood$
+
+
+
+                                             
+▶ fgrep "d$" mydata  
+mahmooood$
+
+
+
+-----------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
+
+
+sed
+
+
+
+-r      ->     regex
+-n      ->     suppress output, you can use p at the end of your regex ( /something/p ) to print the output
+
+
+
+
+s 				in the start  ->   search and replace
+
+p 				at the end    ->   print in the output
+
+
+
+
+
+-----------------------------------------------------------------------------------------
+
+
+
+replace:
+
+▶ sed  "s/PING/DING/" mydata
+
+DING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
+64 bytes from 8.8.8.8: icmp_seq=1 ttl=114 time=121 ms
+64 bytes from 8.8.8.8: icmp_seq=2 ttl=114 time=144 ms
+
+
+
+
+
+
+▶ sed -r "s/^(a|b)/STARTS WITH A OR B/" friends
+
+STARTS WITH A OR Bmir
+mina
+STARTS WITH A OR Bita
+STARTS WITH A OR Bli
+
+
+
+
+-----------------------------------------------------------------------------------------
+
+
+
+
+find "max" and print in the output:
+
+
+▶ sed -n "/max/p" mydata 
+rtt min/avg/max/mdev = 91.810/109.692/166.992/26.672 ms
+
+
+
+
+-----------------------------------------------------------------------------------------
+
+
+find everything that starts with       a or b       and print in the output:
+
+
+
+$ sed -rn "/^(a|b)/p" friends 
+
+amir
+bita
+ali
+
+

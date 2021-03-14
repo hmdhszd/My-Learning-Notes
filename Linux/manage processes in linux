@@ -1,0 +1,355 @@
+
+run a command in background:
+
+▶ xeyes &  
+
+--------------------------------------------------------------------------------------
+
+
+                                
+▶ jobs
+[1]  + running    xeyes
+
+
+
+--------------------------------------------------------------------------------------
+
+Ctrl + C       break a program
+
+Ctrl + Z       stop a program  and  move to background
+
+
+
+
+
+
+Start a program in background:
+
+▶ bg
+
+▶ bg %2
+
+
+--------------------------------------------------------------------------------------
+
+
+move a program to foreground:
+
+▶ fg %2
+
+
+--------------------------------------------------------------------------------------
+
+
+kill a program of background:
+
+▶ kill %2
+[2]  + 30760 terminated  xeyes 
+
+
+--------------------------------------------------------------------------------------
+
+
+run a command after closing terminal:
+
+
+▶ nohup sleep 4000
+nohup: ignoring input and appending output to 'nohup.out'
+^Z
+[1]  + 31468 suspended  nohup sleep 4000
+
+
+
+▶ jobs
+[1]  + suspended  nohup sleep 4000
+
+
+
+▶ bg
+[1]  + 31468 continued  nohup sleep 4000
+
+
+
+▶ jobs
+[1]  + running    nohup sleep 4000
+
+
+
+
+
+
+
+
+
+
+
+▶ ps -ef | grep sleep 
+hamid    31468  6963  0 21:38 pts/0    00:00:00 sleep 4000
+
+
+▶ kill 31468
+[1]  + 31468 terminated  nohup sleep 4000   
+
+
+
+
+--------------------------------------------------------------------------------------
+
+
+
+▶ nohup script.sh > myscript.output 2>&1 &
+
+
+
+--------------------------------------------------------------------------------------
+
+
+kill a process
+
+
+▶ kill -9 %3   
+[3]    10114 killed     sleep 4000 
+
+
+-9   		force close
+-15			normal close
+
+
+--------------------------------------------------------------------------------------
+
+
+▶ killall sleep 
+[1]    9980 terminated  sleep 4000
+[2]    10050 terminated  sleep 4000
+[4]  - 10178 terminated  sleep 4000
+[5]  + 10243 terminated  sleep 4000
+
+
+
+--------------------------------------------------------------------------------------
+
+
+
+▶ ps -ef | grep sleep
+hamid    11001  3182  0 23:47 pts/0    00:00:00 sleep 4000
+hamid    11065  3182  0 23:47 pts/0    00:00:00 sleep 4000
+hamid    11129  3182  0 23:47 pts/0    00:00:00 sleep 4000
+hamid    11197  3182  0 23:47 pts/0    00:00:00 sleep 40030
+hamid    11263  3182  0 23:47 pts/0    00:00:00 sleep 400230
+
+
+▶ jobs -l
+[1]    11001 running    sleep 4000
+[2]    11065 running    sleep 4000
+[3]    11129 running    sleep 4000
+[4]  - 11197 running    sleep 40030
+[5]  + 11263 running    sleep 400230
+
+
+
+
+▶ kill -9 11263
+[5]  + 11263 killed     sleep 400230
+
+
+
+
+--------------------------------------------------------------------------------------
+
+
+show all pricesses:
+
+
+                                                                                                                                       
+▶ ps aux | head
+USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root         1  0.0  0.0 225420  6324 ?        Ss   Mar10   0:03 /sbin/init splash
+root         2  0.0  0.0      0     0 ?        S    Mar10   0:00 [kthreadd]
+root         4  0.0  0.0      0     0 ?        I<   Mar10   0:00 [kworker/0:0H]
+root         6  0.0  0.0      0     0 ?        I<   Mar10   0:00 [mm_percpu_wq]
+
+
+
+
+
+--------------------------------------------------------------------------------------
+
+
+
+▶ pstree | head -10
+systemd-+-ModemManager---2*[{ModemManager}]
+        |-NetworkManager-+-dhclient
+        |                `-2*[{NetworkManager}]
+        |-WhatsApp-+-WhatsApp---WhatsApp---18*[{WhatsApp}]
+        |          |-WhatsApp---6*[{WhatsApp}]
+        |          `-31*[{WhatsApp}]
+
+
+
+
+--------------------------------------------------------------------------------------
+
+
+▶ ps aux --sort -%cpu | head
+
+
+▶ ps aux --sort -%mem | head
+
+
+
+--------------------------------------------------------------------------------------
+
+
+see system status:
+
+default sort by CPU:
+
+▶ top
+
+
+
+for sort by Memory:
+
+press: Shift + M
+
+
+
+
+for kill a process:
+
+press: Shift + K
+
+
+
+
+--------------------------------------------------------------------------------------
+
+
+
+see free memory:
+
+
+
+▶ free -g
+              total        used        free      shared  buff/cache   available
+Mem:              7           4           0           0           2           1
+Swap:             1           0           1
+
+
+
+
+▶ free -m
+              total        used        free      shared  buff/cache   available
+Mem:           7884        4860         367         763        2655        1962
+Swap:          2047          23        2024
+
+
+
+
+--------------------------------------------------------------------------------------
+
+
+
+▶ uptime
+ 00:09:40 up 3 days, 13:52,  1 user,  load average: 0.79, 0.71, 0.62
+
+
+
+--------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------
+
+
+
+nice:  from -20 (higher priority)   to   19 (lower priority)
+
+NI
+
+▶ ps -l
+F S   UID   PID  PPID  C PRI  NI ADDR SZ WCHAN  TTY          TIME CMD
+0 S  1000  3182  3175  0  80   0 - 14239 sigsus pts/0    00:00:00 zsh
+0 S  1000 11001  3182  0  85   5 -  2255 hrtime pts/0    00:00:00 sleep
+0 S  1000 11065  3182  0  85   5 -  2255 hrtime pts/0    00:00:00 sleep
+
+
+
+
+--------------------------------------------------------------------------------------
+
+
+to see default nice:
+
+                                             
+▶ nice
+0
+
+
+
+--------------------------------------------------------------------------------------
+
+
+▶ nice sleep 10000
+^Z
+[5]  + 19193 suspended  nice sleep 10000
+
+
+
+▶ ps -l           
+F S   UID   PID  PPID  C PRI  NI ADDR SZ WCHAN  TTY          TIME CMD
+0 S  1000  3182  3175  0  80   0 - 14239 sigsus pts/0    00:00:00 zsh
+0 S  1000 11001  3182  0  85   5 -  2255 hrtime pts/0    00:00:00 sleep
+0 S  1000 11065  3182  0  85   5 -  2255 hrtime pts/0    00:00:00 sleep
+0 S  1000 11129  3182  0  85   5 -  2255 hrtime pts/0    00:00:00 sleep
+0 S  1000 11197  3182  0  85   5 -  2255 hrtime pts/0    00:00:00 sleep
+0 T  1000 19193  3182  0  90  10 -  2255 signal pts/0    00:00:00 sleep
+
+
+
+default = 10
+
+
+
+--------------------------------------------------------------------------------------
+
+
+
+▶ nice -n 19 ping 8.8.8.8
+PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
+64 bytes from 8.8.8.8: icmp_seq=1 ttl=112 time=113 ms
+^Z
+[6]  + 19758 suspended  nice -n 19 ping 8.8.8.8
+
+
+
+▶ ps -l
+F S   UID   PID  PPID  C PRI  NI ADDR SZ WCHAN  TTY          TIME CMD
+0 S  1000  3182  3175  0  80   0 - 14239 sigsus pts/0    00:00:00 zsh
+0 S  1000 11001  3182  0  85   5 -  2255 hrtime pts/0    00:00:00 sleep
+0 S  1000 11065  3182  0  85   5 -  2255 hrtime pts/0    00:00:00 sleep
+0 S  1000 11129  3182  0  85   5 -  2255 hrtime pts/0    00:00:00 sleep
+0 S  1000 11197  3182  0  85   5 -  2255 hrtime pts/0    00:00:00 sleep
+0 T  1000 19193  3182  0  90  10 -  2255 signal pts/0    00:00:00 sleep
+4 T  1000 19758  3182  0  99  19 -  4486 -      pts/0    00:00:00 ping
+
+
+
+
+--------------------------------------------------------------------------------------
+
+change priority:
+
+
+▶ renice -n 10 22132
+22132 (process ID) old priority 5, new priority 10
+
+
+
+▶ renice -n -10 22132
+renice: failed to set priority for 22132 (process ID): Permission denied
+
+
+
+▶ sudo renice -n -10 22132
+22132 (process ID) old priority 10, new priority -10
+
+
+
