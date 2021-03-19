@@ -292,8 +292,35 @@ make swap:
 
 
 ---------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------
 
 
+
+Control mounting and unmounting of filesystems
+
+
+---------------------------------------------------------------------------------------------
+
+
+
+show all mounted file systems:
+
+
+
+                                                                                                                                        ⍉
+▶ mount
+
+sysfs on /sys type sysfs (rw,nosuid,nodev,noexec,relatime)
+proc on /proc type proc (rw,nosuid,nodev,noexec,relatime)
+udev on /dev type devtmpfs (rw,nosuid,relatime,size=4005680k,nr_inodes=1001420,mode=755)
+devpts on /dev/pts type devpts (rw,nosuid,noexec,relatime,gid=5,mode=620,ptmxmode=000)
+tmpfs on /run type tmpfs (rw,nosuid,noexec,relatime,size=807348k,mode=755)
+/dev/sda2 on / type ext4 (rw,relatime,errors=remount-ro,data=ordered)
+/dev/sda1 on /boot/efi type vfat (rw,relatime,fmask=0077,dmask=0077,codepage=437,iocharset=iso8859-1,shortname=mixed,errors=remount-ro)
+tmpfs on /run/user/1000 type tmpfs (rw,nosuid,nodev,relatime,size=807344k,mode=700,uid=1000,gid=1000)
+gvfsd-fuse on /run/user/1000/gvfs type fuse.gvfsd-fuse (rw,nosuid,nodev,relatime,user_id=1000,group_id=1000)
+/dev/fuse on /run/user/1000/doc type fuse (rw,nosuid,nodev,relatime,user_id=1000,group_id=1000)
 
 
 
@@ -304,25 +331,13 @@ make swap:
 
 
 
+Mount and UnMount:
 
 
+▶ mount /dev/sda1 /media
 
 
-
----------------------------------------------------------------------------------------------
-
-
-
-
-
-
-
-
----------------------------------------------------------------------------------------------
-
-
-
-
+▶ umount /media
 
 
 
@@ -332,11 +347,190 @@ make swap:
 
 
 
+Mount Readonly:
+
+
+▶ mount -o ro /dev/sda1 /media
+
+
+
+-o         option
+
+
+---------------------------------------------------------------------------------------------
+
+
+
+
+Mount Read/Write:
+
+
+▶ mount -o rw /dev/sda1 /media
+
+▶ mount -o remount,rw /dev/sda1 /media
+
 
 
 
 
 ---------------------------------------------------------------------------------------------
+
+
+
+Unmount when    device is busy   :
+
+
+lsof   ->     lsopenfiles
+
+
+
+
+Method 1: use lsof
+The following command finds out the processes accessing the partition/filesystem. You need to run the following command as root. Here, we use the mount point /mnt/data as an example.
+
+
+
+
+# lsof | grep '/mnt/data'
+
+
+
+It will output lines like:       
+
+
+
+bash  17622  user1 cwd   DIR    253,2  4096  2 /mnt/data
+
+
+
+you may kill them by kill or kill -9. After the processes are killed, the filesystem will be able to be unmounted.
+
+
+
+
+
+
+
+
+
+
+Method 2: use fuser
+You can find out the processes using a filesystem (e.g. /mnt/data) by
+
+
+# fuser /mnt/data
+fuser can also help you kill all processes using a filesystem at the same time by
+
+# fuser -k /mnt/data
+or
+
+# fuser -k -9 /mnt/data
+Then you can continue to umount the filesystem.
+
+
+
+
+
+
+
+---------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------
+
+
+
+
+Bootup
+
+/etc/fstab
+
+    file system: Label, UUID, device
+    mount point: swap or none for swap
+    type: can be auto
+    options: defaults, rw / ro, noauto, user, exec / noexec, noatime
+    dump: do dump command backup this? mostly 0
+    pass: Non-zero values of pass specify the order of checking filesystems at boot time (seen in Integrity of file systems)
+
+
+
+
+user 							user can mount without root access
+noauto 							don't mount at startup
+noexec 							user can't run exec file
+errors=remount-ro				if it has errors, remount and readonly
+
+
+
+
+
+
+▶ cat /etc/fstab
+# /etc/fstab: static file system information.
+
+# <file system> <mount point>   <type>  <options>       <dump>  <pass>
+
+UUID=81017340-62d4-40d0-90a0-1484134bf70d 	/               ext4    errors=remount-ro 0       1
+
+UUID=0CF0-35D1  							/boot/efi       vfat    umask=0077      0       1
+/swapfile                                 none            swap    sw              0       0
+
+
+
+
+---------------------------------------------------------------------------------------------
+
+
+
+add a line int fstab :
+
+
+/dev/sdb1		/mnt/hamid/myUSB		user,ro 	0 		0
+
+
+
+
+
+▶ mkdir /mnt/hamid/myUSB
+
+
+
+---------------------------------------------------------------------------------------------
+
+
+
+                                                                                                                                           
+▶ blkid
+
+/dev/sda1: UUID="0CF0-35D1" TYPE="vfat" PARTLABEL="EFI System Partition" PARTUUID="1f8db139-f219-4559-b244-cdee6253f751"
+
+/dev/sda2: UUID="81017340-62d4-40d0-90a0-1484134bf70d" TYPE="ext4" PARTUUID="22b49831-d2a5-4760-af0d-14f097e21bb5"
+
+
+
+
+
+
+---------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------
+
+
+turn on/off swap:
+
+
+# swapoff -a
+
+# swapon -a
+
+
+
+
+
+show swap info:
+
+
+hamid# swapon -s
+
+Filename				Type		Size	Used	Priority
+/swapfile             	file    	2097148	1217952	-2
 
 
 
