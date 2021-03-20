@@ -672,22 +672,55 @@ pp: ASCII text
 
 
 ▶ file /bin/bash 
-/bin/bash: ELF 64-bit LSB shared object, 
-
-
-------------------------------------------------------------------------------
-
-
-
-
-
-
+/bin/bash: ELF 64-bit LSB shared object,
 
 
 
 ------------------------------------------------------------------------------
 
 
+
+Find:
+
+
+▶ find /tmp -maxdepth 1 -user hamid 
+
+
+▶ find /tmp -iname "*hamid*"
+
+
+
+
+------------------------------------------------------------------------------
+
+
+
+Locate:
+
+it works with updatedb command
+
+
+▶ locate -S
+Database /var/lib/mlocate/mlocate.db:
+	103,480 directories
+	1,183,768 files
+	111,213,420 bytes in file names
+	36,964,657 bytes used to store database
+
+
+
+
+
+▶ cat /etc/updatedb.conf 
+PRUNE_BIND_MOUNTS="yes"
+# PRUNENAMES=".git .bzr .hg .svn"
+PRUNEPATHS="/tmp /var/spool /media /var/lib/os-prober /var/lib/ceph /home/.ecryptfs /var/lib/schroot"
+PRUNEFS="NFS nfs nfs4 rpc_pipefs afs binfmt_misc proc smbfs autofs iso9660 ncpfs coda devpts ftpfs devfs devtmpfs fuse.mfs shfs sysfs cifs lustre tmpfs usbfs udf fuse.glusterfs fuse.sshfs curlftpfs ceph fuse.ceph fuse.rozofs ecryptfs fusesmb"
+
+
+
+
+▶ locate myfile
 
 
 
