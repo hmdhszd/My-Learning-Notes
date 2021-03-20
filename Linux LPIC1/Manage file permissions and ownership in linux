@@ -1,0 +1,485 @@
+------------------------------------------------------------------------------------------------
+
+
+
+
+▶ whoami
+hamid
+
+
+▶ groups
+hamid adm cdrom sudo dip plugdev input lpadmin sambashare
+
+
+▶ id
+uid=1000(hamid) gid=1000(hamid) groups=1000(hamid),4(adm),24(cdrom),27(sudo),30(dip),46(plugdev),104(input),112(lpadmin),128(sambashare)
+
+
+
+
+
+------------------------------------------------------------------------------------------------
+
+
+
+
+see all Users info:
+
+▶ cat /etc/passwd
+. . . 
+hamid:x:1000:1000:hamid,,,:/home/hamid:/usr/bin/zsh
+. . .
+
+
+
+see all Groups info:
+
+
+
+
+
+▶ cat /etc/group | grep hamid
+
+adm:x:4:syslog,hamid
+cdrom:x:24:hamid
+sudo:x:27:hamid
+dip:x:30:hamid
+plugdev:x:46:hamid
+input:x:104:hamid
+lpadmin:x:112:hamid
+hamid:x:1000:
+sambashare:x:128:hamid
+
+
+
+
+
+
+------------------------------------------------------------------------------------------------
+
+
+
+
+Chanhging permissions:
+
+
+
+
+------------------------------------------------------------------------------------------------
+
+
+
+
+
+▶ touch myfile 
+
+▶ ls -l myfile 
+-rw-rw-r-- 1 hamid hamid 0 Mar 19 11:54 myfile
+
+
+
+
+▶ chmod u+x myfile        
+
+▶ ls -l myfile    
+-rwxrw-r-- 1 hamid hamid 0 Mar 19 11:54 myfile
+
+
+
+
+▶ chmod u-x myfile 
+
+▶ ls -l myfile     
+-rw-rw-r-- 1 hamid hamid 0 Mar 19 11:54 myfile
+
+
+
+
+▶ chmod ug+x myfile 
+
+▶ ls -l myfile      
+-rwxrwxr-- 1 hamid hamid 0 Mar 19 11:54 myfile
+
+
+
+
+▶ chmod o-r myfile  
+
+▶ ls -l myfile     
+-rwxrwx--- 1 hamid hamid 0 Mar 19 11:54 myfile
+
+
+
+
+▶ chmod o=wr myfile 
+
+▶ ls -l myfile      
+-rwxrwxrw- 1 hamid hamid 0 Mar 19 11:54 myfile
+
+
+
+
+
+------------------------------------------------------------------------------------------------
+
+
+
+
+Chanhging permissions:
+
+
+
+
+------------------------------------------------------------------------------------------------
+
+
+
+rwx 	7
+rw- 	6
+r-x 	5
+r-- 	4
+-wx 	3
+-w- 	2
+--x 	1
+--- 	0
+
+
+d 		directory
+l 		soft link
+
+
+
+
+▶ chmod 754 myfile 
+
+▶ ls -l myfile     
+-rwxr-xr-- 1 hamid hamid 0 Mar 19 11:54 myfile
+
+
+
+------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------
+
+
+
+
+Access modes:
+
+
+
+s 			suid (set user id)
+g 			guid (set group id)
+
+
+
+
+If these are set on a file, that file be will be executed with the access of the owner of the file and not the user who is running it.
+
+
+
+▶ ls -ltrh /usr/bin/passwd 
+-rwsr-xr-x 1 root root 50K Jul 18  2014 /usr/bin/passwd
+
+
+
+
+
+
+▶ chmod u+s  myfile 
+
+▶ ls -l myfile      
+-rwsr-xr-- 1 hamid hamid 0 Mar 19 11:54 myfile
+
+
+
+
+
+▶ chmod g+s  myfile 
+
+▶ ls -l myfile      
+-rwsr-sr-- 1 hamid hamid 0 Mar 19 11:54 myfile
+
+
+
+
+
+
+
+
+
+
+
+▶ chmod g+s MyProjectDirectory 
+                                                                                                                                      
+▶ ls -ld MyProjectDirectory
+drwxrwsr-x 2 hamid hamid 4096 Mar 19 13:08 MyProjectDirectory
+
+
+
+
+▶ chown hamid:adm MyProjectDirectory 
+
+▶ ls -ld MyProjectDirectory         
+drwxrwsr-x 2 hamid adm 4096 Mar 19 13:08 MyProjectDirectory
+
+
+
+
+
+
+------------------------------------------------------------------------------------------------
+
+
+
+t 			sticky bit
+
+
+only the owner of the file can delete it:
+
+
+
+▶ chmod o+t myfile 
+
+▶ ls -l myfile 
+-rwsr-sr-T 1 hamid hamid 0 Mar 19 11:54 myfile
+
+
+
+
+------------------------------------------------------------------------------------------------
+
+
+
+
+suid 	4000 	u+s 	▶ chmod 4755 myfile
+guid 	2000 	g+s 	▶ chmod 2755 myfile
+sticky 	1000 	t   	▶ chmod 1755 myfile
+
+
+
+
+------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------
+
+
+
+umask
+
+permissions should not be given to new files:
+
+
+
+▶ umask 0006  
+
+▶ touch myfile1
+
+▶ ls -l myfile1
+-rw-rw---- 1 hamid hamid 0 Mar 19 13:21 myfile1
+
+
+
+------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------
+
+
+
+Changing owner and groups:
+
+
+
+$ ls -ltrh newfile 
+-rw-rw-r-- 1 hamid hamid 0 Feb  8 21:38 newfile
+
+
+$ chown root:root newfile
+chown: changing ownership of ‘newfile’: Operation not permitted
+
+
+$ sudo chown root:root newfile
+
+
+$ ls -ltrh newfile 
+-rw-rw-r-- 1 root root 0 Feb  8 21:38 newfile
+
+
+
+
+
+
+------------------------------------------------------------------------------------------------
+
+-R to do the chown recursively
+
+------------------------------------------------------------------------------------------------
+
+
+
+change group:
+
+
+$ sudo chgrp postgres newfile
+
+$ ls -ltrh newfile 
+-rw-rw-r-- 1 root postgres 0 Feb  8 21:38 newfile
+
+
+
+------------------------------------------------------------------------------------------------
+
+
+
+
+change the default group:
+
+
+
+$ touch newfile
+
+$ ls -ltrh newfile 
+
+-rw------- 1 hamid hamid 0 Feb  8 21:53 newfile
+
+
+
+
+
+$ groups
+hamid adm cdrom sudo dip plugdev netdev lpadmin sambashare debian-tor
+
+
+
+
+
+$ newgrp adm
+
+$ touch newerfile
+
+$ ls -ltrh new*
+-rw------- 1 hamid hamid 0 Feb  8 21:53 newfile
+-rw------- 1 hamid adm  0 Feb  8 21:54 newerfile
+
+
+
+
+
+------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
