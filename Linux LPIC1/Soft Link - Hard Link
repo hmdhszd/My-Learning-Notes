@@ -1,0 +1,123 @@
+
+
+
+Copy:  		(Different inode)
+
+
+
+▶ ls -il
+total 4
+4721298 -rw-rw-r-- 1 hamid hamid    0 Mar 19 13:21 myfile
+
+
+
+
+▶ cp myfile mynewfile
+
+▶ ls -il             
+total 4
+4721298 -rw-rw-r-- 1 hamid hamid    0 Mar 19 13:21 myfile
+4722818 -rw-rw-r-- 1 hamid hamid    0 Mar 20 08:53 mynewfile
+
+
+
+
+---------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------
+
+
+
+
+
+Hard Link: 		(same inode   ->   same data)   only in the same hard disk and partition
+(only for files)
+
+
+▶ ls -il                        
+total 4
+4721298 -rw-rw-r-- 2 hamid hamid    0 Mar 19 13:21 HardLinkOfMyFile.txt
+4721298 -rw-rw-r-- 2 hamid hamid    0 Mar 19 13:21 myfile
+4722818 -rw-rw-r-- 1 hamid hamid    0 Mar 20 08:53 mynewfile
+
+
+
+! if we copy something to one of the files, the other file will be changes too !
+
+
+
+
+
+
+
+
+
+
+
+▶ ln mydir  HardLinkOfMyDir 
+ln: mydir: hard link not allowed for directory
+
+
+
+
+
+
+---------------------------------------------------------------------------------------------
+
+
+
+
+Unlink:
+
+
+
+▶ unlink HardLinkOfMyFile.txt 
+
+▶ ls -il                     
+total 0
+4721298 -rw-rw-r-- 1 hamid hamid 0 Mar 19 13:21 myfile
+4722818 -rw-rw-r-- 1 hamid hamid 0 Mar 20 08:53 mynewfile
+
+
+
+
+---------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------
+
+
+
+
+Soft Link:  		(Different inode)	we can use it in different file hard disks and partitions
+(for files and directories)
+
+
+▶ ln -s myfile SoftLinkOfMyFile
+
+▶ ls -il                       
+total 0
+4721298 -rw-rw-r-- 1 hamid hamid 0 Mar 19 13:21 myfile
+4722818 lrwxrwxrwx 1 hamid hamid 6 Mar 20 09:11 SoftLinkOfMyFile -> myfile
+
+
+
+! if we copy something to one of the files, the other file will be changes too !
+
+
+
+
+
+
+
+
+
+
+▶ ln -s mydir SoftLinkOfMyDir 
+
+▶ ls -il                         
+total 8
+4722841 lrwxrwxrwx 1 hamid hamid    5 Mar 20 09:26 SoftLinkOfMyDir -> mydir
+4727730 drwxrwxr-x 2 hamid hamid 4096 Mar 20 09:26 mydir
+
+
+
+
+
