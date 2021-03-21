@@ -26,26 +26,58 @@ my user:
 
 
 ------------------------------------------------------------------------------
+------------------------------------------------------------------------------
 
 
 
-Global bash configs are stored at:
+login vs non-login shell:
+
+Sometimes you login into the shell, say after a ssh but sometimes you just open a shell; say in GUI.
 
 
-1)	/etc/profile
-
-
-
-
-and each user has her own config at :
-
-
-2)	~/.profile
-3)	~/.bash_profile
-4)	~/.bash_logout
+------------------------------------------------------------------------------
 
 
 
+when login in a "Login Shell" : 
+
+
+1)  run     /etc/profile            (Global Bash Configurations)
+
+2)  run     every thing in this directory:  /etc/profile.d   (we can add scripts here)
+
+
+
+Now the global profile is loaded and system will go for user specific profiles: (only one of them!)
+
+
+3) /home/USERNAME/.bash_profile     (~/.bash_profile)
+
+4) /home/USERNAME/.bash_login       (~/.bash_login)
+
+5) /home/USERNAME/.profile          (~/.profile)
+
+
+
+
+
+------------------------------------------------------------------------------
+
+
+
+Interactive (non-login) shell:  (shell without password)
+
+
+if you run a shell in an interactive mode (non-login) shell say from a GUI,
+only two things will be run:
+
+1) /etc/bash.bashrc (or in some systems /etc/bashrc)
+
+2) /home/USERNAME/.bashrc
+
+
+
+------------------------------------------------------------------------------
 ------------------------------------------------------------------------------
 
 
@@ -729,11 +761,28 @@ PRUNEFS="NFS nfs nfs4 rpc_pipefs afs binfmt_misc proc smbfs autofs iso9660 ncpfs
 
 
 ------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+
+Aliases:
+
+Most of the time they are defined in ~/.bashrc and look like this:
+
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+
+
+▶ alias gitaddall='git add .'  
+
+
+------------------------------------------------------------------------------
 
 
 
 
+/etc/skel
 
+This directory contains files which will be used as a starting template for each new user.
 
 
 
@@ -743,27 +792,12 @@ PRUNEFS="NFS nfs nfs4 rpc_pipefs afs binfmt_misc proc smbfs autofs iso9660 ncpfs
 
 
 
+.bash_logout
+
+runs when you logout from a login shell.
 
 
-
-
-
-------------------------------------------------------------------------------
-
-
-
-
-
-
-
-
-
-------------------------------------------------------------------------------
-
-
-
-
-
+In many distros it only clears the screen so the next person will not be able to watch what you were doing before you logout.
 
 
 
