@@ -1,0 +1,251 @@
+
+
+
+list the tasks:
+
+▶ crontab -l
+
+
+
+
+_________________________________________________________________________________________________
+
+
+
+
+
+
+A    B    C    D    E    command and arguments
+
+
+
+
+
+filed		Meaning			values
+A			minute			0-59
+B			hour			0-23
+C			day of month	1-31
+D			month			1-12 (or names, see below)
+E			day of week		0-7 (0 or 7 is Sunday, or use names)
+
+
+
+@reboot or @daily
+
+
+
+
+_________________________________________________________________________________________________
+
+
+
+
+edit the tasks in cron:
+
+
+▶ contab -e
+
+
+
+
+_________________________________________________________________________________________________
+
+
+
+
+example:
+
+
+
+
+# run at 2:15pm on the first of every month -- output mailed to paul
+15 14 1 * *     $HOME/bin/monthly
+
+# run at 10 pm on weekdays, annoy Joe
+0 22 * * 1-5    mail -s "It's 10pm" joe%Joe,%%Where are your kids?%
+
+23 0-23/2 * * * echo "run 23 minutes after midn, 2am, 4am ..., everyday"
+5 4 * * sun     echo "run at 5 after 4 every sunday"
+
+*/5 * * * *    echo "each 5 mintues"
+42 8,18 * * 1-5    echo "8:42 and 18:42 and only on weekdays (monday till friday)"
+
+@reboot        echo "runs after the reboot"
+
+
+
+
+_________________________________________________________________________________________________
+
+
+
+at:
+
+
+$ at now + 1 min
+
+warning: commands will be executed using /bin/sh
+at> touch /tmp/at
+at> <EOT>
+job 3 at Thu Oct 29 22:12:00 2019
+
+
+
+
+$atq
+
+it shows the queue of tasks
+
+
+
+
+$atrm 11
+
+remove tasks
+
+
+
+
+_________________________________________________________________________________________________
+_________________________________________________________________________________________________
+
+
+
+
+system wide cron   (we determine USER too)
+
+
+
+
+
+▶ cat /etc/crontab
+
+
+SHELL=/bin/sh
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+
+# m h dom mon dow user	command
+17 *	* * *	root    cd / && run-parts --report /etc/cron.hourly
+25 6	* * *	root	test -x /usr/sbin/anacron || ( cd / && run-parts --report /etc/cron.daily )
+47 6	* * 7	root	test -x /usr/sbin/anacron || ( cd / && run-parts --report /etc/cron.weekly )
+52 6	1 * *	root	test -x /usr/sbin/anacron || ( cd / && run-parts --report /etc/cron.monthly )
+#
+
+
+
+
+
+
+_________________________________________________________________________________________________
+
+
+
+
+
+
+System hourly, daliy, weekly, monthly, .. crons
+
+
+
+We have some system level crontab files in /etc/cron.d/
+
+
+$ sudo tree /etc/cron* 
+root's password:
+/etc/cron.d
+└── mdadm
+
+
+
+
+
+
+But /etc/cron.hourly, /etc/cron.daily, /etc/cron.weekly, /etc/cron.monthly is TOTALLY DIFFERENT. In these directories are actual executable scripts and files.
+
+
+The cron will run these files one a hour, one a day, once a week or once a month based on their directory names.
+
+
+
+
+
+
+
+_________________________________________________________________________________________________
+_________________________________________________________________________________________________
+
+
+
+
+
+anacron
+
+
+
+
+
+
+▶ cat /etc/anacrontab 
+# /etc/anacrontab: configuration file for anacron
+
+# See anacron(8) and anacrontab(5) for details.
+
+SHELL=/bin/sh
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+HOME=/root
+LOGNAME=root
+
+# These replace cron's entries
+1	5	cron.daily	run-parts --report /etc/cron.daily
+7	10	cron.weekly	run-parts --report /etc/cron.weekly
+@monthly	15	cron.monthly	run-parts --report /etc/cron.monthly
+
+
+
+
+
+
+
+
+If the system is down when the cron should run a task, that cron job wont run till the next occurrence! But anacron creates the timestamp each time a daily, weekly or monthly job runs.
+
+
+
+
+
+
+
+_________________________________________________________________________________________________
+_________________________________________________________________________________________________
+
+
+
+
+
+
+controlling access using files
+
+
+
+
+/etc/cron.allow
+/etc/cron.deny
+
+/etc/at.allow
+/etc/at.deny
+
+
+
+
+
+
+.allow	
+
+ONLY users mentioned in this file are allowed to run this service. All other users will be denied
+
+
+
+
+.deny	
+
+Everybody can use the service except the users mentioned in this file
