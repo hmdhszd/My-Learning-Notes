@@ -1,0 +1,282 @@
+change password:
+
+
+$ passwd
+
+
+
+______________________________________________________________________________________________
+
+
+
+Adding users
+
+
+$ useradd
+
+
+switch		meaning
+-d			home directory (-d /home/user)
+-m			create home directory
+-s			specify shell
+-G			add to additional groups
+-c			comment. most of the time, users actual name. Use quotes if comments has spaces or special characters in them
+
+
+
+
+______________________________________________________________________________________________
+
+
+
+
+▶ ls -a /etc/skel        
+.   .bash_logout  .config     .gtkrc-xfce
+..  .bashrc       .gtkrc-2.0  .profile
+
+
+for each new user, it copies this files into :   ▶ ls -a /home/hamid 
+
+
+
+______________________________________________________________________________________________
+
+
+
+Modifying users:
+
+
+
+
+
+
+switch		meaning
+-L			lock this account
+-U			Unlock the account
+-aG			add to more groups (say usermod -aG wheel hamid)
+
+
+
+
+
+comment:
+
+hamid# usermod -c 'this is a test user' test
+
+
+shell:
+hamid# usermod -s /bin/zsh test
+
+
+
+
+
+
+______________________________________________________________________________________________
+
+
+
+Deleting users
+
+
+# userdel testuser
+
+
+
+If you add the -r swtich, the home direcoty and mail spool will be erased too!
+
+
+
+# rm -rf /home/hasan
+
+
+
+______________________________________________________________________________________________
+
+Managing Groups:
+______________________________________________________________________________________________
+
+
+
+
+hamid# groupadd testgroup
+
+hamid# groupdel testgroup
+
+hamid# groupmod -g 432 testgroup
+
+
+
+
+id of group:
+
+hamid# groupadd -g 1200 newgroup
+
+
+
+
+
+______________________________________________________________________________________________
+______________________________________________________________________________________________
+
+
+
+
+hamid# cat /etc/passwd | grep hamid
+
+hamid:x:1000:1000:hamid,,,:/home/hamid:/usr/bin/zsh
+
+
+
+
+
+
+
+hamid# usermod -c 'this is a comment for user  HAMID' hamid
+
+
+
+hamid# cat /etc/passwd | grep hamid
+
+hamid:x:1000:1000:this is a comment for user  HAMID:/home/hamid:/usr/bin/zsh
+
+
+
+
+
+
+As you can see the format is:
+
+username:password:userid:primary group id:Name and comments:home dir:shell
+
+
+
+
+______________________________________________________________________________________________
+______________________________________________________________________________________________
+
+
+
+
+/etc/shadow
+This file contains hashed passwords) of the users. 
+
+
+/etc/passwd is readable for all 
+
+but 
+
+/etc/shadow is only readable for root and members of the shadow group:
+
+
+
+
+
+# ls -ltrh /etc/passwd /etc/shadow
+-rw-r--r-- 1 root root   1.9K Oct 28 15:47 /etc/passwd
+-rw-r----- 1 root shadow  851 Oct 29 19:06 /etc/shadow
+
+
+
+______________________________________________________________________________________________
+
+
+
+
+hamid# cat /etc/shadow | grep test
+
+test:$6$yBReS1yU$r9IShP7wbicfn5Tq/lyjnf0aLhmbtEpndAN/Amm8LQ9brDZx/ojeVajZoTGNJevavz.BpJvar7IdcmWcQdWcP/:18709:0:99999:7:::
+
+
+
+
+______________________________________________________________________________________________
+
+
+
+
+16737:0:99999:7:::
+
+
+filed		meaning
+16737		When was the last time this password changes
+0			User wont be able to change the password 0 days after each change
+99999		After this many days, the user HAVE to change his password
+7			and the user will be informed 7 days before the expiration to change his password
+
+
+
+
+______________________________________________________________________________________________
+
+
+
+
+
+chage
+
+
+switch		meaning
+-l			list information
+-E			Set the expiration date. Date can be a number, in YYYY-MM-DD format or -1 which will mean never
+
+
+
+
+
+
+hamid# chage -l test
+
+Last password change					: Mar 23, 2021
+Password expires					: never
+Password inactive					: never
+Account expires						: never
+Minimum number of days between password change		: 0
+Maximum number of days between password change		: 99999
+Number of days of warning before password expires	: 7
+
+
+
+
+______________________________________________________________________________________________
+______________________________________________________________________________________________
+
+
+
+
+/etc/group
+
+This file contains the groups and their IDs.
+
+# tail /etc/group
+avahi:x:486:
+kdm:!:485:
+mysql:x:484:
+winbind:x:483:
+at:x:25:
+svn:x:482:
+vboxusers:x:481:
+input:x:1000:jadi
+privoxy:x:480:
+
+
+
+***************  every user in group "wheel" can user SUDO command  ***************
+
+
+
+
+______________________________________________________________________________________________
+______________________________________________________________________________________________
+
+
+
+checking user info
+
+
+
+hamid# id hamid
+
+uid=1000(hamid) gid=1000(hamid) groups=1000(hamid),4(adm),24(cdrom),27(sudo),30(dip),46(plugdev),104(input),112(lpadmin),128(sambashare)
+
+
