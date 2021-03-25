@@ -1,0 +1,352 @@
+
+▶ date +'%Y-%m-%d--%H:%M'
+
+2021-03-23--23:40
+
+
+------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+change timezone: 	(Only for my user)
+
+
+▶ tzselect
+
+Please identify a location so that time zone rules can be set correctly.
+Please select a continent, ocean, "coord", or "TZ".
+ 1) Africa
+ 2) Americas
+ 3) Antarctica
+ 4) Asia
+ 5) Atlantic Ocean
+ 6) Australia
+ 7) Europe
+ 8) Indian Ocean
+ 9) Pacific Ocean
+10) coord - I want to use geographical coordinates.
+11) TZ - I want to specify the time zone using the Posix TZ format.
+#? q
+Please enter a number in range.
+
+
+
+
+
+------------------------------------------------------------------------------------------------
+
+
+
+
+There is a directory at /usr/share/zoneinfo/ containing all the timezone info.
+
+
+▶ ls -l /usr/share/zoneinfo/
+total 288
+drwxr-xr-x  2 root root  4096 Jul 29  2019 Africa
+drwxr-xr-x  6 root root  4096 Jul 29  2019 America
+drwxr-xr-x  2 root root  4096 Jul 29  2019 Antarctica
+drwxr-xr-x  2 root root  4096 Jul 29  2019 Arctic
+drwxr-xr-x  2 root root  4096 Jul 29  2019 Asia
+drwxr-xr-x  2 root root  4096 Jul 29  2019 Atlantic
+drwxr-xr-x  2 root root  4096 Jul 29  2019 Australia
+drwxr-xr-x  2 root root  4096 Jul 29  2019 Brazil
+drwxr-xr-x  2 root root  4096 Jul 29  2019 Canada
+
+
+
+
+
+------------------------------------------------------------------------------------------------
+
+
+
+
+change timezone: 	(for entire system)
+
+
+
+
+▶ cat /etc/timezone 
+Asia/Tehran
+
+
+edit and change the timezone:
+
+▶ nano /etc/timezone
+
+
+
+
+
+
+
+
+
+
+
+▶ ls -ltrh localtime 
+lrwxrwxrwx 1 root root 31 Nov 28  2019 localtime -> /usr/share/zoneinfo/Asia/Tehran
+
+
+
+unlink and relink local time:
+
+
+▶ unlink localtime 
+
+▶ ln -s /usr/share/zoneinfo/Asia/Kabul localtime
+
+
+
+
+
+
+------------------------------------------------------------------------------------------------
+Configuring Languages
+------------------------------------------------------------------------------------------------
+
+
+
+
+▶ locale
+                             
+LANG=en_US.UTF-8
+LANGUAGE=en_US:en
+LC_CTYPE="en_US.UTF-8"
+LC_NUMERIC=az_IR
+LC_TIME=en_US.UTF-8
+LC_COLLATE="en_US.UTF-8"
+LC_MONETARY=az_IR
+LC_MESSAGES="en_US.UTF-8"
+LC_PAPER=az_IR
+LC_NAME=az_IR
+LC_ADDRESS=az_IR
+LC_TELEPHONE=az_IR
+LC_MEASUREMENT=az_IR
+LC_IDENTIFICATION=az_IR
+LC_ALL=
+
+
+
+
+
+------------------------------------------------------------------------------------------------
+
+
+
+
+
+change locale:
+
+
+
+
+▶ date              
+Thu Mar 25 09:53:44 +0430 2021
+                                       
+▶ export LC_ALL=en_GB.UTF-8
+                                                                                                                                          
+▶ date                     
+Thu 25 Mar 09:54:01 +0430 2021
+
+
+
+
+
+
+
+
+set to default:
+
+▶ unset LC_ALL             
+
+
+
+
+
+
+------------------------------------------------------------------------------------------------
+
+
+
+
+LANG=C
+
+-All language settings will be default (en.US)
+
+-Binary sort order
+
+
+
+
+------------------------------------------------------------------------------------------------
+
+
+
+
+install new packages for locale:
+
+
+▶ dpkg-reconfigure locales
+
+
+
+
+
+
+
+▶ export LC_ALL=fa_IR.UTF-8    
+
+▶ date
+پنجشنبه ۲۵ مارس ۲۱، ساعت ۱۰:۱۵:۳۶ (+0430)‬
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------------
+Maintain system time
+------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+$ cat /etc/adjtime
+
+0.000000 1451741899 0.000000
+1451741899
+UTC
+
+
+
+
+▶ hwclock
+
+2021-03-25 10:32:35.123998+0430
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------------
+
+
+
+
+
+# hwclock --localtime --set --date="01/05/2015 22:04:00"
+
+
+
+
+
+If you want to fix it, just issue:
+
+# hwclock -u -w
+
+
+
+
+
+------------------------------------------------------------------------------------------------
+NTP:
+------------------------------------------------------------------------------------------------
+
+
+
+
+
+▶ apt instal ntpdate
+
+
+set the time with NTPDATE:
+
+
+▶ ntpdate
+25 Mar 10:45:22 ntpdate[7929]: no servers can be used, exiting
+
+
+
+
+hamid# ntpdate pool.ntp.org
+25 Mar 10:46:17 ntpdate[8216]: adjust time server 89.110.32.178 offset 0.000921 sec
+
+
+
+
+
+------------------------------------------------------------------------------------------------
+
+
+
+
+
+hamid# apt install ntp
+hamid# systemctl start ntp
+hamid# systemctl enable ntp
+
+
+
+
+change NTP settings:
+
+hamid# nano /etc/ntp.conf
+
+
+
+
+
+------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+hamid# ntpq -p
+     remote           refid      st t when poll reach   delay   offset  jitter
+==============================================================================
+ 0.ubuntu.pool.n .POOL.          16 p    -   64    0    0.000    0.000   0.000
+ 1.ubuntu.pool.n .POOL.          16 p    -   64    0    0.000    0.000   0.000
+ 2.ubuntu.pool.n .POOL.          16 p    -   64    0    0.000    0.000   0.000
+ 3.ubuntu.pool.n .POOL.          16 p    -   64    0    0.000    0.000   0.000
+ ntp.ubuntu.com  .POOL.          16 p    -   64    0    0.000    0.000   0.000
++84.2.46.19      82.96.64.2       3 u   42   64   37  1461.98  -671.15 169.845
++37.156.28.13    194.27.222.5     2 u   46   64   37  1271.13  -630.54 347.554
+ 157.230.114.16  71.66.197.233    2 u   45   64   37  1916.64  -914.36 533.244
+ 109.110.160.172 79.133.44.137    2 u   42   64   37  1937.01  -962.30 443.644
+-192.33.214.47   129.194.21.113   2 u   43   64   37  2015.16  -950.48 478.244
+ 75.76.123.222   216.239.35.0     2 u   47   64   21  2075.90  -927.84 546.197
+-194.225.150.25  193.67.79.202    2 u   49   64   37  1816.21  -902.06 431.243
+-164.132.13.191  192.168.100.15   2 u   47   64   17  1938.96  -914.99 502.890
+ 216.6.2.70      195.219.205.18   2 u   44   64   37  2163.07  -991.80 601.630
+-77.104.70.70    194.225.150.25   3 u   45   64   37  1937.43  -958.61 400.280
+*85.220.190.246  213.172.97.14    3 u   41   64   37  560.617  -230.11 369.902
+ 91.189.91.157   94.198.159.10    2 u   50   64   37  1954.64  -892.11 497.151
+-195.219.205.9   129.215.42.240   3 u   40   64   37  1786.45  -831.18 454.803
+ 91.189.89.199   145.238.203.14   2 u   53   64   37  1886.85  -893.82 447.178
+ 91.189.94.4     140.203.204.77   2 u   51   64   37  1941.14  -919.34 500.871
+ 91.189.89.198   17.253.34.253    2 u   53   64   37  1909.50  -906.26 452.942
+
+
+
+
+
+we are using the server with *
+
+
+
+
+
+------------------------------------------------------------------------------------------------
