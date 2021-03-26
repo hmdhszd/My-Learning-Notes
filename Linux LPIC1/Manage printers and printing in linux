@@ -1,0 +1,140 @@
+
+
+
+
+CUPS
+
+
+CUPS web interface   ->    localhost:631 or 127.0.0.1:631
+
+
+
+
+
+-----------------------------------------------------------------------------------------------
+
+
+
+
+
+▶ sudo systemctl start cups
+
+
+
+
+
+▶ sudo systemctl status cups
+● cups.service - CUPS Scheduler
+   Loaded: loaded (/lib/systemd/system/cups.service; enabled; vendor preset: enabled)
+   Active: active (running) since Thu 2021-03-25 11:06:16 +0430; 1 day 8h ago
+     Docs: man:cupsd(8)
+ Main PID: 13805 (cupsd)
+    Tasks: 1 (limit: 4915)
+   CGroup: /system.slice/cups.service
+           └─13805 /usr/sbin/cupsd -l
+
+
+
+
+
+-----------------------------------------------------------------------------------------------
+
+
+
+
+configuration files:
+
+
+▶ ls /etc/cups
+
+cups-browsed.conf  interfaces  raw.types  subscriptions.conf
+cupsd.conf         ppd         snmp.conf  subscriptions.conf.O
+cups-files.conf    raw.convs   ssl
+
+
+
+
+basic conf:
+
+▶ less /etc/cups/cupsd.conf
+
+
+
+
+
+All the printer data is saved at
+
+▶ /etc/cups/printers.conf
+
+
+
+
+
+-----------------------------------------------------------------------------------------------
+
+
+
+
+
+command			usage
+
+lpr				print a file
+lpq				show print queue/jobs
+lprm			rm/remove a file from priner queue
+lpc				printer control / troubleshooting program
+
+
+
+▶ lpr print.txt
+
+
+
+
+
+
+
+-----------------------------------------------------------------------------------------------
+
+
+
+printer is specified by -P
+
+-a switch, the lpq will show the jobs of all printers. 
+
+
+
+
+$ lpr -PApple-Dot-Matrix for_print.txt 
+
+
+
+
+
+
+-----------------------------------------------------------------------------------------------
+
+
+
+$ lpc status
+Apple-Dot-Matrix:
+    printer is on device 'ipp' speed -1
+    queuing is enabled
+    printing is enabled
+    2 entries
+    daemon present
+
+
+
+
+
+command			usage
+
+cupsaccept		tells the printer queue to accept new jobs
+cupsreject		tells the printer to reject any new job
+cupsenable		enables the actual/physical printing of the jobs
+cupsdisable		disables the physical printing of the jobs
+
+
+
+
+-----------------------------------------------------------------------------------------------
