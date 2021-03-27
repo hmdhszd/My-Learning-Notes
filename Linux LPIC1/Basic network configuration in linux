@@ -1,0 +1,500 @@
+
+
+
+hamid# ip addr show
+
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host 
+       valid_lft forever preferred_lft forever
+2: enp3s0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc fq_codel state DOWN group default qlen 1000
+    link/ether 54:ee:75:13:3b:5f brd ff:ff:ff:ff:ff:ff
+    inet 10.10.10.10/24 brd 10.10.10.255 scope global enp3s0
+       valid_lft forever preferred_lft forever
+3: wlp2s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP group default qlen 1000
+    link/ether 14:2d:27:a5:fd:1f brd ff:ff:ff:ff:ff:ff
+    inet 192.168.43.107/24 brd 192.168.43.255 scope global dynamic noprefixroute wlp2s0
+       valid_lft 2261sec preferred_lft 2261sec
+    inet6 fe80::c897:7725:46f8:a780/64 scope link noprefixroute 
+       valid_lft forever preferred_lft forever
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------------
+
+
+
+
+show only up NICs:
+
+
+
+
+▶ ifconfig
+
+enp3s0: flags=4099<UP,BROADCAST,MULTICAST>  mtu 1500
+        ether 54:ee:75:13:3b:5f  txqueuelen 1000  (Ethernet)
+        RX packets 0  bytes 0 (0.0 B)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 0  bytes 0 (0.0 B)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536
+        inet 127.0.0.1  netmask 255.0.0.0
+        inet6 ::1  prefixlen 128  scopeid 0x10<host>
+        loop  txqueuelen 1000  (Local Loopback)
+        RX packets 446281  bytes 225704281 (225.7 MB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 446281  bytes 225704281 (225.7 MB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+wlp2s0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 192.168.43.107  netmask 255.255.255.0  broadcast 192.168.43.255
+        inet6 fe80::c897:7725:46f8:a780  prefixlen 64  scopeid 0x20<link>
+        ether 14:2d:27:a5:fd:1f  txqueuelen 1000  (Ethernet)
+        RX packets 2219020  bytes 2772662776 (2.7 GB)
+        RX errors 0  dropped 1990  overruns 0  frame 0
+        TX packets 1474551  bytes 247608707 (247.6 MB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+
+
+
+
+
+
+show all NICs:
+
+▶ ifconfig -a
+
+
+
+
+
+
+------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+hamid# ifconfig enp3s0 10.10.10.10
+
+
+
+hamid# ifconfig enp3s0
+
+enp3s0: flags=4099<UP,BROADCAST,MULTICAST>  mtu 1500
+        inet 10.10.10.10  netmask 255.0.0.0  broadcast 10.255.255.255
+        ether 54:ee:75:13:3b:5f  txqueuelen 1000  (Ethernet)
+        RX packets 0  bytes 0 (0.0 B)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 0  bytes 0 (0.0 B)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+
+
+
+
+
+------------------------------------------------------------------------------------------------
+
+
+
+
+
+hamid# ifconfig enp3s0 10.10.10.10 netmask 255.255.255.0
+
+
+
+hamid# ifconfig enp3s0
+
+enp3s0: flags=4099<UP,BROADCAST,MULTICAST>  mtu 1500
+        inet 10.10.10.10  netmask 255.255.255.0  broadcast 10.10.10.255
+        ether 54:ee:75:13:3b:5f  txqueuelen 1000  (Ethernet)
+        RX packets 0  bytes 0 (0.0 B)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 0  bytes 0 (0.0 B)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------------
+
+
+
+
+hamid# ifconfig  enp3s0  down
+
+
+
+hamid# ifconfig  enp3s0  up
+
+
+
+
+
+------------------------------------------------------------------------------------------------
+network configuration files
+------------------------------------------------------------------------------------------------
+
+
+
+
+Redhat based systems
+
+
+
+
+$ cat /etc/sysconfig/network-scripts/ifcfg-eth0
+
+DEVICE=eth0
+ONBOOT=yes
+TYPE=Ethernet
+IPADDR=192.168.1.10
+NETMASK=255.255.255.0
+DNS1=4.2.2.4
+
+
+
+
+On these systems, the default gateway is configured via the below file:
+
+
+
+
+
+cat /etc/sysconfig/network
+
+NETWORKING=yes
+HOSTNAME=lpictest
+GATEWAY=192.168.1.1
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------------
+
+
+
+
+
+hamid# ifdown enp3s0     
+
+
+
+
+hamid# ifup enp3s0     
+
+
+
+
+------------------------------------------------------------------------------------------------
+
+
+
+
+
+Debian based systems
+
+
+
+
+
+
+cat /etc/network/interfaces
+
+auto lo
+iface lo inte loopback
+
+auto eth0
+#ifconfig eth0 inet dhcp
+iface eth0 inet static 
+address 192.168.1.10
+netmask 255.255.255.0
+gateway 192.168.1.1
+dns-nameservers 4.2.2.4
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------------
+
+
+
+
+
+or
+
+
+for each network we create a file:
+
+
+hamid# nano enp3s0 > /etc/network/interfaces.d/
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------------
+DNS config file
+------------------------------------------------------------------------------------------------
+
+
+
+
+
+$ cat /etc/resolv.conf
+
+# Generated by resolvconf
+nameserver 192.168.1.1
+
+
+
+
+
+
+------------------------------------------------------------------------------------------------
+
+
+
+
+hostname and their ip address
+
+
+
+hamid# cat /etc/hostname
+
+hamid
+
+
+
+
+
+------------------------------------------------------------------------------------------------
+
+
+
+
+
+server names and their IPs
+
+
+
+hamid# cat /etc/hosts
+
+127.0.0.1	localhost
+127.0.1.1	hamid
+
+# The following lines are desirable for IPv6 capable hosts
+::1     ip6-localhost ip6-loopback
+fe00::0 ip6-localnet
+ff00::0 ip6-mcastprefix
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+
+
+
+
+
+
+------------------------------------------------------------------------------------------------
+route
+------------------------------------------------------------------------------------------------
+
+
+
+
+see routing table:
+
+
+
+hamid# route
+
+Kernel IP routing table
+Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+default         _gateway        0.0.0.0         UG    600    0        0 wlp2s0
+10.10.10.0      0.0.0.0         255.255.255.0   U     0      0        0 enp3s0
+link-local      0.0.0.0         255.255.0.0     U     1000   0        0 wlp2s0
+192.168.43.0    0.0.0.0         255.255.255.0   U     600    0        0 wlp2s0
+
+
+
+
+
+
+------------------------------------------------------------------------------------------------
+
+
+
+
+
+hamid# netstat -nr
+
+Kernel IP routing table
+Destination     Gateway         Genmask         Flags   MSS Window  irtt Iface
+0.0.0.0         192.168.43.1    0.0.0.0         UG        0 0          0 wlp2s0
+10.10.10.0      0.0.0.0         255.255.255.0   U         0 0          0 enp3s0
+169.254.0.0     0.0.0.0         255.255.0.0     U         0 0          0 wlp2s0
+192.168.43.0    0.0.0.0         255.255.255.0   U         0 0          0 wlp2s0
+
+
+
+
+
+
+------------------------------------------------------------------------------------------------
+
+
+
+
+
+emporary adding a default route, youc an do:
+
+hamid# route add default gw 192.168.1.1
+
+
+
+
+
+
+------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+hamid# dig google.com
+
+; <<>> DiG 9.11.3-1ubuntu1.8-Ubuntu <<>> google.com
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 54444
+;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 65494
+;; QUESTION SECTION:
+;google.com.			IN	A
+
+;; ANSWER SECTION:
+google.com.		299	IN	A	216.58.209.142
+
+;; Query time: 175 msec
+;; SERVER: 127.0.0.53#53(127.0.0.53)
+;; WHEN: Sat Mar 27 08:57:25 +0430 2021
+;; MSG SIZE  rcvd: 55
+
+
+
+
+
+
+
+
+
+
+hamid# dig @4.2.2.4 google.com
+
+; <<>> DiG 9.11.3-1ubuntu1.8-Ubuntu <<>> @4.2.2.4 google.com
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 51205
+;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 4096
+;; QUESTION SECTION:
+;google.com.			IN	A
+
+;; ANSWER SECTION:
+google.com.		47	IN	A	172.217.23.78
+
+;; Query time: 90 msec
+;; SERVER: 4.2.2.4#53(4.2.2.4)
+;; WHEN: Sat Mar 27 09:06:40 +0430 2021
+;; MSG SIZE  rcvd: 55
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------------
+
+
+
+
+
+Netcat can be used for port scanning:
+
+
+
+$ nc -v -w 2 z 192.168.56.1 22     #scan a single port
+
+OR
+
+$ nc -v -w 2 z 192.168.56.1 22 80  #scan multiple ports
+
+OR
+
+$ nc -v -w 2 z 192.168.56.1 20-25  #scan range of ports
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------------
