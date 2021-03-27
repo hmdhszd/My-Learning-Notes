@@ -271,6 +271,8 @@ ________________________________________________________________________________
 
 
 
+
+
 checking user info
 
 
@@ -279,4 +281,20 @@ hamid# id hamid
 
 uid=1000(hamid) gid=1000(hamid) groups=1000(hamid),4(adm),24(cdrom),27(sudo),30(dip),46(plugdev),104(input),112(lpadmin),128(sambashare)
 
+
+
+
+
+______________________________________________________________________________________________
+______________________________________________________________________________________________
+
+
+
+If you create and write something in it, the content will be shown to any person who tries to login into the system and the login attempt will fail.
+
+
+/etc/nologin
+
+
+______________________________________________________________________________________________
 
