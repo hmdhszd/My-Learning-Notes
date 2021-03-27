@@ -1,3 +1,162 @@
+
+
+
+
+turn off network services:
+
+
+
+In case you want to turn the httpd service off, you can do:
+
+
+
+
+
+
+system						service manager				command
+
+older linux systems			SysV						chkconfig httpd off
+														sysv-rc-conf httpd off
+
+Ubuntu						Upstart	update-rc.d 		httpd remove
+
+newer linux distros			systemd						systemctl disable httpd
+
+
+
+
+
+
+______________________________________________________________
+
+
+
+
+ /etc/init.d/ufw {start|stop|restart|reload|force-reload|status}
+
 /etc/init.d/ufw start
+
+
+
+
+______________________________________________________________
+
+
+
+
+
+hamid# systemctl start networking.service         
+
+hamid# systemctl status networking.service         
+
+hamid# systemctl stop networking.service         
+
+hamid# systemctl restart networking.service
+
+
+
+
+
+hamid# systemctl enable networking.service         
+
+hamid# systemctl disable networking.service         
+
+
+
+
+
+______________________________________________________________
+
+
+
+hamid# cat /etc/services  | grep telnet
+
+telnet		23/tcp
+rtelnet		107/tcp				# Remote Telnet
+rtelnet		107/udp
+telnets		992/tcp				# Telnet over SSL
+tfido		60177/tcp			# fidonet EMSI over telnet
+
+
+
+______________________________________________________________
+______________________________________________________________
+
+
+
+
+/etc/hosts.allow & /etc/hosts.deny
+
+
+These two files will allow or deny access from specific hosts.
+
+
+
+
+ex:
+
+
+hamid# cat /etc/hosts.allow
+
+
+telnet: 192.168.
+
+
+
+
+______________________________________________________________
+
+
+
+
+
+
+
+
+
+______________________________________________________________
+
+
+
+
+
+
+
+
+
+______________________________________________________________
+
+
+
+
+
+
+
+
+
+______________________________________________________________
+
+
+
+
+
+
+
+
+
+______________________________________________________________
+
+
+
+
+
+
+
+
+
+______________________________________________________________
+
+
+
 
 
