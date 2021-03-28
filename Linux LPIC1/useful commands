@@ -36,29 +36,18 @@ sleep 100
 
 
 
+show all internet connections:
 
+▶ lsof -i
+COMMAND     PID  USER   FD   TYPE  DEVICE SIZE/OFF NODE NAME
+chromium-  2195 hamid  116u  IPv4 4029932      0t0  UDP 224.0.0.251:mdns 
 
-
----------------------------------------------------------------------------------
-
-
-
-
-
-
-
----------------------------------------------------------------------------------
-
-
-
-
-
-
-
----------------------------------------------------------------------------------
-
-
-
+WhatsApp   2791 hamid   94u  IPv4 4718166      0t0  TCP hamid:45602->whatsapp-cdn-shv-01-sof1.fbcdn.net:https (ESTABLISHED)
+plugin_ho 10869 hamid   19u  IPv4 4793027      0t0  TCP hamid:37796->45.55.41.223:http (CLOSE_WAIT)
+firefox   19462 hamid   98u  IPv4 4755241      0t0  TCP localhost:51754->localhost:9050 (ESTABLISHED)
+firefox   19462 hamid  107u  IPv4 4790475      0t0  TCP localhost:52010->localhost:9050 (ESTABLISHED)
+firefox   19462 hamid  116u  IPv4 4761896      0t0  TCP localhost:51786->localhost:9050 (ESTABLISHED)
+firefox   19462 hamid  134u  IPv4 4451814      0t0  TCP hamid:58536->ec2-44-224-80-214.us-west-2.compute.amazonaws.com:https (ESTABLISH
 
 
 
@@ -68,12 +57,145 @@ sleep 100
 
 
 
+                                                                                                                                 
+▶ nmap digikala.com
+
+Starting Nmap 7.60 ( https://nmap.org ) at 2021-03-27 14:19 +0430
+Nmap scan report for digikala.com (185.188.105.10)
+Host is up (0.0029s latency).
+Not shown: 994 filtered ports
+PORT     STATE  SERVICE
+53/tcp   open   domain
+80/tcp   open   http
+113/tcp  closed ident
+443/tcp  open   https
+2000/tcp open   cisco-sccp
+5060/tcp open   sip
+
+Nmap done: 1 IP address (1 host up) scanned in 4.60 seconds
+
+
 
 
 
 ---------------------------------------------------------------------------------
 
 
+
+info of sudoers:
+
+
+▶ sudo cat /etc/sudoers
+
+
+
+edit this file with   visudo   command.
+
+
+
+
+---------------------------------------------------------------------------------
+
+
+user limits
+The resources on a Linux machine can be manages for users by the ulimit command.
+
+
+
+show limitations of users:
+
+
+
+▶ ulimit -a
+
+-t: cpu time (seconds)              unlimited
+-f: file size (blocks)              unlimited
+-d: data seg size (kbytes)          unlimited
+-s: stack size (kbytes)             8192
+-c: core file size (blocks)         0
+-m: resident set size (kbytes)      unlimited
+-u: processes                       30489
+-n: file descriptors                1024
+-l: locked-in-memory size (kbytes)  16384
+-v: address space (kbytes)          unlimited
+-x: file locks                      unlimited
+-i: pending signals                 30489
+-q: bytes in POSIX msg queues       819200
+-e: max nice                        0
+-r: max rt priority                 0
+-N 15:                              unlimited
+
+
+
+
+
+---------------------------------------------------------------------------------
+
+
+
+
+
+Changing the ulimit as we did is a temporary thing. It only persists in that specific shell.
+
+To change the ulimits system-wide:
+
+$ cat /etc/security/limits.conf 
+
+
+
+
+---------------------------------------------------------------------------------
+
+
+
+checking the users in the system:
+
+
+▶ w
+
+ 14:46:31 up 6 days, 15:57,  1 user,  load average: 1.01, 1.18, 1.09
+USER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU WHAT
+hamid    tty7     :0               20Mar21  6days  1:09m  9.46s cinnamon-session --session cinnamon
+
+
+
+
+
+▶ who
+
+hamid    tty7         2021-03-20 21:49 (:0)
+
+
+
+
+
+
+show last logins:
+
+▶ last
+
+hamid    tty7         :0               Sat Mar 20 21:49    gone - no logout
+reboot   system boot  4.15.0-54-generi Sat Mar 20 21:49   still running
+hamid    tty7         :0               Wed Mar 10 10:17 - crash (10+11:31)
+reboot   system boot  4.15.0-54-generi Wed Mar 10 10:17   still running
+hamid    tty7         :0               Tue Mar  9 10:35 - crash  (23:42)
+reboot   system boot  4.15.0-54-generi Tue Mar  9 10:35   still running
+hamid    tty7         :0               Sat Mar  6 08:28 - crash (3+02:06)
+reboot   system boot  4.15.0-54-generi Sat Mar  6 08:23   still running
+
+wtmp begins Sat Mar  6 08:02:33 2021
+
+
+
+
+
+
+
+
+
+
+
+there is a way to check the failed logins too: last -f /var/log/btmp
 
 
 
