@@ -1,0 +1,177 @@
+ssh key pairs
+
+
+all known host ssh keys will be saved here:
+
+▶ cat ~/.ssh/known_hosts
+
+
+______________________________________________________________________________________
+______________________________________________________________________________________
+
+
+
+Login with key pairs instead of password:
+
+
+
+
+
+
+1) First of all, we should generate our public/private in our system:
+
+
+
+Generating public/private rsa key pair.
+
+
+hamid# ssh-keygen 
+
+
+
+hamid# ls  ~/.ssh/  | grep rsa
+id_rsa
+id_rsa.pub
+
+
+
+
+
+
+2) Login to server with "copy-ssh-command":
+
+hamid# ssh-copy-id 192.168.118.137
+
+
+
+with this command, we will copy out public key in targer server:
+
+we can see them here:       [root@localhost ~]# cat  ~/.ssh/authorized_keys 
+
+
+
+
+
+
+______________________________________________________________________________________
+______________________________________________________________________________________
+
+
+
+encryption using gpg
+
+
+
+
+
+
+A software called gpg lets us use public and private keys to encrypt our data. At the beginning we have to create a key pair:
+
+hamid# gpg --gen-key
+
+
+
+
+
+
+
+
+Then we need to share our public key to other people. To export our public key file we need to run:
+
+hamid# gpg --export name > gpg.pub
+
+
+
+
+
+
+
+and the other party can import our public key into his gpg database by:
+
+hamid# gpg --import gpg.pub
+
+
+
+
+
+
+
+
+
+At this stage, if he wants to encrypt some data to us (say the file file.txt) he should run:
+
+hamid# gpg --out file.txt.encrypted --recipient hamidhszd@gmail.com --encrypt file.txt
+
+
+
+
+
+
+
+and give the file.txt.encrypted to us. For openning it, we just need to:
+
+hamid# gpg --out out.txt --decrypt file.txt.encrypted
+
+
+
+and Done!
+
+
+
+
+
+
+
+
+
+
+______________________________________________________________________________________
+
+
+
+
+revoking keys
+
+
+
+if we lost our key, we revoke it:
+
+
+hamid# gpg --output revoke.asc --gen-revoke hamidhszd@gmail.com
+
+
+
+
+______________________________________________________________________________________
+______________________________________________________________________________________
+
+
+
+signing
+
+
+By encrypting a document using your private key, you let everyone to try to open it using your public key and if they succeed, they will be sure that you have signed it using YOUR private key!
+
+
+
+
+hamid# gpg --clearsign originalfile
+
+
+
+
+
+
+
+
+
+
+and another one to verify that a document is singed correctly:
+
+hamid# gpg --verify recievedfile
+
+
+
+
+
+______________________________________________________________________________________
