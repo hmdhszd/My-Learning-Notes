@@ -1,0 +1,115 @@
+tar
+-c craete
+-u update (add only new /modified)
+-z compress gzip
+-j compress bzip2
+-J compress xz
+-v verbose
+-g filename create full/inc based on file
+-d check the tar with existing files
+-t show contents
+-x open
+-z uncompress with gunzip
+-j uncompress with bzip2
+-J uncompress sz
+
+
+
+
+
+tar cfz backup.tar.gzip *.dat
+touch newdat.dat
+tar ufz backup.tar.gzip *.dat
+
+
+
+
+-----------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
+
+
+
+
+archive with rsync:
+
+can be used locally and remotely. 
+-a is archive 
+-v verbos 
+-h more human readable
+--progress
+
+
+
+▶ rsync -avh /tmp/test /home/hamid/Desktop
+
+
+
+
+
+
+
+
+Copy a Directory from Local Server to a Remote Server:
+
+▶ rsync -avz rpmpkgs/ root@192.168.0.101:/home/
+
+
+
+
+
+Copy/Sync a Remote Directory to a Local Machine
+
+▶ rsync -avzh root@192.168.0.100:/home/tarunika/rpmpkgs /tmp/myrpms
+
+
+
+
+
+
+
+
+
+
+
+
+Rsync Over SSH:
+
+
+Copy a File from a Remote Server to a Local Server with SSH:
+
+▶ rsync -avzhe ssh root@192.168.0.100:/root/install.log /tmp/
+
+
+
+
+
+
+Copy a File from a Local Server to a Remote Server with SSH:
+
+▶ rsync -avzhe ssh backup.tar root@192.168.0.100:/backups/
+
+
+
+
+
+-----------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
+
+
+
+
+dd:
+
+
+do not use on mounted! 
+
+dd if=input of=output bs=4096 count=10 
+
+you can use to write iso to the USB you can use to write ZERO on a disk you can use to clone
+
+
+
+
+dd if=/dev/zero of=/dev/sda
+
+
