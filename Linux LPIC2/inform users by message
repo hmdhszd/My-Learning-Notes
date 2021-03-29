@@ -1,0 +1,118 @@
+
+
+
+keeping users informed:
+
+
+
+
+
+to find out if a specific user will get a message?
+
+▶ mesg
+is y
+
+
+
+
+
+
+
+stop getting message:
+
+▶ mesg no
+                                                                                                                                       ⍉
+▶ mesg   
+is n
+
+
+
+
+
+-----------------------------------------------------------------------------------------
+
+
+
+who is login in this system?
+
+▶ who
+hamid    tty7         2021-03-28 12:22 (:0)
+hamid    pts/1        2021-03-29 13:37 (:0)
+
+
+:0     ->     graphical login
+
+
+
+-----------------------------------------------------------------------------------------
+
+
+
+Send a message to a user:
+
+▶ write hamid pts/1
+my messaaaggge is hereeeeee!
+
+
+
+
+-----------------------------------------------------------------------------------------
+
+
+
+send message to all users:
+
+▶ wall  "hello this is a message with wall in the command line"
+
+▶ notify-send "This is a simple message in the graphical environnement"
+
+
+
+-----------------------------------------------------------------------------------------
+
+
+
+show a message for shutdown:
+
+▶ shutdown -h +10 "this system will be power off in 10 minutes"
+
+-h 	halt
+-p 	shutdown
+-c  cancel
+-r  reboot
+
+
+
+
+▶ shutdown -h 22:00 "this system will be power off at 22:00"
+
+
+
+-----------------------------------------------------------------------------------------
+
+
+
+
+
+show a message for all "local" users who log in: (banner)
+
+▶ cat /etc/issue
+Linux Mint 19.2 Tina \n \l
+
+
+
+
+for "telnet" users:
+
+▶ cat /etc/issue.net 
+Linux Mint 19.2 Tina
+
+
+
+
+for all users:
+▶ cat /etc/motd     
+
+
+
+
