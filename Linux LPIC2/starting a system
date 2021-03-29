@@ -1,0 +1,184 @@
+
+
+Process:
+
+1. firmware, Power-On-Self-Test (POST), boot loader
+
+2. finds kernel
+
+3. kernel starts other programssee 
+
+
+
+------------------------------------------------------------------------------------------
+
+
+
+logs during the boot
+
+dmesg -> boot messages (kernel ring buffer)
+
+
+
+
+
+
+
+save this in:
+			 		/var/log/boot (debian) 
+or 
+					/var/log/boot.log (rh)
+
+
+
+
+
+older IBMs firmware is called BIOS (Basic Input Output System) 
+
+and 
+
+newerones are called Unified Extensible Firmware Interface (UEFI)
+
+
+
+------------------------------------------------------------------------------------------
+
+
+BIOS:
+
+
+ booted from only one sector of hdd  ->    bootloader + OS. boot loader has a config file
+
+
+
+ Master Boot Record is the first sector on first hard drive. BIOS checks MBRand boots from it.
+
+
+
+
+------------------------------------------------------------------------------------------
+
+
+UEFI:
+
+
+ EFI System Partition (ESP) to store bootloader pro-grams so we can have any size bootloader and multiple bootloaders.
+
+ it is FATand most of the times on /boot/efi.
+
+
+
+
+------------------------------------------------------------------------------------------
+
+
+
+Linux boot loaders:
+
+1)	Linux Loader (LILO)
+2)	Grand Unified Bootloader (GRUB) Legacy
+3)	GRUB2
+
+
+
+------------------------------------------------------------------------------------------
+
+
+Process Initialization:
+
+
+1)	Unix System V (SysV)
+2)	systemd
+3)	Upstart
+
+
+
+------------------------------------------------------------------------------------------
+
+
+
+SysV:
+
+
+stops and starts services based on runlevels. 0 to 6:
+
+0: shutdown
+1: single
+2: multisuer graphical on debian
+3: multiuser text on RH
+4: not used
+5: graphical on RH
+6: reboot
+
+
+
+we have chkconfig(RH):
+
+#chckconfig --list networknetwork         
+
+0:off   1:off   2:off   3:off   4:off   5:off   6:off
+
+
+
+
+
+
+and update-rc.d(Debian):
+
+#update-rc.d –f program start 40 2 3 4 5 . stop 80 0 1 6 
+
+
+
+
+------------------------------------------------------------------------------------------
+
+
+
+systemd:
+
+
+it has UNITS and TARGETS.
+
+unit: 		service or action on system.
+targets: 	looks like runlevels.
+
+
+
+
+
+
+
+
+
+#sytemctl
+
+UNIT     LOAD   ACTIVE     SUB       DESCRIPTION                 
+
+
+
+
+
+
+
+
+
+
+unit configs are in /lib/systemd/system :
+
+▶ ls /lib/systemd/system | grep ufw
+ufw.service
+
+
+
+
+
+
+
+
+
+see logs of services:
+
+▶ journalctl
+
+
+
