@@ -1,0 +1,158 @@
+
+
+[root@localhost ~]# curl -fsSL get.docker.com -o get-docker.sh
+
+[root@localhost ~]# sh ./get-docker.sh
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+
+adding your user to the "docker" group with something like:
+
+[root@localhost ~]# useradd hamid
+[root@localhost ~]# usermod -aG docker hamid
+
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+
+[root@localhost ~]# systemctl start docker
+
+[root@localhost ~]# systemctl enable docker
+
+
+
+[root@localhost ~]# systemctl status docker
+
+● docker.service - Docker Application Container Engine
+   Loaded: loaded (/usr/lib/systemd/system/docker.service; disabled; vendor preset: disabled)
+   Active: active (running) since Tue 2021-03-30 00:00:36 EDT; 2s ago
+     Docs: https://docs.docker.com
+ Main PID: 2305 (dockerd)
+    Tasks: 8
+   Memory: 40.7M
+   CGroup: /system.slice/docker.service
+           └─2305 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/container...
+
+Mar 30 00:00:35 localhost.localdomain dockerd[2305]: time="2021-03-30T00:00:35.85...c
+Mar 30 00:00:35 localhost.localdomain dockerd[2305]: time="2021-03-30T00:00:35.85...c
+Mar 30 00:00:35 localhost.localdomain dockerd[2305]: time="2021-03-30T00:00:35.88..."
+Mar 30 00:00:36 localhost.localdomain dockerd[2305]: time="2021-03-30T00:00:36.63..."
+Mar 30 00:00:36 localhost.localdomain dockerd[2305]: time="2021-03-30T00:00:36.76..."
+Mar 30 00:00:36 localhost.localdomain dockerd[2305]: time="2021-03-30T00:00:36.88..."
+Mar 30 00:00:36 localhost.localdomain dockerd[2305]: time="2021-03-30T00:00:36.89...5
+Mar 30 00:00:36 localhost.localdomain dockerd[2305]: time="2021-03-30T00:00:36.90..."
+Mar 30 00:00:36 localhost.localdomain dockerd[2305]: time="2021-03-30T00:00:36.93..."
+Mar 30 00:00:36 localhost.localdomain systemd[1]: Started Docker Application Cont....
+Hint: Some lines were ellipsized, use -l to show in full.
+[root@localhost ~]# 
+
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+
+[root@localhost ~]# docker version
+
+Client: Docker Engine - Community
+ Version:           20.10.5
+ API version:       1.41
+ Go version:        go1.13.15
+ Git commit:        55c4c88
+ Built:             Tue Mar  2 20:33:55 2021
+ OS/Arch:           linux/amd64
+ Context:           default
+ Experimental:      true
+
+Server: Docker Engine - Community
+ Engine:
+  Version:          20.10.5
+  API version:      1.41 (minimum version 1.12)
+  Go version:       go1.13.15
+  Git commit:       363e9a8
+  Built:            Tue Mar  2 20:32:17 2021
+  OS/Arch:          linux/amd64
+  Experimental:     false
+ containerd:
+  Version:          1.4.4
+  GitCommit:        05f951a3781f4f2c1911b05e61c160e9c30eaa8e
+ runc:
+  Version:          1.0.0-rc93
+  GitCommit:        12644e614e25b05da6fd08a38ffa0cfe1903fdec
+ docker-init:
+  Version:          0.19.0
+  GitCommit:        de40ad0
+
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+
+[root@localhost ~]# docker info
+
+Client:
+ Context:    default
+ Debug Mode: false
+ Plugins:
+  app: Docker App (Docker Inc., v0.9.1-beta3)
+  buildx: Build with BuildKit (Docker Inc., v0.5.1-docker)
+
+Server:
+ Containers: 0
+  Running: 0
+  Paused: 0
+  Stopped: 0
+ Images: 0
+ Server Version: 20.10.5
+ Storage Driver: overlay2
+  Backing Filesystem: xfs
+  Supports d_type: true
+  Native Overlay Diff: true
+ Logging Driver: json-file
+ Cgroup Driver: cgroupfs
+ Cgroup Version: 1
+ Plugins:
+  Volume: local
+  Network: bridge host ipvlan macvlan null overlay
+  Log: awslogs fluentd gcplogs gelf journald json-file local logentries splunk syslog
+ Swarm: inactive
+ Runtimes: io.containerd.runc.v2 io.containerd.runtime.v1.linux runc
+ Default Runtime: runc
+ Init Binary: docker-init
+ containerd version: 05f951a3781f4f2c1911b05e61c160e9c30eaa8e
+ runc version: 12644e614e25b05da6fd08a38ffa0cfe1903fdec
+ init version: de40ad0
+ Security Options:
+  seccomp
+   Profile: default
+ Kernel Version: 3.10.0-1062.el7.x86_64
+ Operating System: CentOS Linux 7 (Core)
+ OSType: linux
+ Architecture: x86_64
+ CPUs: 1
+ Total Memory: 4.756GiB
+ Name: localhost.localdomain
+ ID: 7YBN:4AVB:WUDE:6RHC:UXQE:6CKG:VNPT:SCM5:SQH2:NKPV:D2DB:NW34
+ Docker Root Dir: /var/lib/docker
+ Debug Mode: false
+ Registry: https://index.docker.io/v1/
+ Labels:
+ Experimental: false
+ Insecure Registries:
+  127.0.0.0/8
+ Live Restore Enabled: false
+
+
+
+
+----------------------------------------------------------------------------------------------------
