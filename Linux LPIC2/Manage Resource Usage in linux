@@ -1,0 +1,298 @@
+
+CPU / Memory / Swap :
+
+▶ top
+▶ htop
+
+
+
+
+----------------------------------------------------------------------------------------
+
+
+
+
+Memory/Swap usage:
+
+
+▶ free
+              total        used        free      shared  buff/cache   available
+Mem:        8073448     7187780      130548      446744      755120      192856
+Swap:       2097148     1099844      997304
+
+
+
+
+
+----------------------------------------------------------------------------------------
+
+
+
+Monitor CPU with sar:
+
+▶ yum install sysstat
+
+
+▶ sar
+
+11:00:02 AM       CPU     %user     %nice   %system   %iowait     %idle
+11:10:01 AM       all      0.00      0.00      0.00      0.00     99.99
+Average:          all      0.00      0.00      0.00      0.00     99.99
+
+
+
+
+----------------------------------------------------------------------------------------
+
+
+
+
+virtual memory status:
+
+
+[root@localhost ~]# vmstat
+
+procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----
+ r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st
+ 2  0      0 2109612   4172 2219288    0    0   135   942  246  491  2  1 96  1  0
+
+
+
+
+
+----------------------------------------------------------------------------------------
+
+
+
+
+CPU/Disk status:
+
+[root@localhost ~]# iostat
+Linux 3.10.0-1062.el7.x86_64 (localhost.localdomain) 	03/30/2021 	_x86_64_	(1 CPU)
+
+avg-cpu:  %user   %nice %system %iowait  %steal   %idle
+           1.70    0.00    1.44    0.67    0.00   96.20
+
+Device:            tps    kB_read/s    kB_wrtn/s    kB_read    kB_wrtn
+sda              24.85       127.41       901.19     371507    2627773
+sdb               0.05         1.86         0.00       5428          0
+dm-0             26.52       115.64       870.83     337185    2539257
+dm-1              0.04         1.11         0.00       3236          0
+
+
+
+
+
+hamid# iotop                 
+
+
+
+
+----------------------------------------------------------------------------------------
+
+
+
+
+All open files:
+
+
+hamid# lsof | head
+
+COMMAND     PID   TID                USER   FD      TYPE             DEVICE   SIZE/OFF       NODE NAME
+systemd       1                      root  cwd       DIR                8,2       4096          2 /
+systemd       1                      root  rtd       DIR                8,2       4096          2 /
+systemd       1                      root  txt       REG                8,2    1595792    2631916 /lib/systemd/systemd
+systemd       1                      root  mem       REG                8,2    1700792    2626468 /lib/x86_64-linux-gnu/libm-2.27.so
+
+
+
+
+
+----------------------------------------------------------------------------------------
+
+
+
+
+CPU status:
+
+Linux 3.10.0-1062.el7.x86_64 (localhost.localdomain) 	03/30/2021 	_x86_64_	(1 CPU)
+
+12:44:51 AM  CPU    %usr   %nice    %sys %iowait    %irq   %soft  %steal  %guest  %gnice   %idle
+12:44:51 AM  all    1.66    0.00    0.93    0.65    0.00    0.48    0.00    0.00    0.00   96.27
+
+
+
+
+----------------------------------------------------------------------------------------
+
+
+
+
+show procceses:
+
+
+[root@localhost ~]# ps -aux | grep ...
+
+
+[root@localhost ~]# ps -ef | grep ...
+
+
+
+
+hamid# pstree | head -10
+
+systemd-+-ModemManager---2*[{ModemManager}]
+        |-NetworkManager---2*[{NetworkManager}]
+        |-VBoxSVC-+-VirtualBoxVM---39*[{VirtualBoxVM}]
+        |         `-16*[{VBoxSVC}]
+        |-VBoxXPCOMIPCD
+        |-VirtualBox---10*[{VirtualBox}]
+        |-WhatsApp-+-WhatsApp---WhatsApp---18*[{WhatsApp}]
+        |          |-WhatsApp---6*[{WhatsApp}]
+        |          `-37*[{WhatsApp}]
+        |-accounts-daemon---2*[{accounts-daemon}]
+
+
+
+----------------------------------------------------------------------------------------
+
+
+
+check loged-in users:
+
+▶ w
+ 09:18:32 up 1 day, 20:56,  1 user,  load average: 0.85, 0.67, 0.88
+USER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU WHAT
+hamid    tty7     :0               Sun12   44:56m 39:43   3.43s cinnamo
+
+
+
+
+----------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
+
+
+
+monitoring network interfaces:
+
+
+hamid# iftop -i wlp2s0
+
+
+
+
+----------------------------------------------------------------------------------------
+
+
+
+
+monitoring network interfaces:
+
+
+hamid# iptraf-ng
+
+
+
+
+----------------------------------------------------------------------------------------
+
+
+
+
+Active Internet connections
+
+hamid# netstat
+Proto Recv-Q Send-Q Local Address           Foreign Address         State      
+tcp        0      0 hamid:56866             mct01s06-in-f78.1:https TIME_WAIT  
+tcp        0      0 hamid:57316             mct01s13-in-f4.1e:https ESTABLISHED
+tcp        0      0 localhost:9050          localhost:43184         ESTABLISHED
+tcp        0      0 localhost:43144         localhost:9050          ESTABLISHED
+tcp        0      0 hamid:41498             wm-in-f188.1e100.:https ESTABLISHED
+tcp        0      0 localhost:43148         localhost:9050          ESTABLISHED
+tcp        0      0 localhost:9050          localhost:43144         ESTABLISHED
+
+
+
+
+
+----------------------------------------------------------------------------------------
+
+
+
+
+Kernel IP routing table
+
+
+hamid# netstat -nr
+
+Destination     Gateway         Genmask         Flags   MSS Window  irtt Iface
+0.0.0.0         192.168.118.129 0.0.0.0         UG        0 0          0 wlp2s0
+169.254.0.0     0.0.0.0         255.255.0.0     U         0 0          0 wlp2s0
+192.168.118.0   0.0.0.0         255.255.255.0   U         0 0          0 wlp2s0
+
+
+
+
+----------------------------------------------------------------------------------------
+
+
+
+
+All open ports that listen:
+
+hamid# netstat -na | grep LISTEN
+tcp        0      0 127.0.0.1:5939          0.0.0.0:*               LISTEN     
+tcp        0      0 127.0.0.53:53           0.0.0.0:*               LISTEN     
+tcp        0      0 127.0.0.1:631           0.0.0.0:*               LISTEN     
+tcp        0      0 127.0.0.1:9050          0.0.0.0:*               LISTEN     
+tcp        0      0 0.0.0.0:445             0.0.0.0:*               LISTEN     
+tcp        0      0 127.0.0.1:3306          0.0.0.0:*               LISTEN     
+tcp        0      0 0.0.0.0:139             0.0.0.0:*               LISTEN     
+tcp        0      0 127.0.0.1:6379          0.0.0.0:*               LISTEN     
+tcp6       0      0 ::1:631                 :::*                    LISTEN     
+tcp6       0      0 :::445                  :::*                    LISTEN     
+tcp6       0      0 ::1:6379                :::*                    LISTEN     
+tcp6       0      0 :::139                  :::*                    LISTEN     
+
+
+
+
+----------------------------------------------------------------------------------------
+
+
+
+
+All TCP connections:
+
+hamid# tcpdump 
+tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on wlp2s0, link-type EN10MB (Ethernet), capture size 262144 bytes
+10:30:00.212215 IP 82.99.216.253.parsonline.net.https > hamid.60716: Flags [.], ack 3267257105, win 501, options [nop,nop,TS val 2396562237 ecr 1799048756], length 0
+10:30:00.215187 IP hamid.34594 > dns.google.domain: 47849+ [1au] PTR? 153.118.168.192.in-addr.arpa. (57)
+10:30:00.219037 IP hamid > one.one.one.one: ICMP echo request, id 18822, seq 3438, length 64
+10:30:00.255505 IP dns.google.domain > hamid.34594: 47849 NXDomain 0/0/1 (57)
+10:30:00.255695 IP hamid.34594 > dns.google.domain: 47849+ PTR? 153.118.168.192.in-addr.arpa. (46)
+10:30:00.294323 IP one.one.one.one > hamid: ICMP echo reply, id 18822, seq 3438, length 64
+10:30:00.294720 IP 192.168.118.137.ssh > hamid.38732: Flags [P.], seq 1695960484:1695960576, ack 2577281508, win 313, options [nop,nop,TS val 7531450 ecr 739962541], length 92
+10:30:00.296594 IP hamid.34575 > dns.google.domain: 42074+ [1au] PTR? 8.8.8.8.in-addr.arpa. (49)
+10:30:00.336824 IP hamid.53719 > dns.google.domain: 46800+ [1au] PTR? 1.1.1.1.in-addr.arpa. (49)
+10:30:00.377962 IP hamid.35876 > dns.google.domain: 51956+ [1au] PTR? 137.118.168.192.in-addr.arpa. (57)
+
+
+
+
+----------------------------------------------------------------------------------------
+
+
+
+
+All sockets:
+
+hamid# ss 
+
+NetidState      Recv-Q Send-Q         Local 	Address:Port     Peer Address:Port
+
+
+
+
+----------------------------------------------------------------------------------------
