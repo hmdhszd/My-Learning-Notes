@@ -535,3 +535,42 @@ Filename				Type		Size	Used	Priority
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+---------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------
+
+
+
+
+Boot-up automatic mounting
+
+
+
+
+
+[root@localhost ~]# blkid /dev/sdb1
+/dev/sdb1: UUID="70fe44b9-51a8-4c1c-84e8-c8330da5a4f1" TYPE="ext3"
+
+
+
+
+
+
+Then edit /etc/fstab and add a line at the end:
+
+
+
+
+UUID=f04214a3-2dba-4d20-827d-d3f03e2f4eed /data2 ext3 defaults 1 1
