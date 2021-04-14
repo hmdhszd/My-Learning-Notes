@@ -1,0 +1,204 @@
+-------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+[root@localhost ~]# mkfs.btrfs -f /dev/sdb1 /dev/sdb2
+btrfs-progs v4.9.1
+See http://btrfs.wiki.kernel.org for more information.
+
+Label:              (null)
+UUID:               841317c9-f833-48f5-a36f-2db3427539d2
+Node size:          16384
+Sector size:        4096
+Filesystem size:    2.00GiB
+Block group profiles:
+  Data:             RAID0           204.75MiB
+  Metadata:         RAID1           102.38MiB
+  System:           RAID1             8.00MiB
+SSD detected:       no
+Incompat features:  extref, skinny-metadata
+Number of devices:  2
+Devices:
+   ID        SIZE  PATH
+    1     1.00GiB  /dev/sdb1
+    2     1.00GiB  /dev/sdb2
+
+
+
+
+
+
+
+-------------------------------------------------------------------------------------------------
+
+
+
+
+[root@localhost ~]# mount /dev/sdb1 /data1
+
+
+
+
+[root@localhost ~]# mount | grep btrfs
+
+/dev/sdb1 on /data1 type btrfs (rw,relatime,seclabel,space_cache,subvolid=5,subvol=/)
+
+
+
+
+
+
+-------------------------------------------------------------------------------------------------
+
+
+
+
+
+[root@localhost ~]# btrfs filesystem show
+Label: none  uuid: 841317c9-f833-48f5-a36f-2db3427539d2
+	Total devices 2 FS bytes used 256.00KiB
+	devid    1 size 1.00GiB used 212.75MiB path /dev/sdb1
+	devid    2 size 1.00GiB used 212.75MiB path /dev/sdb2
+
+
+
+
+
+-------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+[root@localhost ~]# df -TH
+Filesystem              Type      Size  Used Avail Use% Mounted on
+devtmpfs                devtmpfs  508M     0  508M   0% /dev
+tmpfs                   tmpfs     520M     0  520M   0% /dev/shm
+tmpfs                   tmpfs     520M  7.2M  513M   2% /run
+tmpfs                   tmpfs     520M     0  520M   0% /sys/fs/cgroup
+/dev/mapper/centos-root xfs       6.7G  2.2G  4.6G  32% /
+/dev/sda1               xfs       1.1G  143M  921M  14% /boot
+tmpfs                   tmpfs     104M     0  104M   0% /run/user/0
+/dev/sdb1               btrfs     2.2G   18M  2.0G   1% /data1
+
+
+
+
+-------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------
+
+
+
+Create sub volume on a btrfs:
+
+
+
+[root@localhost ~]# cd /data1
+
+
+
+[root@localhost data1]# btrfs subvolume create MyNewSubVolume
+Create subvolume './MyNewSubVolume'
+
+
+
+[root@localhost data1]# ls
+MyNewSubVolume
+
+
+
+[root@localhost data1]# cd MyNewSubVolume/
+
+[root@localhost MyNewSubVolume]# 
+
+
+
+
+
+
+
+[root@localhost MyNewSubVolume]# cd ..
+[root@localhost data1]# cd ..
+
+
+
+
+[root@localhost /]# btrfs subvolume list data1
+ID 258 gen 9 top level 5 path MyNewSubVolume
+
+
+
+
+
+
+-------------------------------------------------------------------------------------------------
+
+
+
+
+mount a sub volume:
+
+
+
+
+[root@localhost /]# mkdir /tmp/test
+
+
+[root@localhost /]# mount -o subvol=MyNewSubVolume /dev/sdb1 /tmp/test
+
+
+
+
+
+
+
+
+
+
+
+[root@localhost /]# df -TH
+Filesystem              Type      Size  Used Avail Use% Mounted on
+devtmpfs                devtmpfs  508M     0  508M   0% /dev
+tmpfs                   tmpfs     520M     0  520M   0% /dev/shm
+tmpfs                   tmpfs     520M  7.2M  513M   2% /run
+tmpfs                   tmpfs     520M     0  520M   0% /sys/fs/cgroup
+/dev/mapper/centos-root xfs       6.7G  2.2G  4.6G  32% /
+/dev/sda1               xfs       1.1G  143M  921M  14% /boot
+tmpfs                   tmpfs     104M     0  104M   0% /run/user/0
+/dev/sdb1               btrfs     2.2G   18M  2.0G   1% /data1
+/dev/sdb1               btrfs     2.2G   18M  2.0G   1% /tmp/test
+
+
+
+
+
+
+-------------------------------------------------------------------------------------------------
+
+
+
+
+Snapshot:
+
+
+
+[root@localhost /]# cd /data1
+
+
+[root@localhost data1]# btrfs subvolume snapshot MyNewSubVolume MyNewSubVolumeSnashot
+Create a snapshot of 'MyNewSubVolume' in './MyNewSubVolumeSnashot'
+
+
+
+
+[root@localhost data1]# btrfs subvolume list .
+ID 258 gen 12 top level 5 path MyNewSubVolume
+ID 260 gen 12 top level 5 path MyNewSubVolumeSnapshot
+
+
+
