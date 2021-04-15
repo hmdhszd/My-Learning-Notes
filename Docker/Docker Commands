@@ -565,6 +565,7 @@ Map port from container to host:
 
 [root@localhost ~]# docker run -d -p 3306:3306 httpd
 
+[root@localhost ~]# docker run -d -p 127.0.0.1:3306:3306 httpd
 
 
 
@@ -587,6 +588,7 @@ Map port from container to host:
 
 [root@localhost ~]# docker update --restart unless-stopped redis
 
+[root@localhost ~]# docker update --restart=always unless-stopped redis
 
 
 
@@ -604,7 +606,7 @@ Map port from container to host:
 
 
 
-[root@localhost ~]# docker container run -it --volume volumename:/data busybox sh
+[root@localhost ~]# docker container run -it -v /home/hamid/Desktop/data:/var/lib/mysql -P mysql:latest
 
 
 
@@ -616,10 +618,7 @@ Map port from container to host:
 
 
 
-
-
-
-
+[root@localhost ~]# docker run --help
 
 
 
