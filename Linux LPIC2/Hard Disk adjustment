@@ -1,0 +1,129 @@
+
+
+hdparm
+sdpard
+
+
+
+
+[root@localhost ~]# hdparm
+
+hdparm - get/set hard disk parameters - version v9.43, by Mark Lord.
+
+
+
+
+
+
+-----------------------------------------------------
+
+
+
+
+
+get info of a specific disk:
+
+
+
+
+
+
+[root@localhost ~]# hdparm -I /dev/sdb
+
+/dev/sdb:
+
+ATA device, with non-removable media
+	Model Number:       VBOX HARDDISK                           
+	Serial Number:      VB0b508f96-4fcabfe5 
+	Firmware Revision:  1.0     
+Standards:
+	Used: ATA/ATAPI-6 published, ANSI INCITS 361-2002 
+	Supported: 6 5 4 
+Configuration:
+	Logical		max	current
+	cylinders	5700	5700
+	heads		16	16
+	sectors/track	63	63
+	--
+	CHS current addressable sectors:    5745600
+	LBA    user addressable sectors:    5745620
+	LBA48  user addressable sectors:    5745620
+	Logical/Physical Sector size:           512 bytes
+	device size with M = 1024*1024:        2805 MBytes
+	device size with M = 1000*1000:        2941 MBytes (2 GB)
+	cache/buffer size  = 256 KBytes (type=DualPortCache)
+Capabilities:
+	LBA, IORDY(cannot be disabled)
+	Queue depth: 32
+	Standby timer values: spec'd by Vendor, no device specific minimum
+	R/W multiple sector transfer: Max = 128	Current = 128
+	DMA: mdma0 mdma1 mdma2 udma0 udma1 udma2 udma3 udma4 udma5 *udma6 
+	     Cycle time: min=120ns recommended=120ns
+	PIO: pio0 pio1 pio2 pio3 pio4 
+	     Cycle time: no flow control=120ns  IORDY flow control=120ns
+Commands/features:
+	Enabled	Supported:
+	   *	Power Management feature set
+	   *	Write cache
+	   *	Look-ahead
+	   *	48-bit Address feature set
+	   *	Mandatory FLUSH_CACHE
+	   *	FLUSH_CACHE_EXT
+	   *	Gen2 signaling speed (3.0Gb/s)
+	   *	Native Command Queueing (NCQ)
+Checksum: correct
+
+
+
+
+
+
+
+
+-----------------------------------------------------
+-----------------------------------------------------
+
+
+
+
+
+
+tune2fs - adjust tunable filesystem parameters on ext2/ext3/ext4 filesystems
+
+
+
+
+
+[root@localhost ~]# tune2fs -l /dev/sdb
+tune2fs 1.42.9 (28-Dec-2013)
+tune2fs: Bad magic number in super-block while trying to open /dev/sdb
+Couldn't find valid filesystem superblock.
+
+
+
+
+
+-----------------------------------------------------
+-----------------------------------------------------
+
+
+
+
+
+sysctl - configure kernel parameters at runtime
+
+
+
+
+[root@localhost ~]# sysctl -a
+
+
+
+
+
+-----------------------------------------------------
+
+
+
+
+
