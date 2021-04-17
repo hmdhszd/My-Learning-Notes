@@ -1,0 +1,81 @@
+
+
+
+
+show images inside our server:
+
+[root@localhost ~]# docker images
+
+REPOSITORY    TAG       IMAGE ID       CREATED       SIZE
+hello-world   latest    d1165f221234   3 weeks ago   13.3kB
+
+
+
+
+
+
+----------------------------------------------------------------------------------------
+
+
+
+
+[root@localhost ~]# docker images --help
+
+Usage:  docker images [OPTIONS] [REPOSITORY[:TAG]]
+
+List images
+
+Options:
+  -a, --all             Show all images (default hides intermediate images)
+      --digests         Show digests
+  -f, --filter filter   Filter output based on conditions provided
+      --format string   Pretty-print images using a Go template
+      --no-trunc        Don't truncate output
+  -q, --quiet           Only show image IDs
+
+
+
+
+
+----------------------------------------------------------------------------------------
+
+
+
+
+
+show info of a specific docker image:
+
+[root@localhost ~]# docker images busybox:1
+
+REPOSITORY   TAG       IMAGE ID   CREATED   SIZE
+
+
+
+
+
+----------------------------------------------------------------------------------------
+
+
+
+show IDs of ALL images:
+
+
+[root@localhost ~]# docker images -q
+d1165f221234
+
+
+
+
+----------------------------------------------------------------------------------------
+
+
+
+show all info of all images:
+
+
+[root@localhost ~]# docker images --no-trunc
+
+REPOSITORY    TAG       IMAGE ID                      CREATED       SIZE
+hello-world   latest    sha256:d1165f2212346b2bab48cb01c1e39ee8ad1be46b87873d9ca7a4e434980a7726   3 weeks ago   13.3kB
+
+
