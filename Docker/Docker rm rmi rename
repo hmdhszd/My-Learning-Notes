@@ -1,0 +1,70 @@
+
+
+Docker rename:
+
+
+
+root@localhost ~]# docker rename --help
+
+Usage:  docker rename CONTAINER NEW_NAME
+
+Rename a container
+
+
+
+
+----------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+remove image:
+
+
+
+
+[root@localhost ~]# docker rmi --help
+
+Usage:  docker rmi [OPTIONS] IMAGE [IMAGE...]
+
+Remove one or more images
+
+Options:
+  -f, --force      Force removal of the image
+      --no-prune   Do not delete untagged parents
+
+
+
+
+
+----------------------------------------------------------------------------------------
+
+
+
+
+
+remove container:
+
+
+
+
+[root@localhost ~]# docker rm --help
+
+Usage:  docker rm [OPTIONS] CONTAINER [CONTAINER...]
+
+Remove one or more containers
+
+Options:
+  -f, --force     Force the removal of a running container (uses SIGKILL)
+  -l, --link      Remove the specified link
+  -v, --volumes   Remove anonymous volumes associated with the container
+[root@localhost ~]# 
+
+
+
+
+
