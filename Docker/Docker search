@@ -1,0 +1,52 @@
+
+
+
+
+Docker search images in docker hub:
+
+
+
+[root@localhost ~]# docker search ubuntu
+NAME                                                      DESCRIPTION                                     STARS     OFFICIAL   AUTOMATED
+ubuntu                                                    Ubuntu is a Debian-based Linux operating sys…   12103     [OK]       
+dorowu/ubuntu-desktop-lxde-vnc                            Docker image to provide HTML5 VNC interface …   520                  [OK]
+websphere-liberty                                         WebSphere Liberty multi-architecture images …   267       [OK]       
+rastasheep/ubuntu-sshd                                    Dockerized SSH service, built on top of offi…   249                  [OK]
+consol/ubuntu-xfce-vnc                                    Ubuntu container with "headless" VNC session…   236                  [OK]
+ubuntu-upstart                                            Upstart is an event-based replacement for th…   110       [OK]       
+
+
+
+
+----------------------------------------------------------------------------------------
+
+
+
+
+
+
+[root@localhost ~]# docker search --filter "is-official=true" ubuntu
+NAME                 DESCRIPTION                                     STARS     OFFICIAL   AUTOMATED
+ubuntu               Ubuntu is a Debian-based Linux operating sys…   12103     [OK]       
+websphere-liberty    WebSphere Liberty multi-architecture images …   267       [OK]       
+ubuntu-upstart       Upstart is an event-based replacement for th…   110       [OK]       
+neurodebian          NeuroDebian provides neuroscience research s…   81        [OK]       
+ubuntu-debootstrap   debootstrap --variant=minbase --components=m…   44        [OK]       
+open-liberty         Open Liberty multi-architecture images based…   43        [OK]       
+
+
+
+
+
+
+----------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
