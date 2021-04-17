@@ -1,0 +1,40 @@
+
+
+
+
+Copy a file to/from a container
+
+
+
+
+-----------------------------------------------
+
+
+
+
+
+
+[root@localhost ~]# docker exec -it stoic_nash ls /tmp
+
+[root@localhost ~]# ping 8.8.8.8 > myfile.txt
+
+[root@localhost ~]# docker cp myfile.txt stoic_nash:/tmp
+
+[root@localhost ~]# docker exec -it stoic_nash ls /tmp
+myfile.txt
+
+
+
+
+
+-----------------------------------------------
+
+
+
+
+
+[root@localhost ~]# docker cp stoic_nash:/tmp/myfile.txt .
+
+
+
+
