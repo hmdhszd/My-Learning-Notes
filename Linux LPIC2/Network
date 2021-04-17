@@ -1,0 +1,844 @@
+yum install net-tools
+
+
+
+
+---------------------------------------------------
+
+
+
+
+
+
+define a DNS record:
+
+
+[root@localhost ~]# cat /etc/hosts
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+
+
+8.8.8.8 internet
+
+
+
+
+
+
+
+
+[root@localhost ~]# ping internet
+
+PING internet (8.8.8.8) 56(84) bytes of data.
+64 bytes from internet (8.8.8.8): icmp_seq=1 ttl=63 time=38.5 ms
+
+
+
+
+---------------------------------------------------
+
+
+
+
+
+see all known services and ports:
+
+
+
+[root@localhost ~]# less /etc/services 
+
+
+
+
+
+
+---------------------------------------------------
+
+
+
+
+
+
+interface config: (in redhat)
+
+
+
+
+
+[root@localhost ~]# cat /etc/sysconfig/network-scripts/
+
+ifcfg-enp0s3
+TYPE=Ethernet
+PROXY_METHOD=none
+BROWSER_ONLY=no
+BOOTPROTO=none
+DEFROUTE=yes
+IPV4_FAILURE_FATAL=no
+IPV6INIT=yes
+IPV6_AUTOCONF=yes
+IPV6_DEFROUTE=yes
+IPV6_FAILURE_FATAL=no
+IPV6_ADDR_GEN_MODE=stable-privacy
+NAME=enp0s3
+UUID=e598adca-0a1a-408f-ae53-127adc485585
+DEVICE=enp0s3
+ONBOOT=yes
+IPADDR=192.168.118.152
+PREFIX=26
+
+
+
+
+
+
+
+---------------------------------------------------
+
+
+
+
+
+
+
+
+[root@localhost ~]# systemctl status NetworkManager
+
+● NetworkManager.service - Network Manager
+   Loaded: loaded (/usr/lib/systemd/system/NetworkManager.service; enabled; vendor preset: enabled)
+   Active: active (running) since Fri 2021-04-16 10:16:11 EDT; 1h 25min ago
+
+
+
+
+
+
+
+---------------------------------------------------
+
+
+
+
+
+
+DNS:
+
+
+
+[root@localhost ~]# cat /etc/resolv.conf
+
+nameserver 8.8.8.8
+
+
+
+
+
+
+
+
+---------------------------------------------------
+
+
+
+
+
+
+
+change hostname:
+
+
+[root@localhost ~]# vi /etc/hostname 
+localhost.localdomain
+
+
+
+
+
+
+
+---------------------------------------------------
+
+
+
+
+
+
+
+                                                                         
+[root@localhost ~]# ifconfig
+
+
+[root@localhost ~]# ip a
+
+
+[root@localhost ~]# ip address
+
+
+[root@localhost ~]# ip address show
+
+
+
+
+
+
+
+---------------------------------------------------
+
+
+
+
+
+
+shut/no shut a interface:+
+
+
+
+[root@localhost ~]# ifup  enp0s3
+
+
+
+[root@localhost ~]# ifup  enp0s3
+
+
+
+
+
+---------------------------------------------------
+
+
+
+
+set ip address on an interface:
+
+
+
+[root@localhost ~]# ifconfig enp0s3 192.168.122.1  netmask 255.255.255.0 
+
+
+
+
+
+
+
+
+[root@localhost ~]# ip addr add 192.168.1.10/24 dev enp0s3
+
+[root@localhost ~]# ip addr del 192.168.1.10/24 dev enp0s3
+
+
+
+
+
+---------------------------------------------------
+
+
+
+
+
+
+for wireless interfaces:  (scan wireless networks)
+
+
+▶ iwlist wlp2s0  scan
+wlp2s0    Scan completed :
+          Cell 01 - Address: 88:DC:96:4C:44:C6
+                    Channel:1
+                    Frequency:2.412 GHz (Channel 1)
+                    Quality=70/70  Signal level=-20 dBm  
+                    Encryption key:on
+                    ESSID:"NOC Wireless 2.4G"
+                    Bit Rates:1 Mb/s; 2 Mb/s; 5.5 Mb/s; 11 Mb/s; 6 Mb/s
+                              9 Mb/s; 12 Mb/s; 18 Mb/s
+                    Bit Rates:24 Mb/s; 36 Mb/s; 48 Mb/s; 54 Mb/s
+                    Mode:Master
+                    Extra:tsf=00000037eb0b9b7d
+                    Extra: Last beacon: 157236ms ago
+                    IE: Unknown: 00114E4F4320576972656C65737320322E3447
+                    IE: Unknown: 010882848B960C121824
+                    IE: Unknown: 030101
+                    IE: Unknown: 0706555320010B1E
+                    IE: Unknown: 2A0100
+                    IE: IEEE 802.11i/WPA2 Version 1
+                        Group Cipher : TKIP
+                        Pairwise Ciphers (2) : CCMP TKIP
+                        Authentication Suites (1) : PSK
+                    IE: Unknown: 32043048606C
+                    IE: Unknown: 2D1AEF111BFFFF0000000000000000000000000000000406E6A70C00
+                    IE: Unknown: 331AEF111BFFFF0000000000000000000000000000000406E6A70C00
+                    IE: Unknown: 3D16010D0000000000000000000000000000000000000000
+                    IE: Unknown: 3416010D0000000000000000000000000000000000000000
+                    IE: Unknown: 4A0E14000A002C01C800140005001900
+                    IE: Unknown: 7F0101
+                    IE: Unknown: DD180050F2020101020003A4000027A4000042435E0062322F00
+                    IE: Unknown: DD0900037F01010000FF7F
+
+
+
+
+
+
+
+
+
+---------------------------------------------------
+routing:
+---------------------------------------------------
+
+
+
+
+
+
+
+show routing table:
+
+
+
+[root@localhost ~]# netstat -nr
+Kernel IP routing table
+Destination     Gateway         Genmask         Flags   MSS Window  irtt Iface
+0.0.0.0         10.0.4.2        0.0.0.0         UG        0 0          0 enp0s9
+10.0.4.0        0.0.0.0         255.255.255.0   U         0 0          0 enp0s9
+10.10.10.0      0.0.0.0         255.255.255.0   U         0 0          0 enp0s8
+172.17.0.0      0.0.0.0         255.255.0.0     U         0 0          0 docker0
+172.18.0.0      0.0.0.0         255.255.0.0     U         0 0          0 br-23ba33c7c288
+192.168.118.128 0.0.0.0         255.255.255.192 U         0 0          0 enp0s3
+
+
+
+
+
+
+
+
+
+[root@localhost ~]# route -n
+Kernel IP routing table
+Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+0.0.0.0         10.0.4.2        0.0.0.0         UG    102    0        0 enp0s9
+10.0.4.0        0.0.0.0         255.255.255.0   U     102    0        0 enp0s9
+10.10.10.0      0.0.0.0         255.255.255.0   U     101    0        0 enp0s8
+172.17.0.0      0.0.0.0         255.255.0.0     U     0      0        0 docker0
+172.18.0.0      0.0.0.0         255.255.0.0     U     0      0        0 br-23ba33c7c288
+192.168.118.128 0.0.0.0         255.255.255.192 U     100    0        0 enp0s3
+
+
+
+
+
+
+
+
+[root@localhost ~]# ip route
+default via 10.0.4.2 dev enp0s9 proto dhcp metric 102 
+10.0.4.0/24 dev enp0s9 proto kernel scope link src 10.0.4.15 metric 102 
+10.10.10.0/24 dev enp0s8 proto kernel scope link src 10.10.10.1 metric 101 
+172.17.0.0/16 dev docker0 proto kernel scope link src 172.17.0.1 
+172.18.0.0/16 dev br-23ba33c7c288 proto kernel scope link src 172.18.0.1 
+192.168.118.128/26 dev enp0s3 proto kernel scope link src 192.168.118.152 metric 100 
+
+
+
+
+
+
+
+
+
+---------------------------------------------------
+
+
+
+
+
+
+add a default route:
+
+
+
+
+[root@localhost ~]# route add default gw 192.168.1.1
+
+
+[root@localhost ~]# ip route add default via 192.168.1.1
+
+
+
+
+
+
+---------------------------------------------------
+
+
+
+
+
+
+Get IP by DHCP:
+
+
+[root@localhost ~]# dhclient enp0s9
+
+
+
+
+
+
+---------------------------------------------------
+---------------------------------------------------
+---------------------------------------------------
+---------------------------------------------------
+---------------------------------------------------
+---------------------------------------------------
+
+t-shoot
+
+---------------------------------------------------
+
+
+
+
+
+show logs:
+
+[root@localhost ~]# dmesg 
+
+[root@localhost ~]# cat /var/log/messages 
+
+[root@localhost ~]# cat /var/log/syslog 
+
+
+
+
+---------------------------------------------------
+
+
+
+
+
+
+show arp table:
+
+
+
+
+
+[root@localhost ~]# arp
+Address                  HWtype  HWaddress           Flags Mask            Iface
+hamid                    ether   14:2d:27:a5:fd:1f   C                     enp0s3
+gateway                  ether   52:54:00:12:35:02   C                     enp0s9
+10.0.4.3                 ether   52:54:00:12:35:03   C                     enp0s9
+_gateway                 ether   00:09:0f:09:00:13   C                     enp0s3
+
+
+
+
+
+
+---------------------------------------------------
+
+
+
+
+show sockets:
+
+
+
+[root@localhost ~]# ss 
+
+
+[root@localhost ~]# ss -m
+
+
+[root@localhost ~]# ss -l
+
+
+
+
+
+
+---------------------------------------------------
+---------------------------------------------------
+
+
+
+
+
+
+Send data on a specific port:
+
+
+
+
+▶ nc 127.0.0.1 3000
+hello are you receiving my messages?
+
+
+
+
+
+
+
+
+
+
+listen on a specific port to se if it's open:
+
+
+▶ nc -l 3000
+hello are you receiving my messages?
+
+
+
+
+
+---------------------------------------------------
+---------------------------------------------------
+
+
+
+
+
+
+nmap:
+
+
+
+
+[root@localhost ~]# nmap google.com
+
+Starting Nmap 6.40 ( http://nmap.org ) at 2021-04-16 13:48 EDT
+Nmap scan report for google.com (172.217.169.238)
+Host is up (0.0043s latency).
+rDNS record for 172.217.169.238: mct01s10-in-f14.1e100.net
+Not shown: 995 filtered ports
+PORT     STATE  SERVICE
+80/tcp   open   http
+113/tcp  closed ident
+443/tcp  open   https
+2000/tcp open   cisco-sccp
+5060/tcp open   sip
+
+Nmap done: 1 IP address (1 host up) scanned in 18.33 seconds
+
+
+
+
+
+
+
+
+
+
+[root@localhost ~]# nmap 192.168.1.0/24
+
+
+
+
+
+
+
+---------------------------------------------------
+
+
+
+
+
+
+
+▶ nslookup google.com
+
+Server:		127.0.0.53
+Address:	127.0.0.53#53
+
+Non-authoritative answer:
+Name:	google.com
+Address: 142.250.186.110
+Name:	google.com
+Address: 2a00:1450:4018:801::200e
+
+
+
+
+
+
+
+
+---------------------------------------------------
+
+
+
+
+
+see all open connections to the internet:
+
+
+[root@localhost ~]# lsof -i
+COMMAND   PID   USER   FD   TYPE DEVICE SIZE/OFF NODE NAME
+chronyd   794 chrony    5u  IPv4  22129      0t0  UDP localhost:323 
+chronyd   794 chrony    6u  IPv6  22130      0t0  UDP localhost:323 
+sshd     1232   root    3u  IPv4  25834      0t0  TCP *:ssh (LISTEN)
+sshd     1232   root    4u  IPv6  25850      0t0  TCP *:ssh (LISTEN)
+master   1497   root   13u  IPv4  26783      0t0  TCP localhost:smtp (LISTEN)
+master   1497   root   14u  IPv6  26784      0t0  TCP localhost:smtp (LISTEN)
+sshd     2468   root    3u  IPv4  33120      0t0  TCP localhost.localdomain:ssh->hamid:59352 (ESTABLISHED)
+dhclient 2608   root    6u  IPv4  35699      0t0  UDP *:bootpc 
+
+
+
+
+
+
+
+---------------------------------------------------
+
+
+
+
+
+
+see all udp connections:
+
+
+[root@localhost ~]# netstat -u
+Active Internet connections (w/o servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State      
+
+
+
+
+
+
+
+
+
+---------------------------------------------------
+
+
+
+
+
+
+show all tcp connections:
+
+[root@localhost ~]# netstat -t
+Active Internet connections (w/o servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State      
+tcp        0      0 localhost.localdoma:ssh hamid:55172             ESTABLISHED
+
+
+
+
+
+
+
+
+---------------------------------------------------
+
+
+
+
+
+
+
+show all listen ports:
+
+[root@localhost ~]# netstat -l
+Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State      
+tcp        0      0 localhost:smtp          0.0.0.0:*               LISTEN     
+tcp        0      0 0.0.0.0:ssh             0.0.0.0:*               LISTEN     
+tcp6       0      0 localhost:smtp          [::]:*                  LISTEN     
+tcp6       0      0 [::]:ssh                [::]:*                  LISTEN     
+
+
+
+
+
+
+
+
+---------------------------------------------------
+
+
+
+
+
+
+
+[root@localhost ~]# netstat -tulpen
+
+Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       User       Inode      PID/Program name    
+tcp        0      0 127.0.0.1:25            0.0.0.0:*               LISTEN      0          27806      1522/master         
+tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      0          26785      1259/sshd           
+tcp6       0      0 ::1:25                  :::*                    LISTEN      0          27807      1522/master         
+tcp6       0      0 :::22                   :::*                    LISTEN      0          26802      1259/sshd           
+udp        0      0 0.0.0.0:68              0.0.0.0:*                           0          24797      1008/dhclient       
+udp        0      0 127.0.0.1:323           0.0.0.0:*                           0          21418      808/chronyd         
+udp6       0      0 ::1:323                 :::*                                0          21419      808/chronyd         
+
+
+
+
+
+
+
+
+---------------------------------------------------
+---------------------------------------------------
+---------------------------------------------------
+---------------------------------------------------
+---------------------------------------------------
+---------------------------------------------------
+
+
+
+
+tcpdump
+				dump traffic on a network
+
+
+-i 				interface
+
+
+
+
+
+---------------------------------------------------
+
+
+
+
+
+
+
+show available interfaces:
+
+
+
+[root@localhost ~]# tcpdump -D
+
+1.enp0s3
+2.enp0s8
+3.enp0s9
+4.docker0
+5.nflog (Linux netfilter log (NFLOG) interface)
+6.nfqueue (Linux netfilter queue (NFQUEUE) interface)
+7.usbmon1 (USB bus number 1)
+8.usbmon2 (USB bus number 2)
+9.br-23ba33c7c288
+10.any (Pseudo-device that captures on all interfaces)
+11.lo [Loopback]
+
+
+
+
+
+
+
+
+---------------------------------------------------
+
+
+
+
+
+
+
+
+[root@localhost ~]# tcpdump -i any port  22
+
+
+
+
+[root@localhost ~]# tcpdump -i any port  22 -w myfile.pcap
+
+
+
+
+
+
+
+[root@localhost ~]# tcpdump dst 127.0.0.1
+
+
+
+[root@localhost ~]# tcpdump src 127.0.0.1
+
+
+
+
+
+
+-A      for show inside the packet
+
+
+-w 		write to a file
+
+
+
+
+
+
+---------------------------------------------------
+---------------------------------------------------
+---------------------------------------------------
+---------------------------------------------------
+---------------------------------------------------
+---------------------------------------------------
+---------------------------------------------------
+
+
+
+
+
+
+
+
+Access list for linux:
+
+
+
+
+
+
+[root@localhost ~]# cat /etc/hosts.allow 
+#
+# hosts.allow	This file contains access rules which are used to
+#		allow or deny connections to network services that
+#		either use the tcp_wrappers library or that have been
+#		started through a tcp_wrappers-enabled xinetd.
+#
+#		See 'man 5 hosts_options' and 'man 5 hosts_access'
+#		for information on rule syntax.
+#		See 'man tcpd' for information on tcp_wrappers
+
+
+
+
+
+
+[root@localhost ~]# cat /etc/hosts.deny 
+#
+# hosts.deny	This file contains access rules which are used to
+#		deny connections to network services that either use
+#		the tcp_wrappers library or that have been
+#		started through a tcp_wrappers-enabled xinetd.
+#
+#		The rules in this file can also be set up in
+#		/etc/hosts.allow with a 'deny' option instead.
+#
+#		See 'man 5 hosts_options' and 'man 5 hosts_access'
+#		for information on rule syntax.
+#		See 'man tcpd' for information on tcp_wrappers
+#
+
+
+
+
+
+
+
+
+---------------------------------------------------
+
