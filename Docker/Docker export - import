@@ -1,0 +1,19 @@
+
+
+[root@localhost ~]# docker export wizardly_leavitt  > httpd.tar
+
+
+
+
+
+
+
+
+[root@localhost ~]# docker import httpd.tar testimagename:testtag
+sha256:50426c26cd908dc32602519e54f24fc9b83e8079c05e32fe5ca05d303c0e0823
+
+
+
+[root@localhost ~]# docker images
+REPOSITORY      TAG             IMAGE ID       CREATED         SIZE
+testimagename   testtag         50426c26cd90   8 seconds ago   134MB
