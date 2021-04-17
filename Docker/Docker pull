@@ -1,0 +1,45 @@
+
+
+[root@localhost ~]# docker pull --help
+
+Usage:  docker pull [OPTIONS] NAME[:TAG|@DIGEST]
+
+Pull an image or a repository from a registry
+
+Options:
+  -a, --all-tags                Download all tagged images in the repository
+      --disable-content-trust   Skip image verification (default true)
+      --platform string         Set platform if server is multi-platform capable
+  -q, --quiet                   Suppress verbose output
+
+
+
+
+
+
+----------------------------------------------------------------------------------------
+
+
+
+
+Download docker image:
+
+[root@localhost ~]# docker pull httpd
+
+
+
+
+----------------------------------------------------------------------------------------
+
+
+
+[root@localhost ~]# docker pull -a busybox
+
+
+[root@localhost ~]# docker images
+
+REPOSITORY    TAG       IMAGE ID       CREATED       SIZE
+busybox       1-glibc   541480a10cb1   2 weeks ago   5.2MB
+hello-world   latest    d1165f221234   3 weeks ago   13.3kB
+
+
