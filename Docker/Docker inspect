@@ -1,0 +1,228 @@
+[root@localhost ~]# docker inspect --help
+
+
+  -f, --format string   Format the output using the given Go template
+  -s, --size            Display total file sizes if the type is container
+      --type string     Return JSON for specified type
+
+
+
+
+
+------------------------------------------------
+
+
+
+
+
+
+
+[root@localhost ~]# docker inspect busybox
+[
+    {
+        "Id": "sha256:a9d583973f65a19b3bbd7a4312b4e2c27712c44c0ed8b94e9a38cc73e7565b75",
+        "RepoTags": [
+            "busybox:latest",
+            "mybusybox:test"
+        ],
+        "RepoDigests": [
+            "busybox@sha256:ce2360d5189a033012fbad1635e037be86f23b65cfd676b436d0931af390a2ac"
+        ],
+        "Parent": "",
+        "Comment": "",
+        "Created": "2021-03-09T21:26:43.742604734Z",
+        "Container": "d2a13cb3804820797650467a94a2938a1187593550027b815b232df8465574a5",
+        "ContainerConfig": {
+            "Hostname": "d2a13cb38048",
+            "Domainname": "",
+            "User": "",
+            "AttachStdin": false,
+            "AttachStdout": false,
+            "AttachStderr": false,
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+            ],
+            "Cmd": [
+                "/bin/sh",
+                "-c",
+                "#(nop) ",
+                "CMD [\"sh\"]"
+            ],
+            "Image": "sha256:fd254a83042986bdb46649e2f80f5f870415a796c8b9db3bff54283e4730c453",
+            "Volumes": null,
+            "WorkingDir": "",
+            "Entrypoint": null,
+            "OnBuild": null,
+            "Labels": {}
+        },
+        "DockerVersion": "19.03.12",
+        "Author": "",
+        "Config": {
+            "Hostname": "",
+            "Domainname": "",
+            "User": "",
+            "AttachStdin": false,
+            "AttachStdout": false,
+            "AttachStderr": false,
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+            ],
+            "Cmd": [
+                "sh"
+            ],
+            "Image": "sha256:fd254a83042986bdb46649e2f80f5f870415a796c8b9db3bff54283e4730c453",
+            "Volumes": null,
+            "WorkingDir": "",
+            "Entrypoint": null,
+            "OnBuild": null,
+            "Labels": null
+        },
+        "Architecture": "amd64",
+        "Os": "linux",
+        "Size": 1231725,
+        "VirtualSize": 1231725,
+        "GraphDriver": {
+            "Data": {
+                "MergedDir": "/var/lib/docker/overlay2/910f03d1fcf77c96d18aa33dac3726c8422c2afe4a16f130eb16b0e8a90c38e3/merged",
+                "UpperDir": "/var/lib/docker/overlay2/910f03d1fcf77c96d18aa33dac3726c8422c2afe4a16f130eb16b0e8a90c38e3/diff",
+                "WorkDir": "/var/lib/docker/overlay2/910f03d1fcf77c96d18aa33dac3726c8422c2afe4a16f130eb16b0e8a90c38e3/work"
+            },
+            "Name": "overlay2"
+        },
+        "RootFS": {
+            "Type": "layers",
+            "Layers": [
+                "sha256:2983725f2649f8847244cbb73ff9cb0b041bd319144816dfdee904adfd18bd1f"
+            ]
+        },
+        "Metadata": {
+            "LastTagTime": "2021-04-16T01:21:17.249652702-04:00"
+        }
+    }
+]
+
+
+
+
+
+
+------------------------------------------------
+
+
+
+
+
+[root@localhost ~]# docker network  ls
+
+NETWORK ID     NAME       DRIVER    SCOPE
+ca57e5699b7f   bridge     bridge    local
+2124d677076b   host       host      local
+23ba33c7c288   mynet123   bridge    local
+dca31b1e8305   none       null      local
+
+
+
+
+
+
+
+[root@localhost ~]# docker inspect mynet123
+
+[
+    {
+        "Name": "mynet123",
+        "Id": "23ba33c7c28809f44bd3e2e0203c1f1b72c7f086c75d048294a7bffbcd5c9e3b",
+        "Created": "2021-04-14T10:14:25.928105077-04:00",
+        "Scope": "local",
+        "Driver": "bridge",
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": {},
+            "Config": [
+                {
+                    "Subnet": "172.18.0.0/16",
+                    "Gateway": "172.18.0.1"
+                }
+            ]
+        },
+        "Internal": false,
+        "Attachable": false,
+        "Ingress": false,
+        "ConfigFrom": {
+            "Network": ""
+        },
+        "ConfigOnly": false,
+        "Containers": {},
+        "Options": {},
+        "Labels": {}
+    }
+]
+
+
+
+
+
+
+
+------------------------------------------------
+
+
+
+
+
+
+[root@localhost ~]# docker inspect -f '{{.NetworkSettings}}' busybox
+
+Template parsing error: template: :1:2: executing "" at <.NetworkSettings>: map has no entry for key "NetworkSettings"
+
+
+
+
+
+
+------------------------------------------------
+
+
+
+
+
+
+[root@localhost ~]# docker inspect -f '{{.GraphDriver}}' busybox
+
+{map[MergedDir:/var/lib/docker/overlay2/910f03d1fcf77c96d18aa33dac3726c8422c2afe4a16f130eb16b0e8a90c38e3/merged UpperDir:/var/lib/docker/overlay2/910f03d1fcf77c96d18aa33dac3726c8422c2afe4a16f130eb16b0e8a90c38e3/diff WorkDir:/var/lib/docker/overlay2/910f03d1fcf77c96d18aa33dac3726c8422c2afe4a16f130eb16b0e8a90c38e3/work] overlay2}
+
+
+
+
+
+
+JSON output:
+
+
+
+
+
+[root@localhost ~]# docker inspect -f '{{json .GraphDriver}}' busybox
+
+{"Data":{"MergedDir":"/var/lib/docker/overlay2/910f03d1fcf77c96d18aa33dac3726c8422c2afe4a16f130eb16b0e8a90c38e3/merged","UpperDir":"/var/lib/docker/overlay2/910f03d1fcf77c96d18aa33dac3726c8422c2afe4a16f130eb16b0e8a90c38e3/diff","WorkDir":"/var/lib/docker/overlay2/910f03d1fcf77c96d18aa33dac3726c8422c2afe4a16f130eb16b0e8a90c38e3/work"},"Name":"overlay2"}
+
+
+
+
+
+
+------------------------------------------------
+
+
+
+
+
+
+
