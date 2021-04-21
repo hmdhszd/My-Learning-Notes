@@ -1,0 +1,36 @@
+----------------------------------------------
+
+
+
+
+
+[root@localhost ~]# docker restart --help
+
+
+  -t, --time int   Seconds to wait for stop before killing the
+                   container (default 10)
+
+
+
+
+----------------------------------------------
+
+
+
+
+[root@localhost ~]# docker restart test
+
+
+
+----------------------------------------------
+
+
+
+
+
+[root@localhost ~]# docker restart -t 15 test
+
+
+
+
+----------------------------------------------
