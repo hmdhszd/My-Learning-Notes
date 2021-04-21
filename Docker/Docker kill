@@ -1,0 +1,32 @@
+[root@localhost ~]# docker kill --help
+
+
+
+  -s, --signal string   Signal to send to the container (default "KILL")
+
+
+
+
+
+-------------------------------------------------
+
+
+
+
+
+[root@localhost ~]# docker kill test
+
+
+
+
+
+-------------------------------------------------
+
+
+
+
+
+[root@localhost ~]# docker kill -s 15 test
+
+
+
