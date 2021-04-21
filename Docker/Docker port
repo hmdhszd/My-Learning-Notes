@@ -1,0 +1,22 @@
+
+
+
+
+[root@localhost ~]# docker run -d --name test-http -p 80:80 httpd
+11568feb694f2d3623d1fff77c7f81b3f02d115dcb183f6ce12b72579ed98591
+
+
+
+
+
+[root@localhost ~]# docker ps 
+CONTAINER ID   IMAGE     COMMAND              CREATED          STATUS          PORTS                               NAMES
+11568feb694f   httpd     "httpd-foreground"   8 seconds ago    Up 7 seconds    0.0.0.0:80->80/tcp, :::80->80/tcp   test-http
+
+
+
+
+
+[root@localhost ~]# docker port  11568feb694f
+80/tcp -> 0.0.0.0:80
+80/tcp -> :::80
