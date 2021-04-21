@@ -1,0 +1,52 @@
+[root@localhost ~]# docker history  httpd
+IMAGE          CREATED       CREATED BY                                      SIZE      COMMENT
+0b932df43057   10 days ago   /bin/sh -c #(nop)  CMD ["httpd-foreground"]     0B        
+<missing>      10 days ago   /bin/sh -c #(nop)  EXPOSE 80                    0B        
+<missing>      10 days ago   /bin/sh -c #(nop) COPY file:c432ff61c4993ecd…   138B      
+<missing>      10 days ago   /bin/sh -c #(nop)  STOPSIGNAL SIGWINCH          0B        
+<missing>      10 days ago   /bin/sh -c set -eux;   savedAptMark="$(apt-m…   60.9MB    
+<missing>      10 days ago   /bin/sh -c #(nop)  ENV HTTPD_PATCHES=           0B        
+<missing>      10 days ago   /bin/sh -c #(nop)  ENV HTTPD_SHA256=740eddf6…   0B        
+<missing>      10 days ago   /bin/sh -c #(nop)  ENV HTTPD_VERSION=2.4.46     0B        
+<missing>      10 days ago   /bin/sh -c set -eux;  apt-get update;  apt-g…   7.38MB    
+<missing>      10 days ago   /bin/sh -c #(nop) WORKDIR /usr/local/apache2    0B        
+<missing>      10 days ago   /bin/sh -c mkdir -p "$HTTPD_PREFIX"  && chow…   0B        
+<missing>      10 days ago   /bin/sh -c #(nop)  ENV PATH=/usr/local/apach…   0B        
+<missing>      10 days ago   /bin/sh -c #(nop)  ENV HTTPD_PREFIX=/usr/loc…   0B        
+<missing>      11 days ago   /bin/sh -c #(nop)  CMD ["bash"]                 0B        
+<missing>      11 days ago   /bin/sh -c #(nop) ADD file:c855b3c65f5ba94d5…   69.3MB  
+
+
+
+
+
+
+
+-------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+[root@localhost ~]# docker history --format {{.Size}}  httpd
+0B
+0B
+138B
+0B
+60.9MB
+0B
+0B
+0B
+7.38MB
+0B
+0B
+0B
+0B
+0B
+69.3MB
