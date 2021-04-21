@@ -314,3 +314,30 @@ Map port from container to host:
 [root@localhost ~]# docker container run -it -v /home/hamid/Desktop/data:/var/lib/mysql -P mysql:latest
 
 
+
+
+
+
+
+
+
+----------------------------------------------------------------------------------------
+
+
+
+
+
+
+[root@localhost ~]# docker run  --help | grep rm
+
+      --rm                             Automatically remove the container when it exits
+
+
+
+
+
+[root@localhost ~]# docker run  --rm busybox
+
+
+
+
