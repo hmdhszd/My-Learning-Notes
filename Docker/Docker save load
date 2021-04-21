@@ -1,0 +1,59 @@
+
+
+save a specific image
+
+
+
+
+[root@localhost ~]# docker images
+REPOSITORY      TAG             IMAGE ID       CREATED        SIZE
+hello-world     latest          d1165f221234   6 weeks ago    13.3kB
+
+
+
+
+
+
+[root@localhost ~]# docker save hello-world -o MySavedImage.tar
+
+
+
+
+
+
+-----------------------------------------------
+
+
+
+
+save alot of images:
+
+
+[root@localhost ~]# docker save -o MySavedImage.tar hello-world busybox https:latest
+
+
+
+
+
+
+-----------------------------------------------
+-----------------------------------------------
+-----------------------------------------------
+
+
+
+load:
+
+
+[root@localhost ~]# docker load -i MySavedImage.tar 
+f22b99068db9: Loading layer  15.36kB/15.36kB
+Loaded image: hello-world:latest
+
+
+
+
+
+[root@localhost ~]# docker images
+hello-world     latest          d1165f221234   6 weeks ago    13.3kB
+
+
