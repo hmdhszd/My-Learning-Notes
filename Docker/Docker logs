@@ -1,0 +1,80 @@
+[root@localhost ~]# docker info | grep Loggi
+
+ Logging Driver: json-file
+
+
+
+
+
+
+-----------------------------------------------
+
+
+
+
+
+
+
+[root@localhost ~]# docker logs --help
+
+Usage:  docker logs [OPTIONS] CONTAINER
+
+Fetch the logs of a container
+
+Options:
+      --details        Show extra details provided to logs
+  -f, --follow         Follow log output
+      --since string   Show logs since timestamp (e.g.
+                       2013-01-02T13:23:37Z) or relative (e.g. 42m for
+                       42 minutes)
+  -n, --tail string    Number of lines to show from the end of the logs
+                       (default "all")
+  -t, --timestamps     Show timestamps
+      --until string   Show logs before a timestamp (e.g.
+                       2013-01-02T13:23:37Z) or relative (e.g. 42m for
+                       42 minutes)
+
+
+
+
+
+
+
+-----------------------------------------------
+
+
+
+
+
+[root@localhost ~]# docker logs -f test-http
+
+
+[root@localhost ~]# docker logs test-http
+
+
+
+AH00558: httpd: Could not reliably determine the server's fully qualified domain name, using 172.17.0.3. Set the 'ServerName' directive globally to suppress this message
+
+AH00558: httpd: Could not reliably determine the server's fully qualified domain name, using 172.17.0.3. Set the 'ServerName' directive globally to suppress this message
+
+[Wed Apr 21 11:01:42.338266 2021] [mpm_event:notice] [pid 1:tid 140065812915328] AH00489: Apache/2.4.46 (Unix) configured -- resuming normal operations
+
+[Wed Apr 21 11:01:42.338483 2021] [core:notice] [pid 1:tid 140065812915328] AH00094: Command line: 'httpd -D FOREGROUND'
+
+
+
+
+-----------------------------------------------
+
+
+
+
+
+
+
+[root@localhost ~]# docker logs test-http  --tail 1
+[Wed Apr 21 11:01:42.338483 2021] [core:notice] [pid 1:tid 140065812915328] AH00094: Command line: 'httpd -D FOREGROUND'
+
+
+
+
