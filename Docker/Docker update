@@ -1,0 +1,72 @@
+
+
+
+
+set memory limit:		-m 100M
+
+
+
+
+[root@localhost ~]# docker run -it --name test -m 100M -d busybox
+
+
+
+
+
+
+
+[root@localhost ~]# docker stats --format "table {{.Container}}\t{{.CPUPerc}}\t{{.MemUsage}}    "
+
+
+
+
+CONTAINER      CPU %     MEM USAGE / LIMIT
+55f8fdce2d84   0.00%     56KiB / 100MiB
+
+
+
+
+
+
+----------------------------------------------
+----------------------------------------------
+
+
+
+
+Update server resources:
+
+
+
+
+
+
+
+[root@localhost ~]# docker update -m 150M test
+
+
+
+
+
+
+
+[root@localhost ~]# docker stats --format "table {{.Container}}\t{{.CPUPerc}}\t{{.MemUsage}}    "
+
+CONTAINER      CPU %     MEM USAGE / LIMIT
+55f8fdce2d84   0.00%     56KiB / 150MiB
+660aefab8ed5   0.00%     8.688MiB / 991MiB
+
+
+
+
+
+
+
+----------------------------------------------
+
+
+
+
+
+
+
