@@ -79,6 +79,20 @@ CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
 
 
 
+[root@localhost ~]# docker container ls
+
+CONTAINER ID   IMAGE     COMMAND              CREATED       STATUS       PORTS     NAMES
+55f8fdce2d84   busybox   "sh"                 2 hours ago   Up 2 hours             test
+660aefab8ed5   httpd     "httpd-foreground"   2 hours ago   Up 2 hours   80/tcp    myweb
+
+
+
+
+[root@localhost ~]# docker ps
+
+CONTAINER ID   IMAGE     COMMAND              CREATED       STATUS       PORTS     NAMES
+55f8fdce2d84   busybox   "sh"                 2 hours ago   Up 2 hours             test
+660aefab8ed5   httpd     "httpd-foreground"   2 hours ago   Up 2 hours   80/tcp    myweb
 
 
 
