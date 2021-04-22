@@ -1,0 +1,47 @@
+
+
+
+[root@localhost ~]# docker diff --help
+
+Usage:  docker diff CONTAINER
+
+Inspect changes to files or directories on a container's filesystem
+
+
+
+-----------------------------------------------
+
+
+
+
+
+
+
+[root@localhost ~]# docker diff test-http
+C /usr
+C /usr/local
+C /usr/local/apache2
+C /usr/local/apache2/logs
+A /usr/local/apache2/logs/httpd.pid
+
+
+
+
+
+-----------------------------------------------
+
+
+
+
+C change
+
+D delete
+
+A add
+
+
+
+
+-----------------------------------------------
+
+
