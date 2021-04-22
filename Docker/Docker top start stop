@@ -1,0 +1,124 @@
+[root@localhost ~]# docker top
+"docker top" requires at least 1 argument.
+See 'docker top --help'.
+
+Usage:  docker top CONTAINER [ps OPTIONS]
+
+Display the running processes of a container
+
+
+
+
+-------------------------------------------------
+
+
+
+
+
+[root@localhost ~]# docker top test-http
+UID                 PID                 PPID                C                   STIME               TTY                 TIME                CMD
+root                4132                4113                0                   07:01               ?                   00:00:00            httpd -DFOREGROUND
+bin                 4163                4132                0                   07:01               ?                   00:00:00            httpd -DFOREGROUND
+bin                 4164                4132                0                   07:01               ?                   00:00:00            httpd -DFOREGROUND
+bin                 4165                4132                0                   07:01               ?                   00:00:00            httpd -DFOREGROUND
+
+
+
+
+
+-------------------------------------------------
+
+
+
+
+[root@localhost ~]# docker top test-http  aux
+USER                PID                 %CPU                %MEM                VSZ                 RSS                 TTY                 STAT                START               TIME                COMMAND
+root                4132                0.0                 0.3                 5928                3096                ?                   Ss                  07:01               0:00                httpd -DFOREGROUND
+bin                 4163                0.0                 0.4                 751844              4252                ?                   Sl                  07:01               0:00                httpd -DFOREGROUND
+bin                 4164                0.0                 0.4                 751844              4252                ?                   Sl                  07:01               0:00                httpd -DFOREGROUND
+bin                 4165                0.0                 0.4                 751844              4252                ?                   Sl                  07:01               0:00                httpd -DFOREGROUND
+
+
+
+
+
+
+-------------------------------------------------
+-------------------------------------------------
+-------------------------------------------------
+-------------------------------------------------
+-------------------------------------------------
+-------------------------------------------------
+
+
+
+
+
+
+[root@localhost ~]# docker start  --help
+
+
+  -a, --attach               Attach STDOUT/STDERR and forward signals
+      --detach-keys string   Override the key sequence for detaching a
+                             container
+  -i, --interactive          Attach container's STDIN
+
+
+
+
+
+-------------------------------------------------
+
+
+
+
+
+[root@localhost ~]# docker stop  test-http 
+test-http
+
+
+
+[root@localhost ~]# docker start  test-http 
+test-http
+
+
+
+
+
+-------------------------------------------------
+
+
+
+
+
+[root@localhost ~]# docker start  -i test-http 
+
+AH00558: httpd: Could not reliably determine the server's fully qualified domain name, using 172.17.0.3. Set the 'ServerName' directive globally to suppress this message
+AH00558: httpd: Could not reliably determine the server's fully qualified domain name, using 172.17.0.3. Set the 'ServerName' directive globally to suppress this message
+[Wed Apr 21 12:06:17.197639 2021] [mpm_event:notice] [pid 1:tid 139969820484736] AH00489: Apache/2.4.46 (Unix) configured -- resuming normal operations
+[Wed Apr 21 12:06:17.197850 2021] [core:notice] [pid 1:tid 139969820484736] AH00094: Command line: 'httpd -D FOREGROUND'
+
+
+
+
+
+-------------------------------------------------
+
+
+
+
+
+[root@localhost ~]# docker stop --help
+
+
+  -t, --time int   Seconds to wait for stop before killing it (default 10)
+
+
+
+
+
+-------------------------------------------------
+
+
+
+
