@@ -1,0 +1,403 @@
+
+
+
+
+isolate container 	= none
+
+default Network 	= bridge
+
+directly connect container to my host = host
+
+
+
+
+
+[root@localhost ~]# docker network ls
+
+NETWORK ID     NAME       DRIVER    SCOPE
+ca57e5699b7f   bridge     bridge    local
+2124d677076b   host       host      local
+23ba33c7c288   mynet123   bridge    local
+dca31b1e8305   none       null      local
+
+
+
+
+---------------------------------------------------
+
+
+
+
+
+
+[root@localhost ~]# ip a
+
+
+6: docker0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN group default 
+    link/ether 02:42:66:87:44:fa brd ff:ff:ff:ff:ff:ff
+    inet 172.17.0.1/16 brd 172.17.255.255 scope global docker0
+       valid_lft forever preferred_lft forever
+
+
+
+
+---------------------------------------------------
+
+
+
+
+
+[root@localhost ~]# docker network inspect bridge
+[
+    {
+        "Name": "bridge",
+        "Id": "28e55a4d71cf71f13ecf2c45b0ed88900643698847e09626bae0f6e2cdaaa912",
+        "Created": "2021-04-21T12:27:55.291903515-04:00",
+        "Scope": "local",
+        "Driver": "bridge",
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": null,
+            "Config": [
+                {
+                    "Subnet": "172.17.0.0/16",
+                    "Gateway": "172.17.0.1"
+                }
+            ]
+        },
+        "Internal": false,
+        "Attachable": false,
+        "Ingress": false,
+        "ConfigFrom": {
+            "Network": ""
+        },
+        "ConfigOnly": false,
+        "Containers": {},
+        "Options": {
+            "com.docker.network.bridge.default_bridge": "true",
+            "com.docker.network.bridge.enable_icc": "true",
+            "com.docker.network.bridge.enable_ip_masquerade": "true",
+            "com.docker.network.bridge.host_binding_ipv4": "0.0.0.0",
+            "com.docker.network.bridge.name": "docker0",
+            "com.docker.network.driver.mtu": "1500"
+        },
+        "Labels": {}
+    }
+]
+
+
+
+
+
+
+
+---------------------------------------------------
+---------------------------------------------------
+
+
+
+
+
+[root@localhost ~]# docker exec -it 016d1b88a426   ip a
+
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+9: eth0@if10: <BROADCAST,MULTICAST,UP,LOWER_UP,M-DOWN> mtu 1500 qdisc noqueue 
+    link/ether 02:42:ac:11:00:02 brd ff:ff:ff:ff:ff:ff
+    inet 172.17.0.2/16 brd 172.17.255.255 scope global eth0
+       valid_lft forever preferred_lft forever
+
+
+
+
+
+
+
+
+---------------------------------------------------
+
+
+
+
+
+
+isolate container:
+
+
+[root@localhost ~]# docker run -itd --network none  busybox:latest
+
+
+
+
+
+
+[root@localhost ~]# docker exec -it bb315ccc4cdb    ip a
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+
+
+
+
+
+
+---------------------------------------------------
+---------------------------------------------------
+---------------------------------------------------
+---------------------------------------------------
+---------------------------------------------------
+---------------------------------------------------
+---------------------------------------------------
+Ports:
+---------------------------------------------------
+
+
+
+
+
+[root@localhost ~]# docker run -itd -p 80 nginx
+
+
+
+[root@localhost ~]# docker ps
+CONTAINER ID   IMAGE     COMMAND                  CREATED          STATUS          PORTS                                     NAMES
+a109b0a30038   nginx     "/docker-entrypoint.…"   45 seconds ago   Up 43 seconds   0.0.0.0:49153->80/tcp, :::49153->80/tcp   jolly_kowalevski
+
+
+
+
+
+
+
+
+
+0.0.0.0:49153->80/tcp
+
+
+49153 - > random port of our host
+is mapped to
+port 80 inside of the container
+
+
+
+
+
+
+
+
+---------------------------------------------------
+
+
+
+
+
+
+
+everybody has access to it:			0.0.0.0:80->80/tcp
+
+
+
+
+
+[root@localhost ~]# docker run -itd -p 80:80 nginx
+
+
+
+
+
+[root@localhost ~]# docker ps
+CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS         PORTS                               NAMES
+de30657e4f8c   nginx     "/docker-entrypoint.…"   5 seconds ago   Up 5 seconds   0.0.0.0:80->80/tcp, :::80->80/tcp   focused_cartwright
+
+
+
+
+
+
+
+
+
+0.0.0.0:80->80/tcp
+
+
+
+port 80 of our host
+is mapped to
+port 80 inside of the container
+
+
+
+
+
+
+
+
+
+
+Chain DOCKER (2 refer
+ences)
+target     prot opt source               destination         
+ACCEPT     tcp  --  0.0.0.0/0            172.17.0.2           tcp dpt:80
+
+
+
+
+
+
+
+[root@localhost ~]# netstat -ntlp | grep 80
+tcp        0      0 0.0.0.0:80              0.0.0.0:*               LISTEN      3541/docker-proxy 
+
+
+
+
+
+
+
+---------------------------------------------------
+---------------------------------------------------
+---------------------------------------------------
+
+
+
+
+
+
+
+
+Map only to local host,   127.0.0.1:80->80/tcp
+
+
+other host will not have access:
+
+
+
+
+
+
+
+[root@localhost ~]# docker run -itd -p 127.0.0.1:80:80 nginx
+d233c789481db39297d7f7395c31ccc31b738504ba7d6d62704ff4beb2a18fce
+
+
+
+
+
+
+
+
+
+[root@localhost ~]# docker ps
+CONTAINER ID   IMAGE     COMMAND                  CREATED          STATUS         PORTS                  NAMES
+d233c789481d   nginx     "/docker-entrypoint.…"   10 seconds ago   Up 9 seconds   127.0.0.1:80->80/tcp   quizzical_maxwell
+
+
+
+
+
+
+
+
+[root@localhost ~]# curl 127.0.0.1
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+    body {
+        width: 35em;
+
+
+
+
+
+
+
+
+---------------------------------------------------
+---------------------------------------------------
+---------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+---------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+---------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+---------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+---------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+---------------------------------------------------
