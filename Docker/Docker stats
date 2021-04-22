@@ -1,0 +1,57 @@
+
+
+
+
+
+
+
+[root@localhost ~]# docker ps 
+
+CONTAINER ID   IMAGE     COMMAND   CREATED       STATUS       PORTS     NAMES
+24b5e10335fe   busybox   "sh"      3 hours ago   Up 3 hours             youthful_colden
+
+
+
+
+
+
+
+[root@localhost ~]# docker stats
+
+CONTAINER ID   NAME              CPU %     MEM USAGE / LIMIT   MEM %     NET I/O     BLOCK I/O   PIDS
+24b5e10335fe   youthful_colden   0.00%     56KiB / 991MiB      0.01%     656B / 0B   0B / 0B     1
+
+
+
+
+
+
+
+
+----------------------------------------------
+
+
+
+
+
+
+
+[root@localhost ~]# docker stats --format "table {{.Container}}\t{{.CPUPerc}}\t{{.MemUsage}}    "
+
+
+
+
+CONTAINER      CPU %     MEM USAGE / LIMIT
+660aefab8ed5   0.00%     8.688MiB / 991MiB
+
+
+
+
+
+
+
+----------------------------------------------
+
+
+
+
