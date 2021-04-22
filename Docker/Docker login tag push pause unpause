@@ -48,3 +48,68 @@ Username:
 
 [root@localhost ~]# docker logout docker.jfrog.ir
 
+
+
+
+
+
+
+
+
+-------------------------------------------------
+
+
+
+
+
+[root@localhost ~]# docker tag  busybox:latest docker.jfrog.ir/mydocker/busybox:latest
+
+
+
+
+
+[root@localhost ~]# docker push docker.jfrog.ir/mydocker/busybox 
+
+
+
+
+
+
+-------------------------------------------------
+-------------------------------------------------
+
+
+
+
+
+[root@localhost ~]# docker pause 24b5e10335fe
+24b5e10335fe
+
+
+[root@localhost ~]# docker unpause 24b5e10335fe
+24b5e10335fe
+
+
+
+
+
+
+-------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------
+
+
+
+
+
+
