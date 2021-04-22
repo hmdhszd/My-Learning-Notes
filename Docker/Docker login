@@ -1,0 +1,50 @@
+
+Login to a registery
+
+-----------------------------------------------
+
+
+
+
+
+[root@localhost ~]# docker login --help
+
+
+
+  -p, --password string   Password
+      --password-stdin    Take the password from stdin
+  -u, --username string   Username
+
+
+
+
+
+-----------------------------------------------
+
+
+
+
+default =  https://hub.docker.com
+
+
+[root@localhost ~]# docker login 
+Login with your Docker ID to push and pull images from Docker Hub. If you don't have a Docker ID, head over to https://hub.docker.com to create one.
+Username: 
+
+
+
+
+-----------------------------------------------
+
+
+
+
+[root@localhost ~]# docker login docker.jfrog.ir
+Username: 
+
+
+
+
+
+[root@localhost ~]# docker logout docker.jfrog.ir
+
