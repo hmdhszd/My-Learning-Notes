@@ -1,0 +1,53 @@
+all:
+    children:
+        routers:
+            hosts:
+                r1:
+                    ansible_host: 127.0.0.1
+
+                r2:
+                    ansible_host: 127.0.0.1
+
+            vars:
+                ansible_connection: network_cli
+                ansible_network_os: ios
+
+        servers:
+            hosts:
+                centos:
+                    ansible_host: 127.0.0.1
+
+
+
+
+
+
+----------------------------------------------
+
+
+
+
+
+
+
+(env3) [hamid@localhost Ansible]$ ansible --list-hosts all
+  hosts (3):
+    r1
+    r2
+    centos
+
+
+
+
+
+(env3) [hamid@localhost Ansible]$ ansible --list-hosts servers
+  hosts (1):
+    centos
+
+
+
+
+(env3) [hamid@localhost Ansible]$ ansible --list-hosts routers
+  hosts (2):
+    r1
+    r2
