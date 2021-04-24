@@ -1,25 +1,70 @@
-[root@localhost ~]# sudo yum -y update
+yum install epel-release
+yum install python34 python-pip
+yum update
+yum install python3
 
 
 
-[root@localhost ~]# sudo yum -y install epel-repo
-
-
-
-[root@localhost ~]# sudo yum -y update
-
-
-
-[root@localhost ~]# sudo yum -y install ansible
+----------------------------------------------------
 
 
 
 
-[root@localhost ~]# ansible --version
-ansible 2.9.18
-  config file = /etc/ansible/ansible.cfg
-  configured module search path = [u'/root/.ansible/plugins/modules', u'/usr/share/ansible/plugins/modules']
-  ansible python module location = /usr/lib/python2.7/site-packages/ansible
-  executable location = /usr/bin/ansible
-  python version = 2.7.5 (default, Nov 16 2020, 22:23:17) [GCC 4.8.5 20150623 (Red Hat 4.8.5-44)]
+[hamid@localhost root]$ sudo mkdir /Ansible
+[hamid@localhost root]$ cd /Ansible/
+
+
+
+
+
+
+
+
+
+
+
+
+[hamid@localhost Ansible]$ python --version
+Python 2.7.5
+
+
+
+
+
+[hamid@localhost Ansible]$ python3 -m venv env3
+
+[hamid@localhost Ansible]$ source env3/bin/activate
+
+
+
+
+
+(env3) [hamid@localhost Ansible]$ python --version
+Python 3.6.8
+
+
+
+
+
+
+
+----------------------------------------------------
+
+
+
+
+
+
+(env3) [hamid@localhost Ansible]$ pip3 install ansible
+
+
+
+
+
+
+
+----------------------------------------------------
+
+
+
 
