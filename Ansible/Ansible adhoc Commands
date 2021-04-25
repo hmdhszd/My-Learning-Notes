@@ -1,0 +1,215 @@
+(env3) [hamid@localhost Ansible]$ cat /etc/ansible/hosts 
+all:
+    children:
+        routers:
+            hosts:
+                r1:
+                    ansible_host: 10.10.10.11
+
+                r2:
+                    ansible_host: 10.10.10.22
+
+            vars:
+                ansible_connection: network_cli
+                ansible_network_os: ios
+
+        servers:
+            hosts:
+                centos:
+                    ansible_host: 127.0.0.1
+
+
+
+
+
+
+
+
+
+--------------------------------------------------
+
+
+
+
+
+
+
+
+(env3) [hamid@localhost Ansible]$ ansible r1 -m raw -a "show ip int br" -u hamid -k
+
+
+
+
+
+
+
+
+--------------------------------------------------
+--------------------------------------------------
+--------------------------------------------------
+--------------------------------------------------
+--------------------------------------------------
+
+
+
+
+
+
+ios modules for ansible:
+
+
+https://docs.ansible.com/ansible/2.8/modules/list_of_network_modules.html#ios
+
+
+
+
+
+
+--------------------------------------------------
+
+
+
+
+
+ios_command – Run commands on remote devices running Cisco IOS
+
+
+
+
+
+(env3) [root@localhost Ansible]# pip install paramiko
+
+
+
+
+(env3) [root@localhost Ansible]# ansible r1 -c local -m ios_command -a "commands='show ip int br | ex unas'" -u hamid -k
+
+
+
+
+
+
+
+--------------------------------------------------
+
+
+
+
+
+
+
+
+(env3) [root@localhost Ansible]# ansible routers -c local -m ios_command -a "commands='show ip int br | ex unas'" -u hamid -k | grep "SUCCESS\|up"
+
+SSH password: 
+r2 | SUCCESS => {
+        "Interface                  IP-Address      OK? Method Status                Protocol\nFastEthernet2/0            10.10.10.22     YES manual up                    up"
+            "FastEthernet2/0            10.10.10.22     YES manual up                    up"
+r1 | SUCCESS => {
+        "Interface                  IP-Address      OK? Method Status                Protocol\nFastEthernet2/0            10.10.10.11     YES manual up                    up"
+            "FastEthernet2/0            10.10.10.11     YES manual up                    up"
+
+
+
+
+
+
+
+
+--------------------------------------------------
+--------------------------------------------------
+
+
+
+
+
+
+ios_facts – Collect facts from remote devices running Cisco IOS
+
+
+
+(env3) [root@localhost Ansible]# ansible-galaxy collection install cisco.ios
+
+
+
+
+
+
+
+
+
+(env3) [hamid@localhost ~]$ ansible r1 -c local -m ios_facts -a "gather_subset=hardware"  -u hamid -k
+
+SSH password: 
+r1 | SUCCESS => {
+    "ansible_facts": {
+        "ansible_net_api": "cliconf",
+        "ansible_net_filesystems": [],
+        "ansible_net_filesystems_info": {},
+        "ansible_net_gather_network_resources": [],
+        "ansible_net_gather_subset": [
+            "hardware",
+            "default"
+        ],
+        "ansible_net_hostname": "R1",
+        "ansible_net_image": "tftp://255.255.255.255/unknown",
+        "ansible_net_iostype": "IOS",
+        "ansible_net_memfree_mb": 335187.859375,
+        "ansible_net_memtotal_mb": 367144.41015625,
+        "ansible_net_model": "7206VXR",
+        "ansible_net_python_version": "2.7.5",
+        "ansible_net_serialnum": "4279256517",
+        "ansible_net_system": "ios",
+        "ansible_net_version": "15.0(1)M",
+        "ansible_network_resources": {},
+        "discovered_interpreter_python": "/usr/bin/python"
+    },
+    "changed": false
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+(env3) [hamid@localhost ~]$ ansible r1 -c local -m ios_facts -a "gather_subset=interfaces"  -u hamid -k | grep "SUCCESS\|address"
+
+SSH password: 
+r1 | SUCCESS => {
+        "ansible_net_all_ipv4_addresses": [
+        "ansible_net_all_ipv6_addresses": [],
+                "macaddress": "ca01.17c8.0000",
+                "macaddress": "ca01.17c8.001c",
+                        "address": "10.10.10.11",
+                "macaddress": "ca01.17c8.0038",
+
+
+
+
+
+
+
+
+
+
+
+
+--------------------------------------------------
+--------------------------------------------------
+
+
+
+
+
+
