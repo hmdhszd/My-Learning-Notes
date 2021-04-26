@@ -1,3 +1,94 @@
+
+
+
+
+#YAML format example:
+
+
+
+
+
+
+
+
+---
+
+
+
+#list
+
+fruits:
+ - apple
+ - orange
+ - lemon
+ - strawberry
+
+
+
+
+#dictionary
+
+employee:
+  name: hamid
+  family: hosseinzadeh
+  job: networker
+
+
+
+
+
+
+
+employees:
+  - hamid hosseinzadeh:
+    age: 30
+    married: no
+    skills:
+     - skill-1: 
+        experience: yes
+        knowledge: yes
+
+     - skill-2: 
+        experience: yes
+        knowledge: yes
+
+     
+  - ali daei:
+    age: 50
+    married: yes
+    skills:
+     - skill-1: 
+        experience: no
+        knowledge: yes
+
+     - skill-2: 
+        experience: yes
+        knowledge: no
+
+
+
+
+
+
+#variable:
+
+name:
+  user: "{{username}}"
+  pass: "{{password}}"
+  uname: "{{username}} sdhfk ksadjfhkasjd fkjasdhf"
+  randomkey: "asdfjh asdlfk asdkljf a"
+
+
+
+
+
+
+
+
+
+
+
+
 all:
     children:
         routers:
@@ -22,6 +113,14 @@ all:
 
 
 
+----------------------------------------------
+----------------------------------------------
+----------------------------------------------
+----------------------------------------------
+----------------------------------------------
+----------------------------------------------
+----------------------------------------------
+----------------------------------------------
 ----------------------------------------------
 
 
