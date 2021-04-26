@@ -1,0 +1,189 @@
+[root@localhost hamid]# yum install nfs-utils -y
+
+[root@localhost hamid]# mkdir /var/nfsshare
+
+
+chmod -R 755 /var/nfsshare
+chown nfsnobody:nfsnobody /var/nfsshare
+
+
+
+
+
+
+
+
+
+
+
+
+
+systemctl enable rpcbind
+systemctl enable nfs-server
+systemctl enable nfs-lock
+systemctl enable nfs-idmap
+
+systemctl start rpcbind
+systemctl start nfs-server
+systemctl start nfs-lock
+systemctl start nfs-idmap
+
+
+
+
+--------------------------------------------
+
+
+
+
+
+
+force to use only version 3:
+
+
+[root@localhost hamid]# nano /etc/sysconfig/nfs 
+
+
+RPCNFSDARGS="--no-nfs-version 4"
+
+
+
+
+--------------------------------------------
+
+
+
+
+
+
+
+
+[root@localhost hamid]# touch /var/nfsshare/test.txt
+
+
+
+
+
+
+
+
+
+
+
+[root@localhost hamid]# exportfs 192.168.43.88:/var/nfsshare
+
+
+
+
+[root@localhost hamid]# showmount -e
+Export list for localhost.localdomain:
+/var/nfsshare 192.168.43.88
+
+
+
+
+
+
+
+
+[root@localhost hamid]# exportfs -v
+/var/nfsshare 	192.168.43.88(sync,wdelay,hide,no_subtree_check,sec=sys,ro,secure,root_squash,no_all_squash)
+
+
+
+
+
+
+[root@localhost hamid]# cat /var/lib/nfs/etab 
+/var/nfsshare	192.168.43.88(ro,sync,wdelay,hide,nocrossmnt,secure,root_squash,no_all_squash,no_subtree_check,secure_locks,acl,no_pnfs,anonuid=65534,anongid=65534,sec=sys,ro,secure,root_squash,no_all_squash)
+
+
+
+
+
+
+--------------------------------------------
+--------------------------------------------
+--------------------------------------------
+
+
+
+
+
+
+
+firewall-cmd --permanent --zone=public --add-service=nfs
+firewall-cmd --permanent --zone=public --add-service=mountd
+firewall-cmd --permanent --zone=public --add-service=rpc-bind
+firewall-cmd --reload
+
+
+
+
+--------------------------------------------
+
+
+
+
+
+systemctl restart nfs-server
+
+
+
+
+
+--------------------------------------------
+
+
+
+
+
+
+configuration:
+
+[root@localhost hamid]# cat /etc/nfsmount.conf 
+
+
+
+[root@localhost hamid]# cat /etc/nfs.conf 
+
+
+
+
+
+
+--------------------------------------------
+--------------------------------------------
+--------------------------------------------
+--------------------------------------------
+
+
+
+test:
+
+
+
+
+[root@localhost hamid]# showmount -e localhost
+Export list for localhost:
+/var/nfsshare 192.168.43.88
+
+
+
+
+[hamid@localhost home]$ sudo mount.nfs -o vers=3 192.168.43.88:/var/nfsshare /mnt/nfs/
+
+
+
+
+
+
+--------------------------------------------
+
+
+
+
+
+
+
+
