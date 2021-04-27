@@ -63,9 +63,6 @@ ansible.cfg  hosts
 
 
 
-hosts:
-
-
 
 [webservers]
 foo.example.com	ansible_host=10.10.10.10
