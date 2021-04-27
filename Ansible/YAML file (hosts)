@@ -73,9 +73,9 @@ employees:
 #variable:
 
 name:
-  user: "{{username}}"
-  pass: "{{password}}"
-  uname: "{{username}} sdhfk ksadjfhkasjd fkjasdhf"
+  user: "{{ username }}"
+  pass: "{{ password }}"
+  uname: "{{ username }} sdhfk ksadjfhkasjd fkjasdhf"
   randomkey: "asdfjh asdlfk asdkljf a"
 
 
@@ -89,26 +89,29 @@ name:
 
 
 
+
 all:
-    children:
-        routers:
-            hosts:
-                r1:
-                    ansible_host: 127.0.0.1
-
-                r2:
-                    ansible_host: 127.0.0.1
-
-            vars:
-                ansible_connection: network_cli
-                ansible_network_os: ios
-
-        servers:
-            hosts:
-                centos:
-                    ansible_host: 127.0.0.1
 
 
+   children:
+      routers:
+         hosts:
+            r1:
+               ansible_host: 10.10.10.11
+
+            r2:
+               ansible_host: 10.10.10.22
+
+         vars:
+            ansible_connection: network_cli
+            ansible_network_os: ios
+            username: hamid
+            password: hamid
+
+      servers:
+         hosts:
+            centos:
+               ansible_host: 127.0.0.1
 
 
 
