@@ -1,0 +1,280 @@
+Dictionary:
+
+
+
+
+
+---
+
+- name: test playbook
+  hosts: routers
+
+
+
+  vars:
+    cli:
+    	host: "{{ inventory_hostname }}"
+    	username: test_user
+    	password: test_password
+
+
+
+
+  tasks:
+    - name: test-task
+      ios_config:
+        backup: yes
+      	providers: "{{ cli }}" 
+
+
+
+
+
+-----------------------------------------------
+Dictionary:
+
+
+
+
+
+- name: test playbook
+  hosts: routers
+
+
+
+  vars:
+    var_dic:
+      name: hamid
+      family: hosseinzadeh
+      company: Internet
+
+
+
+
+  tasks:
+    - name: test-task1
+      debug:
+        msg: "{{ var.var_dic.name }}"
+
+
+
+
+    - name: test-task2
+      debug:
+        msg: "{{ var.var_dic[name] }}"
+
+
+
+
+    - name: test-task3
+      debug:
+        msg: "key is {{ item.key }} and value is {{ item.value }}"
+      loop:
+        - "{{ var_dic|dic2items }}"
+
+
+
+
+
+
+
+
+-----------------------------------------------
+String:
+
+
+
+
+---
+
+- name: test playbook
+  hosts: routers
+
+
+
+  backup_root: ./backup
+
+
+
+
+  tasks:
+    - name: ensure that Backup folder is created
+      file:
+        path: "{{ backup_root }}/myfiles"
+
+
+
+
+
+
+
+-----------------------------------------------
+Integer:
+
+
+
+
+
+---
+
+- name: test playbook
+  hosts: routers
+
+
+
+  var_int: 7
+
+
+
+
+  tasks:
+    - name: test-task
+      debug:
+        msg: "{{ var_int * 1.5 }}"
+
+
+
+
+
+
+-----------------------------------------------
+List:
+
+
+
+
+
+---
+
+- name: test playbook
+  hosts: routers
+
+
+
+  var_list:
+    - my_first_item_of_my_list
+    - my_second_item_of_my_list
+    - my_third_item_of_my_list
+
+
+
+
+  tasks:
+    - name: test-task1
+      debug:
+        msg: "{{ var_list[0] }}"
+
+
+
+
+
+    - name: test-task2
+      debug:
+        msg: "{{ item }}"
+
+      loop:
+        - "{{ var_list }}"
+
+
+
+
+
+    - name: test-task3
+      debug:
+        msg: "{{ var_int * 1.5 }}"
+
+
+
+
+-----------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+-----------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+-----------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+-----------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+-----------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+-----------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+-----------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+-----------------------------------------------
