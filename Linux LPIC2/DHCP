@@ -1,0 +1,57 @@
+client:
+
+
+
+[hamid@localhost ~]$ dhclient enp0s3
+
+
+
+
+-----------------------------------------------
+Server:
+
+
+
+Install:
+
+
+yum -y install dhcp
+
+
+
+
+
+-----------------------------------------------
+
+
+
+
+
+
+[root@localhost ~]# cat /etc/dhcp/dhcpd.conf 
+#
+# DHCP Server Configuration file.
+#   see /usr/share/doc/dhcp*/dhcpd.conf.example
+#   see dhcpd.conf(5) man page
+#
+
+
+
+
+
+
+-----------------------------------------------
+
+
+
+
+
+[root@localhost ~]# cat /usr/share/doc/dhcp-4.2.5/dhcpd.conf.example 
+
+
+
+
+
+
+
+-----------------------------------------------
