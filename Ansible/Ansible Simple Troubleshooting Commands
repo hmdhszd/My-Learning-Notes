@@ -1,0 +1,65 @@
+
+
+
+--syntax-check
+
+
+
+
+  --syntax-check        perform a syntax check on the playbook, but do not execute it
+
+
+
+
+
+(env3) [root@localhost Ansible]# ansible-playbook show-run-playbook.yaml --syntax-check
+[WARNING]: Invalid characters were found in group names but not replaced, use
+-vvvv to see details
+
+playbook: show-run-playbook.yaml
+
+
+
+
+
+
+
+--------------------------------------------
+
+
+
+
+
+run playbook but doesn't change anything
+
+
+
+
+(env3) [root@localhost Ansible]# ansible-playbook show-run-playbook.yaml -C
+
+
+
+
+
+--------------------------------------------
+
+
+
+
+
+
+  -v, --verbose         verbose mode (-vvv for more, -vvvv to enable
+                        connection debugging)
+
+
+
+
+(env3) [root@localhost Ansible]# ansible-playbook show-run-playbook.yaml -vvvv
+
+
+
+
+
+--------------------------------------------
+
+
