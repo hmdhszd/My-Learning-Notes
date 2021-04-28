@@ -1,0 +1,60 @@
+
+
+
+
+
+item
+with_items:
+
+
+
+
+
+
+
+
+- name: configure ip helpers on multiple interfaces
+  ios_config:
+    lines:
+      - ip helper-address 172.26.1.10
+      - ip helper-address 172.26.3.8
+    parents: "{{ item }}"
+  with_items:
+    - interface Ethernet1
+    - interface Ethernet2
+    - interface GigabitEthernet1
+
+
+
+
+
+----------------------------------------------
+
+
+
+
+
+
+item
+loop:
+
+
+
+
+
+
+- name: configure ip helpers on multiple interfaces
+  ios_config:
+    lines:
+      - ip helper-address 172.26.1.10
+      - ip helper-address 172.26.3.8
+    parents: "{{ item }}"
+  loop:
+    - interface Ethernet1
+    - interface Ethernet2
+    - interface GigabitEthernet1
+
+
+
+
+
