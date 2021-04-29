@@ -187,10 +187,80 @@ List:
 
 
 -----------------------------------------------
+vars_files:
 
 
 
 
+
+---
+
+- name: test playbook
+  hosts: routers
+
+
+  vars_files:
+    - ./credendial.yaml
+
+
+
+
+  tasks:
+    - name: test-task
+      ios_config:
+        backup: yes
+        providers: "{{ cli }}" 
+
+
+
+
+
+
+
+
+
+
+
+
+
+./credendial.yaml
+
+
+cli:
+  host: "{{ inventory_hostname }}"
+  username: test_user
+  password: test_password
+
+
+
+
+
+
+-----------------------------------------------
+vars_prompt:
+
+
+
+
+
+
+---
+- hosts: routers
+  vars_prompt:
+
+    - name: username
+      prompt: What is your username?
+      private: no
+      default: hamid
+
+    - name: password
+      prompt: What is your password?
+
+  tasks:
+
+    - name: Print a message
+      ansible.builtin.debug:
+        msg: 'Logging in as {{ username }}'
 
 
 
@@ -205,7 +275,86 @@ List:
 
 
 
+variable in the command line:
 
+ ▶ ansicle-playbook myplaybook.yaml -e "username='hamid'"
+
+
+
+
+-----------------------------------------------
+a single var file for each host:
+
+
+
+
+
+
+
+
+
+---
+
+- name: test playbook
+  hosts: routers
+
+  include_vars: "{{ansible-hostname}}.yaml"
+
+  vars:
+    cli:
+      host: "{{ inventory_hostname }}"
+      username: test_user
+      password: test_password
+
+
+
+
+  tasks:
+    - name: test-task
+      ios_config:
+        backup: yes
+        providers: "{{ cli }}" 
+
+
+
+
+
+
+
+r1.yaml
+r2.yaml
+
+
+
+
+
+
+
+-----------------------------------------------
+Create a file for each group:
+
+
+
+
+  group_vars
+  ├── all
+  ├── routers
+  └── servers
+
+
+
+
+
+-----------------------------------------------
+Create a file for each host:
+
+
+
+
+
+host_vars
+├── r1
+└── r2
 
 
 
@@ -218,63 +367,3 @@ List:
 
 
 
-
-
-
-
-
-
-
------------------------------------------------
-
-
-
-
-
-
-
-
-
-
-
-
------------------------------------------------
-
-
-
-
-
-
-
-
-
-
-
-
------------------------------------------------
-
-
-
-
-
-
-
-
-
-
-
-
------------------------------------------------
-
-
-
-
-
-
-
-
-
-
-
-
------------------------------------------------
