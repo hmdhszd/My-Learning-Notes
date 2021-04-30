@@ -1,0 +1,313 @@
+Variable substitution
+---------------------------------------------------
+
+
+
+
+
+yml:
+
+
+hostname: core-sw-waw-01
+name_server_pri: 1.1.1.1
+name_server_sec: 8.8.8.8
+ntp_server_pri: 0.pool.ntp.org
+ntp_server_sec: 1.pool.ntp.org
+
+
+
+
+
+
+
+j2:
+
+
+hostname {{ hostname }}
+
+no ip domain lookup
+ip domain name local.lab
+ip name-server {{ name_server_pri }}
+ip name-server {{ name_server_sec }}
+
+ntp server {{ ntp_server_pri }} prefer
+ntp server {{ ntp_server_sec }}
+
+
+
+
+
+
+
+
+---------------------------------------------------
+
+
+
+
+
+Dictionaries as variables:
+
+
+
+
+
+
+
+interface: {
+  name: "GigabitEthernet1/1",
+  ip_address: "10.0.0.1/31",
+  description: "Uplink to core",
+  speed: "1000",
+  duplex: "full",
+  mtu: "9124"
+
+
+
+
+
+
+
+
+
+
+
+
+interface {{ interface.name }}
+  description {{ interface.description }}
+  ip address {{ interface.ip_address }}
+  speed {{ interface.speed }}
+  duplex {{ interface.duplex }}
+  mtu {{ interface.mtu }}
+
+
+
+
+
+
+
+
+---------------------------------------------------
+
+
+
+
+
+
+prefixes:
+  10.0.0.0/24:
+    description: Corporate NAS
+    region: Europe
+    site: Telehouse-West
+
+
+
+
+
+
+
+
+  Description: {{ prefixes['10.0.0.0/24'].description }}
+  Region: {{ prefixes['10.0.0.0/24'].region }}
+  Site: {{ prefixes['10.0.0.0/24'].site }}
+
+
+
+
+
+
+
+---------------------------------------------------
+LOOP:
+---------------------------------------------------
+
+
+
+
+PL_AS_65003_IN:
+  - permit 10.96.0.0/24
+  - permit 10.97.11.0/24
+  - permit 10.99.15.0/24
+  - permit 10.100.5.0/25
+  - permit 10.100.6.128/25
+
+
+
+
+
+
+
+ip prefix-list PL_AS_65003_IN
+
+{% for line in PL_AS_65003_IN %}
+ {{ line }}
+{% endfor %}
+
+
+
+
+
+
+
+---------------------------------------------------
+
+
+
+
+
+
+
+interfaces:
+  - Ethernet1:
+      description: leaf01-eth51
+      ipv4_address: 10.50.0.0/31
+  - Ethernet2:
+      description: leaf02-eth51
+      ipv4_address: 10.50.0.2/31
+
+
+
+
+
+{% for intf in interfaces %}
+interface {{ intf }}
+ description {{ interfaces[intf].description }}
+ ip address {{ interfaces[intf].ipv4_address }}
+{% endfor %}
+
+
+
+
+
+
+
+
+---------------------------------------------------
+
+
+
+
+
+
+
+interfaces:
+  Ethernet1:
+    description: leaf01-eth51
+    ipv4_address: 10.50.0.0/31
+  Ethernet2:
+    description: leaf02-eth51
+    ipv4_address: 10.50.0.2/31
+
+
+
+
+
+{% for key, value in interfaces.items() %}
+	interface {{ key }}
+		description {{ value.description }}
+		ip address {{ value.ipv4_address }}
+{% endfor %}
+
+
+
+
+
+
+
+---------------------------------------------------
+
+
+
+
+
+
+
+
+prefix_lists:
+
+  PL_AS_IN:
+    - permit 10.96.0.0/24
+    - permit 10.97.11.0/24
+    - permit 10.99.15.0/24
+    - permit 10.100.5.0/25
+    - permit 10.100.6.128/25
+
+  PL_AS_OUT:
+    - permit 10.96.0.0/24
+    - permit 10.97.11.0/24
+    - permit 10.99.15.0/24
+    - permit 10.100.5.0/25
+    - permit 10.100.6.128/25
+
+
+
+
+
+
+
+{% for pl_name, pl_lines in prefix_lists.items() %}
+	ip prefix-list {{ pl_name }}
+		{% for line in pl_lines %}
+			{{ line }}
+		{%  endfor %}
+{% endfor %}
+
+
+
+
+
+
+
+
+
+
+---------------------------------------------------
+
+
+
+
+
+sort:
+
+
+
+{% for k, v in my_dict | dictsort(by='value') %}
+
+
+
+
+
+
+---------------------------------------------------
+---------------------------------------------------
+
+
+
+
+
+hostname {{ hostname }}
+ip routing
+
+{% for intf, idata in interfaces.items() -%}
+interface {{ intf }}
+  ip address {{ idata.ip }}/{{ idata.mask }}
+{%- endfor %}
+
+{% if routing_protocol == 'bgp' -%}
+router bgp {{ bgp.as }}
+  router-id {{ interfaces.Loopback0.ip }}
+  network {{ interfaces.Loopback0.ip }}/{{ interfaces.Loopback0.mask }}
+{%- elif routing_protocol == 'ospf' -%}
+router ospf {{ ospf.pid }}
+  router-id {{ interfaces.Loopback0.ip }}
+  network {{ interfaces.Loopback0.ip }}/{{ interfaces.Loopback0.mask }} area 0
+{%- else -%}
+  ip route 0.0.0.0/0 {{ default_nh }}
+{%- endif %}
+
+
+
+
+
+
+---------------------------------------------------
