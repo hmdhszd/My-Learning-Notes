@@ -1,0 +1,20 @@
+---
+
+- name: Test Handler
+  hosts: r1
+
+  tasks:
+    - name: Change Hostname
+      ios_config:
+        lines: hostname test-host-r1
+      
+      notify: hostname_changed
+
+      register: output
+    
+  
+  handlers:
+    - name: Change-Handler
+      listen: hostname_changed
+      debug:
+        msg: "{{output}}"
