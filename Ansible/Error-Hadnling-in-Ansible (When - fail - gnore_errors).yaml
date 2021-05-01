@@ -25,6 +25,22 @@
 
 
 
+
+
+
+
+
+
+      when: output is succeed
+
+
+
+
+
+
+
+
+
 _-------------------------------------------------_
 
 
@@ -34,10 +50,28 @@ _-------------------------------------------------_
 
     when: ansible_facts['os_family'] == "Debian"
 
-    when: (ansible_facts['distribution'] == "CentOS" and ansible_facts['distribution_major_version'] == "6") or
-          (ansible_facts['distribution'] == "Debian" and ansible_facts['distribution_major_version'] == "7")
 
 
+_-------------------------------------------------_
+
+
+
+OR:
+
+    - name: print output
+      debug:
+        var: output
+      when: (ansible_facts['distribution'] == "CentOS" and ansible_facts['distribution_major_version'] == "6") or
+            (ansible_facts['distribution'] == "Debian" and ansible_facts['distribution_major_version'] == "7")
+
+
+
+
+AND:
+
+    - name: print output
+      debug:
+        var: output
       when:
       - ansible_facts['distribution'] == "CentOS"
       - ansible_facts['distribution_major_version'] == "6"
