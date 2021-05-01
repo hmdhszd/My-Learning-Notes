@@ -1,0 +1,10 @@
+---
+- hosts: localhost
+  become: no
+  gather_facts: false
+  vars:
+    cisco_backup: false
+    cisco_function_msg: false
+
+  tasks:
+    - include_tasks: "../tasks/main.yml"

@@ -1,0 +1,159 @@
+---
+- name: git setup
+  include_tasks: git.yml
+  when:
+    - tower_job_id is defined
+    - cisco_backup_results is defined and cisco_backup_results is success
+
+- name: archiving to git
+  block:
+    - name: fetch repo from scm
+      git:
+        repo: "{{ cisco_backup_repo }}"
+        dest: "{{ cisco_backup_repo_dest }}"
+        accept_hostkey: yes
+        force: yes
+      delegate_to: localhost
+      run_once: true
+
+    - name: create needed dirs
+      file:
+        path: "{{ cisco_backup_repo_dest }}{{ cisco_backup_dest }}"
+        state: directory
+      delegate_to: localhost
+
+    - name: saving output to repo
+      copy:
+        content: "{{ cisco_backup_results.stdout[0] }}"
+        dest: "{{ cisco_backup_repo_dest }}{{ cisco_backup_dest }}{{ cisco_backup_file }}"
+        mode: 0660
+      register: cisco_backup_save
+      delegate_to: localhost
+
+    - name: adding files to repo
+      shell: "git add -A ."
+      args:
+        chdir: "{{ cisco_backup_repo_dest }}"
+      register: cisco_git_add
+      delegate_to: localhost
+      run_once: true
+      when: cisco_backup_save is success
+
+    - name: commiting repo changes
+      shell: "git commit -m {{ cisco_uuid.stdout }}"
+      args:
+        chdir: "{{ cisco_backup_repo_dest }}"
+      register: cisco_git_commit
+#      ignore_errors: yes
+      delegate_to: localhost
+      run_once: true
+      failed_when: cisco_git_commit.stderr != ""
+      when: cisco_git_add is success
+
+    - name: pushing changes
+      shell: "git push origin master"
+      args:
+        chdir: "{{ cisco_backup_repo_dest }}"
+      register: cisco_git_push
+      delegate_to: localhost
+      run_once: true
+#      no_log: true
+      when: cisco_git_commit is success
+   
+    - set_fact:
+        cisco_git_run: false
+        msg_alert_title: "Backups already up-to-date"
+        msg_alert_url: "{{ cisco_backup_repo_url }}"
+        msg_alert_txt: " "
+        msg_alert_body: " "
+        msg_alert_lvl: 3
+      delegate_to: localhost
+      run_once: true
+      when:
+        - cisco_git_push is defined 
+        - "'Everything up-to-date' in cisco_git_push.stderr"
+   
+    - set_fact:
+        cisco_git_run: true
+      delegate_to: localhost
+      run_once: true
+      when:
+        - cisco_git_push is defined 
+        - "'master -> master' in cisco_git_push.stderr"
+
+  rescue:
+    - set_fact:
+        cisco_git_run: false
+        msg_alert_title: "Backups Failed"
+        msg_alert_url: "{{ cisco_backup_repo_url }}"
+        msg_alert_txt: "{{ cisco_git_push.stderr }}"
+        msg_alert_body: "{{ cisco_git_push.stderr }}"
+        msg_alert_lvl: 1
+      delegate_to: localhost
+      run_once: true
+
+  when: cisco_backup_results is success
+
+- name: gathering results
+  block:
+  
+    - name: getting initial commit
+      shell: git log | grep commit | head -n2 | tail -n1 | awk '{print $2}'
+      args:
+        chdir: "{{ cisco_backup_repo_dest }}"
+      register: cisco_git_initial
+      run_once: true
+      no_log: true
+
+    - name: getting latest commit
+      shell: git log | grep commit | head -n1 | awk '{print $2}'
+      args:
+        chdir: "{{ cisco_backup_repo_dest }}"
+      register: cisco_git_change
+      run_once: true
+      no_log: true
+
+    - name: compare changes
+      shell: "git diff --stat {{ cisco_git_initial.stdout }} {{ cisco_git_change.stdout }} {{ item.dest }}{{ item.file }}"
+      args:
+        chdir: "{{ cisco_backup_repo_dest }}"
+      register: cisco_git_diff
+      with_items: 
+        - { dest: '{{ cisco_backup_dest }}', file: '{{ cisco_backup_file }}' }
+
+#    - debug: msg={{ item.stdout }}
+#      with_items: "{{ cisco_git_diff.results }}"
+#      when: item.stdout_lines != ""
+
+    - name: register results
+      shell: 'echo "{{ item.stdout }}" >> {{ cisco_backup_repo_dest }}tmp_results'
+      with_items: "{{ cisco_git_diff.results }}"
+      register: cisco_git_tmp
+#      run_once: true
+      no_log: true
+      when: item.stdout != ""
+
+    - name: save results
+      shell: "cat {{ cisco_backup_repo_dest }}tmp_results"
+      register: cisco_git_results
+      ignore_errors: true
+      run_once: true
+      when: not cisco_git_tmp is skipped
+
+    - set_fact:
+        msg_alert_title: "Backups Completed"
+        msg_alert_url: "{{ cisco_backup_repo_url }}commit/{{ cisco_git_change.stdout }}"
+        msg_alert_txt: "{{ cisco_git_results.stdout }}"
+        msg_alert_body: "{{ cisco_git_results.stdout }}"
+        msg_alert_lvl: 2
+      when:
+        - cisco_git_commit is success
+        - cisco_git_results is success
+      delegate_to: localhost
+      run_once: true
+ 
+  when: cisco_git_run is defined and cisco_git_run|bool == true
+
+- name: cleaning up all temp files
+  shell: "rm -rf {{ cisco_backup_repo_dest }}"
+  run_once: true

@@ -1,0 +1,30 @@
+---
+- name: checking global git options
+  git_config:
+    list_all: yes
+    scope: global
+  register: cisco_git_config
+  delegate_to: localhost
+  run_once: true
+
+#- debug: msg={{ cisco_git_config.config_values }}
+
+- name: setting up global git email
+  git_config:
+    name: user.email
+    value: :{{ git_config_email }}"
+    scope: global
+  delegate_to: localhost
+  run_once: true
+#  when: "'user.email' is not cisco_git_config.config_values"
+
+- name: setting up global git user
+  git_config: 
+    name: user.name
+    value: "{{ git_config_user }}"
+    scope: global
+  delegate_to: localhost
+  run_once: true
+#  when: "'user.name' is not cisco_git_config.config_values"
+
+

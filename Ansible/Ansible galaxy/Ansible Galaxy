@@ -1,0 +1,220 @@
+
+
+
+
+
+https://galaxy.ansible.com/
+
+
+
+
+
+--------------------------------------------------
+
+
+
+
+
+(env3) [root@localhost Ansible]# ansible-galaxy install kurrier.cisco_backup
+
+Starting galaxy role install process
+- downloading role 'cisco_backup', owned by kurrier
+- downloading role from https://github.com/kurrier/ansible-role_cisco_backup/archive/master.tar.gz
+- extracting kurrier.cisco_backup to /root/.ansible/roles/kurrier.cisco_backup
+- kurrier.cisco_backup (master) was installed successfully
+
+
+
+
+
+--------------------------------------------------
+
+
+
+
+
+(env3) [root@localhost Ansible]# ls /root/.ansible/roles/kurrier.cisco_backup
+LICENSE  README.md  defaults  handlers  meta  tasks  tests  vars
+
+
+
+
+
+--------------------------------------------------
+
+
+
+
+
+(env3) [root@localhost roles]# cd kurrier.cisco_backup/
+
+
+
+
+(env3) [root@localhost roles]# tree
+.
+└── kurrier.cisco_backup
+    ├── defaults
+    │   └── main.yml
+    ├── handlers
+    │   └── main.yml
+    ├── LICENSE
+    ├── meta
+    │   └── main.yml
+    ├── README.md
+    ├── tasks
+    │   ├── archive.yml
+    │   ├── asa_backup.yml
+    │   ├── git.yml
+    │   ├── ios_backup.yml
+    │   └── main.yml
+    ├── tests
+    │   ├── inventory
+    │   └── test.yml
+    └── vars
+        ├── asa.yml
+        ├── ios.yml
+        └── main.yml
+
+
+
+
+
+
+--------------------------------------------------
+Create a new role:
+--------------------------------------------------
+
+
+
+
+
+
+ (env3) [root@localhost roles]# ansible-galaxy init test
+- Role test was created successfully
+
+
+
+
+
+(env3) [root@localhost roles]# tree
+.
+├── kurrier.cisco_backup
+│   ├── defaults
+│   │   └── main.yml
+│   ├── handlers
+│   │   └── main.yml
+│   ├── LICENSE
+│   ├── meta
+│   │   └── main.yml
+│   ├── README.md
+│   ├── tasks
+│   │   ├── archive.yml
+│   │   ├── asa_backup.yml
+│   │   ├── git.yml
+│   │   ├── ios_backup.yml
+│   │   └── main.yml
+│   ├── tests
+│   │   ├── inventory
+│   │   └── test.yml
+│   └── vars
+│       ├── asa.yml
+│       ├── ios.yml
+│       └── main.yml
+└── test
+    ├── defaults
+    │   └── main.yml
+    ├── files
+    ├── handlers
+    │   └── main.yml
+    ├── meta
+    │   └── main.yml
+    ├── README.md
+    ├── tasks
+    │   └── main.yml
+    ├── templates
+    ├── tests
+    │   ├── inventory
+    │   └── test.yml
+    └── vars
+        └── main.yml
+
+
+
+
+
+--------------------------------------------------
+
+
+
+
+
+(env3) [root@localhost roles]# ansible-galaxy search ios
+
+Found 47 roles matching your search:
+
+ Name                                      Description
+ ----                                      -----------
+ ansible-network.cisco_ios                 This role provides an implementatio
+Cisco IOS/IOS-XE devices.  It provides implementations of Ansible Network
+configuration abstractions.
+ ansible-network.cisco_iosxr               Ansible role for managing Cisco IOS
+ chkpnt.mailserver                         Ansible role for an all-in-one mail
+ chouseknecht.ios                          Ansible role for managing Cisco IOS
+ clay584.parse_genie                       Filter plugin for network CLI parsi
+ colin_mccarthy.servicenow_network_tickets your description
+ e1mo.bigbluebutton                        BigBlueButton installation (followi
+
+
+
+
+
+
+--------------------------------------------------
+
+
+
+
+
+
+(env3) [root@localhost roles]# ansible-galaxy info ansible-network.cisco_ios
+
+Role: ansible-network.cisco_ios
+        description: This role provides an implementation for automating the c
+Cisco IOS/IOS-XE devices.  It provides implementations of Ansible Network
+configuration abstractions.
+        active: True
+        commit: fdf9cc5321c6a45bdc0704c31da93d4b4feec0ee
+        commit_message: Merge pull request #94 from justjais/v2.7.1_1
+
+Cisco_IOS v2.7.1 with minor change updates
+
+Reviewed-by: https://github.com/softwarefactory-project-zuul[bot]
+        commit_url: https://api.github.com/repos/ansible-network/cisco_ios/git
+        company: Ansible
+        created: 2018-09-18T06:16:56.964279Z
+        download_count: 48315
+        forks_count: 24
+        github_branch: devel
+        github_repo: cisco_ios
+        github_user: ansible-network
+        id: 29841
+        imported: 2019-02-05T07:02:44.690665-05:00
+        is_valid: True
+        issue_tracker_url: https://github.com/ansible-network/cisco_ios/issues
+        license: GPLv3
+        min_ansible_version: 2.7
+        modified: 2019-02-05T12:02:44.775001Z
+        open_issues_count: 11
+        path: ('/root/.ansible/roles', '/usr/share/ansible/roles', '/etc/ansib
+        role_type: ANS
+        stargazers_count: 29
+        travis_status_url: 
+
+
+
+
+
+--------------------------------------------------
+
+

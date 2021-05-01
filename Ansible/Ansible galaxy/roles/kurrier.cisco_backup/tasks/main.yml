@@ -1,0 +1,38 @@
+---
+# tasks file for kurrier.cisco_backup
+
+- name: set version
+  shell: "uuidgen -r | cut -c1-8"
+  register: cisco_uuid
+  delegate_to: localhost
+  run_once: true
+  when: cisco_backup|bool == true
+
+- set_fact:
+    cisco_backup_date: "{{ lookup('pipe', 'date +%Y/%m/%d') }}"
+    cisco_backup_time: "{{ lookup('pipe', 'date +%H:%M') }}"
+  delegate_to: localhost
+  when: cisco_backup|bool == true
+
+- set_fact:
+    msg_job_time: "{{ lookup('pipe', 'date +%s') }}"
+    msg_job_uuid: "{{ cisco_uuid.stdout }}"
+  delegate_to: localhost
+  when: cisco_function_msg is defined and cisco_function_msg|bool == true
+
+- name: backup IOS devices
+  include_tasks: ios_backup.yml
+  when: 
+    - cisco_backup|bool == true
+    - function == "router" or function == "switches"
+
+- name: backup ASA devices
+  include_tasks: asa_backup.yml
+  when:
+    - cisco_backup|bool == true
+    - function == "firewall"
+
+- name: backup to git
+  include_tasks: archive.yml
+  when: cisco_backup_results is defined and cisco_backup_results is success
+

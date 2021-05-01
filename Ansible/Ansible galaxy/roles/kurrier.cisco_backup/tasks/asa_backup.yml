@@ -1,0 +1,29 @@
+---
+# tasks file for kurrier.cisco_backup
+- name: add common variables
+  include_vars:
+    file: "asa.yml"
+  no_log: true
+
+- name: add credentials
+  include_vars: "{{ ansible_vault }}/cisco_users_inside.yml"
+  no_log: true
+  when:
+    - cisco_function_encrypt is defined and cisco_function_encrypt == true
+
+- name: "[ASA] terminal length"
+  asa_command:
+    commands: terminal pager 0
+    provider: "{{ asa_connection }}"
+#    wait_for: 5
+    retries: 1
+
+- name: "[ASA] show run"
+  asa_command:
+    commands: show run
+    provider: "{{ asa_connection }}"
+#    wait_for: 5
+    retries: 1
+  register: cisco_backup_results
+  no_log: true
+

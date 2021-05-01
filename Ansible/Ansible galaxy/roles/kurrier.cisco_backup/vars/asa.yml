@@ -1,0 +1,10 @@
+---
+
+asa_connection:
+  host: "{{ ansible_host }}"
+  username: "{{ cisco_auth_user }}"
+  password: "{{ cisco_auth_pass }}"
+  authorize: yes
+  auth_pass: "{{ cisco_auth_pass }}"
+#  transport: cli
+

@@ -1,0 +1,26 @@
+---
+stages:
+  - check_syntax
+  - run
+#  - deploy
+
+before_script:
+  - ansible --version
+  - printf '[defaults]\nroles_path=../' > ansible.cfg
+
+test:
+  stage: check_syntax
+  script:
+    # Basic role syntax check
+    - ansible-playbook tests/test.yml -i tests/inventory --syntax-check
+
+    # Run the first time
+    - ansible-playbook tests/test.yml -i tests/inventory -c local -b
+
+    # Run again and expect no changes
+    - >
+      ansible-playbook tests/test.yml -i tests/inventory -c local -b
+      | grep -q 'failed=0'
+      && (echo 'Idempotence test: pass' && exit 0)
+      || (echo 'Idempotence test: fail' && exit 1)
+ 

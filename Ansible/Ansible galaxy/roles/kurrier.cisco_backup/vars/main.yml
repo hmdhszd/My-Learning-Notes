@@ -1,0 +1,16 @@
+---
+# vars file for kurrier.cisco_backup
+
+cisco_backup_repo_dest: "{{ lookup('env', 'HOME') }}/.ansible/cisco_backups/"
+
+cisco_backup_dest: "{{ function }}/"
+cisco_backup_file: "{{ inventory_hostname }}-running-cfg.txt"
+
+ios_backup: []
+asa_backup: []
+
+# Alert Setup
+msg_subject: "Ansible Cisco Backups"
+msg_footer: "Cisco"
+msg_footer_icon: " "
+

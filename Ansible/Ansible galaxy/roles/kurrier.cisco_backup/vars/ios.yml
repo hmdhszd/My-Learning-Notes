@@ -1,0 +1,6 @@
+---
+cisco_connection:
+  host: "{{ ansible_host }}"
+  username: "{{ cisco_auth_user }}"
+  password: "{{ cisco_auth_pass }}"
+

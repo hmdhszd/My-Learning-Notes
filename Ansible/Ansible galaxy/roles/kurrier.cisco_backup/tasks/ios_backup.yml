@@ -1,0 +1,34 @@
+---
+# tasks file for kurrier.cisco_backup
+- name: add common variables
+  include_vars:
+    file: "ios.yml"
+  no_log: true
+
+- name: add credentials
+  include_vars: "{{ ansible_vault }}/cisco_users_inside.yml"
+  no_log: true
+  when:
+    - cisco_function_encrypt is defined and cisco_function_encrypt == true 
+    - sub_function is defined and sub_function == "inside"
+
+- name: add credentials
+  include_vars: "{{ ansible_vault }}/cisco_users_outside.yml"
+  no_log: true
+  when:
+    - cisco_function_encrypt is defined and cisco_function_encrypt == true 
+    - sub_function is defined and sub_function == "outside"
+
+- name: terminal length
+  ios_command:
+    commands: terminal length 0
+    provider: "{{ cisco_connection }}"
+
+- name: show run
+  ios_command:
+    commands: show run
+    provider: "{{ cisco_connection }}"
+  register: cisco_backup_results
+  no_log: true
+
+
