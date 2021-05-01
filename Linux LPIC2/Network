@@ -491,6 +491,49 @@ hello are you receiving my messages?
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+check open ports on a pc:
+
+
+
+                                                                                                                                             ⍉
+▶ nc -vz localhost 20-30
+
+nc: connect to localhost port 20 (tcp) failed: Connection refused
+nc: connect to localhost port 21 (tcp) failed: Connection refused
+Connection to localhost 22 port [tcp/ssh] succeeded!
+nc: connect to localhost port 23 (tcp) failed: Connection refused
+nc: connect to localhost port 24 (tcp) failed: Connection refused
+nc: connect to localhost port 25 (tcp) failed: Connection refused
+nc: connect to localhost port 26 (tcp) failed: Connection refused
+nc: connect to localhost port 27 (tcp) failed: Connection refused
+nc: connect to localhost port 28 (tcp) failed: Connection refused
+nc: connect to localhost port 29 (tcp) failed: Connection refused
+nc: connect to localhost port 30 (tcp) failed: Connection refused
+
+
+
+
+
+
+
 ---------------------------------------------------
 ---------------------------------------------------
 
@@ -841,4 +884,48 @@ Access list for linux:
 
 
 ---------------------------------------------------
+---------------------------------------------------
+---------------------------------------------------
+---------------------------------------------------
+---------------------------------------------------
+---------------------------------------------------
+---------------------------------------------------
+---------------------------------------------------
+---------------------------------------------------
+---------------------------------------------------
+
+
+
+Routing in Linux:
+
+
+
+---------------------------------------------------
+
+
+
+By Default , it doesn't forward packet:
+
+
+[root@localhost ~]# cat /proc/sys/net/ipv4/ip_forward 
+0
+
+
+
+
+---------------------------------------------------
+
+
+
+
+Enable routing:
+
+[root@localhost ~]# sudo sysctl -w net.ipv4.ip_fowrard=1
+
+
+
+
+---------------------------------------------------
+
+
 
