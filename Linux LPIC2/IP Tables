@@ -1,0 +1,97 @@
+
+
+
+[root@localhost ~]# iptables -L
+
+
+
+Chain INPUT (policy ACCEPT)
+Chain FORWARD (policy ACCEPT)
+Chain OUTPUT (policy ACCEPT)
+
+
+
+---------------------------------------------
+
+
+
+
+[root@localhost ~]# iptables -P OUTPUT DROP
+
+
+[root@localhost ~]# iptables -P OUTPUT ACCEPT
+
+
+
+
+---------------------------------------------
+
+
+
+
+
+[root@localhost ~]# iptables -A INPUT -s 8.8.8.8 -j DROP
+
+
+
+[root@localhost ~]# iptables -A INPUT -s 8.8.8.8 -p tcp -j DROP
+
+
+[root@localhost ~]# iptables -A OUTPUT -p icmp -j DROP
+
+
+
+
+---------------------------------------------
+
+
+
+source port
+
+--sport
+
+
+
+
+destination port
+
+--dport
+
+
+
+---------------------------------------------
+
+
+
+
+[root@localhost ~]# iptables-save  >  /tmp/backup_of_my_iptables
+
+
+
+
+---------------------------------------------
+
+
+
+
+Flush iptables:
+
+
+[root@localhost ~]# iptables -F
+
+
+
+
+restore backup:
+
+
+[root@localhost ~]# iptables-restore /tmp/backup_of_my_iptables 
+
+
+
+
+---------------------------------------------
+
+
+
+
