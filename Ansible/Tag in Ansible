@@ -1,0 +1,138 @@
+---
+- name: tags in ansible
+  hosts: r1
+  tags:
+    - all
+
+
+  tasks:
+
+    - name: show interfaces
+      ios_command:
+        commands: sho ip int br
+      register: output_int
+      tags:
+        - show-int
+
+    - name: print output
+      debug:
+        msg: "{{output_int}}"
+      tags:
+        - show-int
+
+
+
+
+    - name: show cdp
+      ios_command:
+        commands: show cdp neighbors
+      register: output_cdp
+      tags:
+        - show-cdp
+
+    - name: print output
+      debug:
+        msg: "{{output_cdp}}"
+      tags:
+        - show-cdp
+
+
+
+
+
+
+
+-------------------------------------------
+
+
+
+
+
+
+
+
+(env3) [root@localhost Ansible]# ansible-playbook tags-in-ansible.yaml  --list-tasks
+
+
+
+playbook: tags-in-ansible.yaml
+
+  play #1 (r1): tags in ansible	TAGS: [all]
+    tasks:
+      show interfaces	TAGS: [all, show-int]
+      print output	TAGS: [all, show-int]
+      show cdp	TAGS: [all, show-cdp]
+      print output	TAGS: [all, show-cdp]
+
+
+
+
+
+
+
+
+-------------------------------------------
+
+
+
+
+
+
+
+
+
+(env3) [root@localhost Ansible]# ansible-playbook tags-in-ansible.yaml  --list-tags
+
+playbook: tags-in-ansible.yaml
+
+  play #1 (r1): tags in ansible	TAGS: [all]
+      TASK TAGS: [all, show-cdp, show-int]
+
+
+
+
+
+
+
+
+-------------------------------------------
+
+--tag
+
+
+
+
+
+
+(env3) [root@localhost Ansible]# ansible-playbook tags-in-ansible.yaml  --tag show-int
+
+
+
+
+
+(env3) [root@localhost Ansible]# ansible-playbook tags-in-ansible.yaml  --tag show-cdp
+
+
+
+
+
+
+
+-------------------------------------------
+
+--skip-tag
+
+
+
+
+
+(env3) [root@localhost Ansible]# ansible-playbook tags-in-ansible.yaml  --skip-tag show-int
+
+
+
+
+
+
+
+-------------------------------------------
+
