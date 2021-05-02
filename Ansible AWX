@@ -1,0 +1,43 @@
+yum -y update
+
+
+yum install -y epel-release
+
+
+yum -y install git gcc gcc-c++ nodejs gettext device-mapper-persistent-data lvm2 bzip2 python-pip
+
+
+yum -y install yum-utils
+
+
+yum-config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
+
+
+yum install -y docker-ce
+
+
+systemctl enable --now docker.service
+
+
+yum install python-pip
+
+
+pip install docker-compose
+
+
+git clone --depth 50 https://github.com/ansible/awx.git
+
+
+cd awx/installer
+
+
+sed -i 's|admin_password=.*|admin_password=hamid|g' inventory
+
+
+openssl rand -base64 30
+
+
+sed -i 's|secret_key=.*|secret_key=ejv9P72oNvD4AtWLhOUTvpxfdIfKIid3skwuK+ES|g' inventory
+
+
+https://www.centlinux.com/2019/09/install-ansible-awx-with-docker-compose-on-centos-7.html
