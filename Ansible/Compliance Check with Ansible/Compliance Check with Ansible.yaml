@@ -1,0 +1,46 @@
+ #Compliance can mean checking to see if a system has “drifted” from a known state, pushing a system back into line from a different state, or making it conform with a very specific set of (often security related) standards.
+
+
+
+
+
+
+
+ #---config a router and show changes before and after---
+
+
+#       diff: yes             ->              show before and after changes
+
+
+
+
+
+---
+
+- name: Compliance Check with Ansible
+  hosts: r1
+
+  tasks:
+    - name: config r1
+      ios_config:
+        diff_against: intended
+        intended_config: "general_config.j2"
+        match: line
+      diff: yes
+      register: diff_result
+      #changed_when: false
+
+    - name: Print diff_result
+      debug:
+        msg: "{{ diff_result }}"
+
+
+
+
+
+
+
+
+
+
+
