@@ -208,7 +208,7 @@ docker network connect
 
 
 
-[root@localhost ~]# docker run -d -P  -link  nimmis/apache-php7  rabbitmq redis 
+[root@localhost ~]# docker run -d -P  --link  nimmis/apache-php7  rabbitmq redis 
 
 
 
