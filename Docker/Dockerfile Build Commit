@@ -1,0 +1,443 @@
+-----------------------------------------------
+
+
+
+
+assign a tag to image:
+
+
+
+[root@localhost ~]# docker build  --help | grep tag
+  -t, --tag list                Name and optionally a tag in the 'name:tag' format
+
+
+
+
+
+
+-----------------------------------------------
+
+
+
+
+
+alway pull the newer version of image:
+
+
+[root@localhost ~]# docker build  --help | grep pull
+      --pull                    Always attempt to pull a newer version
+
+
+
+
+
+-----------------------------------------------
+
+
+
+
+
+
+[root@localhost ~]# docker build  --help | grep cache
+      --no-cache                Do not use cache when building the image
+
+
+
+
+-----------------------------------------------
+-----------------------------------------------
+-----------------------------------------------
+-----------------------------------------------
+-----------------------------------------------
+-----------------------------------------------
+-----------------------------------------------
+-----------------------------------------------
+
+
+Docker commit:	Create a new image from a container's changes
+
+
+for write the change on a new image
+
+
+-----------------------------------------------
+
+
+
+
+
+[root@localhost ~]# docker commit --help
+
+Usage:  docker commit [OPTIONS] CONTAINER [REPOSITORY[:TAG]]
+
+
+
+Options:
+  -a, --author string    Author (e.g., "John Hannibal Smith
+                         <hannibal@a-team.com>")
+  -c, --change list      Apply Dockerfile instruction to the created image
+  -m, --message string   Commit message
+  -p, --pause            Pause container during commit (default true)
+
+
+
+
+
+
+-----------------------------------------------
+
+
+
+
+
+
+[root@localhost ~]# docker ps
+CONTAINER ID   IMAGE     COMMAND              CREATED             STATUS             PORTS     NAMES
+52e283ec885f   httpd     "httpd-foreground"   About an hour ago   Up About an hour   80/tcp    intelligent_mendel
+
+
+
+
+
+
+[root@localhost ~]# docker commit -p intelligent_mendel mynewhttpd:Hamid
+sha256:b63456e14e1baa0905a629ea3308bc5eac185af10f4bc7eb462bc554d0d65b47
+
+
+
+
+
+
+[root@localhost ~]# docker run mynewhttpd:Hamid
+
+
+
+
+
+
+[root@localhost ~]# docker ps
+CONTAINER ID   IMAGE              COMMAND              CREATED             STATUS             PORTS     NAMES
+5df06426ad0c   mynewhttpd:Hamid   "httpd-foreground"   5 seconds ago       Up 4 seconds       80/tcp    stoic_nash
+52e283ec885f   httpd              "httpd-foreground"   About an hour ago   Up About an hour   80/tcp    intelligent_mendel
+
+
+
+
+
+[root@localhost ~]# docker images mynewhttpd
+REPOSITORY   TAG       IMAGE ID       CREATED         SIZE
+mynewhttpd   Hamid     b63456e14e1b   2 minutes ago   138MB
+
+
+
+
+
+
+-----------------------------------------------
+
+
+
+
+
+Docker file:
+
+
+[root@localhost ~]# cat Dockerfile
+
+FROM ubuntu
+
+
+
+
+
+[root@localhost ~]# docker build -t my_new_image .
+
+Sending build context to Docker daemon    139MB
+Step 1/1 : FROM ubuntu
+ ---> 7e0aa2d69a15
+Successfully built 7e0aa2d69a15
+Successfully tagged my_new_image:latest
+
+
+
+
+
+-----------------------------------------------
+
+
+
+
+
+[root@localhost ~]# cat  Dockerfile
+
+FROM ubuntu
+RUN sh -c "touch /tmp/hamid.txt"
+
+
+
+
+
+
+[root@localhost ~]# docker build -t my_new_image1 .
+
+Sending build context to Docker daemon    139MB
+Step 1/2 : FROM ubuntu
+ ---> 7e0aa2d69a15
+Step 2/2 : RUN sh -c "touch /tmp/hamid.txt"
+ ---> Running in 2261a9ef89fc
+Removing intermediate container 2261a9ef89fc
+ ---> 38c796e87270
+Successfully built 38c796e87270
+Successfully tagged my_new_image1:latest
+
+
+
+
+
+
+
+
+[root@localhost ~]# docker run -it my_new_image1
+
+
+root@2d47b03dc524:/# ls /tmp/
+hamid.txt
+
+
+
+
+-----------------------------------------------
+
+
+
+
+
+
+
+[root@localhost ~]# cat  Dockerfile
+
+FROM ubuntu
+RUN sh -c "touch /tmp/hamid.txt"
+CMD exho test
+CMD ["bash","-c","echo test"]
+
+
+
+
+CMD  /code/run-app
+
+
+
+
+
+
+-----------------------------------------------
+
+
+
+
+
+
+
+ENV MY_NAME=hamid
+
+
+
+
+
+[root@localhost ~]# docker run -it my_new_image sh
+# echo $MY_NAME
+hamid
+
+
+
+
+
+
+-----------------------------------------------
+
+
+
+
+
+
+
+
+[root@localhost ~]# cat Dockerfile 
+FROM ubuntu
+COPY . .
+
+
+
+
+
+
+
+[root@localhost ~]# docker run -it my_new_image ls
+Dockerfile	  dev		 lib	 mnt	       root  test.test
+MySavedImage.tar  etc		 lib32	 my_flask_app  run   test.txt
+anaconda-ks.cfg   get-docker.sh  lib64	 myfile.txt    sbin  tmp
+bin		  home		 libx32  opt	       srv   usr
+boot		  httpd.tar	 media	 proc	       sys   var
+
+
+
+
+-----------------------------------------------
+
+
+
+
+
+
+
+[root@localhost ~]# cat Dockerfile 
+FROM ubuntu
+COPY test/1 .
+
+
+
+[root@localhost ~]# touch test/1
+
+
+
+
+
+[root@localhost ~]# docker run -it my_new_image ls
+1    boot  etc	 lib	lib64	media  opt   root  sbin  sys  usr
+bin  dev   home  lib32	libx32	mnt    proc  run   srv	 tmp  var
+
+
+
+
+
+
+
+-----------------------------------------------
+
+
+
+
+
+
+
+FROM ubuntu
+WORKDIR /tmp/
+RUN sh -c "touch testtttttttttttttttt"
+
+
+
+
+
+[root@localhost ~]# docker run -it my_new_image ls /tmp/
+testtttttttttttttttt
+
+
+
+
+
+
+-----------------------------------------------
+-----------------------------------------------
+-----------------------------------------------
+-----------------------------------------------
+-----------------------------------------------
+-----------------------------------------------
+-----------------------------------------------
+-----------------------------------------------
+-----------------------------------------------
+-----------------------------------------------
+-----------------------------------------------
+
+
+
+
+
+[root@localhost ~]# cat test/index.html 
+this is my index.html
+
+
+
+
+
+
+
+Dockerfile:
+
+
+FROM nginx
+COPY test/ /usr/share/nginx/html
+
+
+
+
+
+
+
+
+
+
+[root@localhost ~]# docker build -t my_nginx .
+
+
+
+
+
+
+[root@localhost ~]# docker run -d -P my_nginx
+
+
+
+
+
+
+
+[root@localhost ~]# docker ps
+CONTAINER ID   IMAGE      COMMAND                  CREATED         STATUS         PORTS                                     NAMES
+60bf345ad346   my_nginx   "/docker-entrypoint.…"   3 minutes ago   Up 3 minutes   0.0.0.0:49155->80/tcp, :::49155->80/tcp   jovial_williamson
+
+
+
+
+
+
+
+[root@localhost ~]# curl 127.0.0.1:49155
+this is my index.html
+
+
+
+
+
+
+
+
+-----------------------------------------------
+-----------------------------------------------
+-----------------------------------------------
+-----------------------------------------------
+-----------------------------------------------
+-----------------------------------------------
+-----------------------------------------------
+
+
+
+
+
+
+LABEL key value
+
+
+
+
+LABEL "com.example.vendor"="ACME Incorporated"
+LABEL com.example.label-with-value="foo"
+LABEL version="1.0"
+
+
+
+
+
+
+
+-----------------------------------------------
