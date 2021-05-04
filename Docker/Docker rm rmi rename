@@ -13,6 +13,28 @@ Rename a container
 
 
 
+
+
+[root@localhost ~]# docker ps
+CONTAINER ID   IMAGE     COMMAND              CREATED         STATUS         PORTS     NAMES
+98f171ed97d9   httpd     "httpd-foreground"   5 seconds ago   Up 4 seconds   80/tcp    inspiring_liskov
+
+
+
+
+[root@localhost ~]# docker rename inspiring_liskov test-httpd
+
+
+
+[root@localhost ~]# docker ps
+CONTAINER ID   IMAGE     COMMAND              CREATED          STATUS          PORTS     NAMES
+98f171ed97d9   httpd     "httpd-foreground"   27 seconds ago   Up 27 seconds   80/tcp    test-httpd
+
+
+
+
+
+
 ----------------------------------------------------------------------------------------
 
 
@@ -36,6 +58,18 @@ Remove one or more images
 Options:
   -f, --force      Force removal of the image
       --no-prune   Do not delete untagged parents
+
+
+
+
+
+
+[root@localhost ~]# docker rmi hello-world
+
+Untagged: hello-world:latest
+Deleted: sha256:d1165f2212346b2bab48cb01c1e39ee8ad1be46b87873d9ca7a4e434980a7726
+Deleted: sha256:f22b99068db93900abe17f7f5e09ec775c2826ecfe9db961fea68293744144bd
+
 
 
 
@@ -68,3 +102,23 @@ Options:
 
 
 
+
+
+
+
+
+
+
+
+
+[root@localhost ~]# docker ps
+CONTAINER ID   IMAGE     COMMAND              CREATED         STATUS         PORTS     NAMES
+98f171ed97d9   httpd     "httpd-foreground"   3 minutes ago   Up 3 minutes   80/tcp    test-httpd
+
+
+[root@localhost ~]# docker stop test-httpd
+test-httpd
+
+
+[root@localhost ~]# docker rm test-httpd
+test-httpd
