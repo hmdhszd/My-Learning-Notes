@@ -1,0 +1,38 @@
+
+
+- name: test playbook
+  hosts: routers
+
+
+
+  vars:
+    var_dic:
+      name: hamid
+      family: hosseinzadeh
+      company: Internet
+
+
+
+
+  tasks:
+    - name: test-task1
+      debug:
+        msg: "{{ var.var_dic.name }}"
+
+
+
+
+    - name: test-task2
+      debug:
+        msg: "{{ var.var_dic[name] }}"
+
+
+
+
+    - name: test-task3
+      debug:
+        msg: "key is {{ item.key }} and value is {{ item.value }}"
+      loop:
+        - "{{ var_dic|dic2items }}"
+
+
