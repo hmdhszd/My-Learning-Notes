@@ -232,14 +232,61 @@ CMD  /code/run-app
 
 
 -----------------------------------------------
+-----------------------------------------------
+-----------------------------------------------
+-----------------------------------------------
+
+
+
+
+
+		ENV
 
 
 
 
 
 
+in the run command define the variables:		[root@localhost ~]# docker run -d my_new_image --env MY_NAME=hamid
+
+--env MY_NAME=hamid
+
+
+
+
+
+
+
+
+
+or in the docker file:
 
 ENV MY_NAME=hamid
+
+
+
+
+
+
+
+
+or in the ".env" file:			[root@localhost ~]# docker run -d my_new_image --env-file ./.env
+
+.env
+
+MY_NAME=hamid
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -254,6 +301,55 @@ hamid
 
 
 
+
+
+-----------------------------------------------
+-----------------------------------------------
+-----------------------------------------------
+-----------------------------------------------
+
+
+
+
+
+
+		ARG
+
+
+
+
+
+
+
+in the build command define the argument:	[root@localhost ~]# docker build -t my_new_image --build-arg MY_NAME=hamid
+
+--build-arg MY_NAME=hamid
+
+
+
+
+
+
+
+
+
+or when we build the image, use "ARG"    but we can use it only in the docker file: (exept CMD)
+
+ARG MY_NAME=hamid
+
+COPY /files /$MY_NAME
+
+
+
+
+
+
+
+
+
+-----------------------------------------------
+-----------------------------------------------
+-----------------------------------------------
 -----------------------------------------------
 
 
@@ -279,6 +375,38 @@ MySavedImage.tar  etc		 lib32	 my_flask_app  run   test.txt
 anaconda-ks.cfg   get-docker.sh  lib64	 myfile.txt    sbin  tmp
 bin		  home		 libx32  opt	       srv   usr
 boot		  httpd.tar	 media	 proc	       sys   var
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+**** the files in the "dockerignore" file will not be copied in the image
+
+
+
+.dockerignore
+
+node_modules
+file1
+file2
+file3
+
+
+
+
+
+
+
 
 
 
