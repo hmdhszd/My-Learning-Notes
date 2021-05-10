@@ -1,0 +1,193 @@
+
+
+
+Anonymous volume
+
+docker run -v /app/data
+
+
+it removes when the container is removed
+it survives when the container is stopped/started
+
+
+
+
+
+
+in Docker file :		VOLUME [ "/app/data" ]
+
+
+
+
+
+
+
+
+
+
+------------------------------------------------------------
+
+
+
+Named volume
+
+docker run -v my-data-volume-in-host:/app/data
+
+
+it survives when the container is /removed/stopped/started
+
+
+
+it's used to share data accros multiple containers
+can be attached to multiple containers
+
+
+
+
+
+
+
+
+
+
+------------------------------------------------------------
+
+
+
+Bind mount
+
+docker run -v /home/hamid/data:/app/data
+
+
+it survives when the container is /removed/stopped/started
+
+
+
+
+it's used to share data accros multiple containers
+can be attached to multiple containers
+
+
+
+
+
+
+
+
+
+
+------------------------------------------------------------
+------------------------------------------------------------
+------------------------------------------------------------
+------------------------------------------------------------
+------------------------------------------------------------
+
+
+
+[root@localhost ~]# docker volume create wp-data
+
+
+
+[root@localhost ~]# docker volume inspect wp-data
+[
+    {
+        "CreatedAt": "2021-05-04T12:23:30-04:00",
+        "Driver": "local",
+        "Labels": {},
+        "Mountpoint": "/var/lib/docker/volumes/wp-data/_data",
+        "Name": "wp-data",
+        "Options": {},
+        "Scope": "local"
+    }
+]
+
+
+
+
+
+[root@localhost ~]# docker run -itd --name wordpress --hostname wordpress \
+ --mount=source=wp-data,target=/var/www/html/
+  . . .
+
+
+
+
+
+
+------------------------------------------------------------
+------------------------------------------------------------
+------------------------------------------------------------
+------------------------------------------------------------
+------------------------------------------------------------
+
+
+
+
+
+
+By Default = volumes are R/W
+
+
+
+
+make volumes Read Only:			ro
+
+
+
+[root@localhost ~]# docker run -v /home/hamid/data:/app/data:ro
+
+
+
+
+
+------------------------------------------------------------
+
+
+
+remove a volume:
+
+[root@localhost ~]# docker volume rm wp-db
+
+
+
+
+------------------------------------------------------------
+
+
+
+
+remove all unused volumes:
+
+
+[root@localhost ~]# docker volume prune   
+
+WARNING! This will remove all local volumes not used by at least one container.
+Are you sure you want to continue? [y/N] y
+Deleted Volumes:
+c9697a98e67dfa940c6edf4b5bfce0b594cc2dff75b14e593e902d4d39b2b190
+feedback-volume-in-host
+982122f614b1817619eecbfcdf00873375697d33960e9dbb72e41ac8655fd6d5
+d1309d09896803aefd8908b9ca110f6e0f39b25b79e8609362eb190f0d8db758
+aa1cf25f1de935e98b37f4676dea315cdc6f73ddc40785bebc909fd65d185d41
+e24fdd0b56b05b911689fcd998073688dbf7d8413e2c79f346554a86490352ee
+
+Total reclaimed space: 8.485MB
+
+
+
+
+
+
+
+
+[root@localhost ~]# docker volume ls                                                                 
+
+DRIVER    VOLUME NAME
+local     75b93982e4b188cfe886f0c89879d015cc2a9ba0743b6c5dc7812e78768f504f
+
+
+
+
+------------------------------------------------------------
+
+
