@@ -94,7 +94,7 @@ mongoose.connect(
       console.error('FAILED TO CONNECT TO MONGODB');
       console.error(err);
     } else {
-      console.log('CONNECTED TO MONGODB');
+      console.log('CONNECTED TO MONGODB!!');
       app.listen(80);
     }
   }
