@@ -48,6 +48,25 @@ by default, we dont need to use "--rm" and "-d"
 
 
 
+
+
+run only one of the containers:
+
+
+
+
+docker-compose run mongo
+
+docker-compose run --rm mysql
+
+
+
+
+
+------------------------------------------------
+
+
+
 example:
 
 
