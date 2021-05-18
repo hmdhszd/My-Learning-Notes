@@ -1,0 +1,81 @@
+curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube_latest_amd64.deb
+sudo dpkg -i minikube_latest_amd64.deb
+
+minikube start --drive=docker
+
+or
+
+minikube start --drive=virtualdrive
+
+
+minikube status
+
+
+----------------------------------
+
+
+
+
+minikube kubectl -- get po -A
+
+
+
+----------------------------------
+
+▶ minikube dashboard
+
+🔌  Enabling dashboard ...
+    ▪ Using image kubernetesui/dashboard:v2.1.0
+    ▪ Using image kubernetesui/metrics-scraper:v1.0.4
+🤔  Verifying dashboard health ...
+🚀  Launching proxy ...
+🤔  Verifying proxy health ...
+🎉  Opening http://127.0.0.1:34843/api/v1/namespaces/kubernetes-dashboard/services/http:kubernetes-dashboard:/proxy/ in your default browser...
+
+
+----------------------------------
+
+
+
+
+
+Install kubectl binary with curl on Linux :
+
+
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+
+
+
+curl -LO "https://dl.k8s.io/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
+
+
+
+sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+
+
+
+
+
+
+
+                                                                                                                                             ⍉
+▶ kubectl version --client
+
+Client Version: version.Info{Major:"1", Minor:"21", GitVersion:"v1.21.1", GitCommit:"5e58841cce77d4bc13713ad2b91fa0d961e69192", GitTreeState:"clean", BuildDate:"2021-05-12T14:18:45Z", GoVersion:"go1.16.4", Compiler:"gc", Platform:"linux/amd64"}
+
+
+
+
+
+
+
+
+snap install kubectl --classic
+
+                                                                                                                                             
+▶ kubectl version --client
+
+Client Version: version.Info{Major:"1", Minor:"21", GitVersion:"v1.21.1", GitCommit:"5e58841cce77d4bc13713ad2b91fa0d961e69192", GitTreeState:"clean", BuildDate:"2021-05-12T14:18:45Z", GoVersion:"go1.16.4", Compiler:"gc", Platform:"linux/amd64"}
+
+
+
