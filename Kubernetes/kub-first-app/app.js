@@ -6,7 +6,7 @@ app.get('/', (req, res) => {
   res.send(`
     <h1>Hello from this NodeJS app!</h1>
     <p>Try sending a request to /error and see what happens</p>
-    <p>The program is changed so we need to rebuild the image</p>
+    <p>i changed the app</p>
   `);
 });
 
