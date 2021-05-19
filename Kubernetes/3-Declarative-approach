@@ -1,0 +1,193 @@
+
+
+
+
+
+1- we should create a "deployment.yaml" file instead of 
+
+"kubectl create deployment first-app --image=hamidhszd/kub-first-app"  command:
+
+
+
+
+
+
+
+
+
+
+deployment.yaml:
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: second-app-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: second-app
+      tier: backend
+  template:
+    metadata: 
+      labels:
+        app: second-app
+        tier: backend
+    spec: 
+      containers:
+        - name: second-node
+          image: hamidhszd/kub-second-app
+        # - name: ...
+        #   image: ...
+
+
+
+
+
+
+
+
+
+
+
+
+------------------------------------------------
+
+
+
+name: second-app-deployment
+
+
+
+replicas: 1
+
+
+
+image: hamidhszd/kub-second-app
+
+
+
+------------------------------------------------
+
+
+
+2-
+
+
+▶ kubectl apply -f=deployment.yaml
+
+deployment.apps/second-app-deployment created
+
+
+
+
+
+------------------------------------------------
+------------------------------------------------
+------------------------------------------------
+------------------------------------------------
+------------------------------------------------
+------------------------------------------------
+
+
+
+Create service:
+
+
+
+
+3- we should create a "service.yaml" file instead of 
+
+"kubectl expose deployment first-app --type=LoadBalancer --port=8080"  command:
+
+
+
+
+
+
+
+
+service.yaml:
+
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+spec:
+  selector: 
+    app: second-app
+  ports:
+    - protocol: 'TCP'
+      port: 80
+      targetPort: 8080
+    # - protocol: 'TCP'
+    #   port: 443
+    #   targetPort: 443
+  type: LoadBalancer
+
+
+
+
+
+------------------------------------------------
+
+
+name: backend
+
+
+
+
+  selector: 
+    app: second-app
+
+
+
+port: 80                  --->   the port that we want to expose
+
+targetPort: 8080          --->   the port inside the container
+
+type: LoadBalancer
+
+
+------------------------------------------------
+
+
+
+4-
+
+
+▶ kubectl apply -f=service.yaml   
+
+service/backend created
+
+
+
+
+------------------------------------------------
+------------------------------------------------
+------------------------------------------------
+------------------------------------------------
+------------------------------------------------
+
+
+
+5-
+
+
+▶ minikube service backend
+
+|-----------|---------|-------------|---------------------------|
+| NAMESPACE |  NAME   | TARGET PORT |            URL            |
+|-----------|---------|-------------|---------------------------|
+| default   | backend |          80 | http://192.168.49.2:32550 |
+|-----------|---------|-------------|---------------------------|
+🎉  Opening service default/backend in default browser...
+
+
+
+
+
+------------------------------------------------
