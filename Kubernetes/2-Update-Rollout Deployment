@@ -1,0 +1,253 @@
+
+
+
+
+
+
+If we change our source code, we have to rebuild and repush the image:
+
+
+
+**** WE SHOULD CHANGE THE TAG ****
+
+
+
+▶ docker build -t hamidhszd/kub-first-app:2 kub-first-app/.
+
+
+
+▶ docker push hamidhszd/kub-first-app:2 
+
+
+
+
+
+
+
+---------------------------------------------------
+
+
+
+
+
+
+
+Update the deployment :
+
+
+
+
+kubectl set image deployment/<deployment-object-name> <old-image>=<new-image>:TAG
+
+
+
+▶ kubectl set image deployment/first-app kub-first-app=hamidhszd/kub-first-app:2
+
+deployment.apps/first-app image updated
+
+
+
+
+
+
+
+---------------------------------------------------
+
+
+
+
+check if it's updates:
+
+▶ kubectl rollout status deployment/first-app                      
+
+deployment "first-app" successfully rolled out
+
+
+
+
+---------------------------------------------------
+---------------------------------------------------
+---------------------------------------------------
+---------------------------------------------------
+
+
+
+Rollback to the latest version:
+
+
+▶ kubectl rollout undo deployment/first-app  
+
+deployment.apps/first-app rolled back
+
+
+
+
+
+
+
+Rollback to a specific version:
+
+
+▶ kubectl rollout undo deployment/first-app --to-revision=3         
+
+deployment.apps/first-app rolled back
+
+
+
+
+
+---------------------------------------------------
+
+
+
+
+▶ kubectl rollout history deployment/first-app                                                            
+deployment.apps/first-app 
+REVISION  CHANGE-CAUSE
+3         <none>
+4         <none>
+5         <none>
+
+
+
+
+---------------------------------------------------
+
+
+
+
+
+
+                                                                 
+▶ kubectl rollout history deployment/first-app --revision=3
+
+deployment.apps/first-app with revision #3
+Pod Template:
+  Labels:	app=first-app
+	pod-template-hash=79f85b5799
+  Containers:
+   kub-first-app:
+    Image:	hamidhszd/kub-first-app
+    Port:	<none>
+    Host Port:	<none>
+    Environment:	<none>
+    Mounts:	<none>
+  Volumes:	<none>
+
+
+
+
+
+                                                                      
+▶ kubectl rollout history deployment/first-app --revision=6
+
+deployment.apps/first-app with revision #6
+Pod Template:
+  Labels:	app=first-app
+	pod-template-hash=5c86f6b779
+  Containers:
+   kub-first-app:
+    Image:	hamidhszd/kub-first-app:2
+    Port:	<none>
+    Host Port:	<none>
+    Environment:	<none>
+    Mounts:	<none>
+  Volumes:	<none>
+
+
+
+
+
+
+
+---------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+---------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+---------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+---------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+---------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+---------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+---------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
