@@ -35,7 +35,7 @@ then push our image into that:
 
 
 
-create a new deployment object:
+1- Create a new deployment object:
 
 
 
@@ -90,7 +90,7 @@ first-app-79f85b5799-fxljw   1/1     Running   0          3m16s
 
 
 
-Expose a POD by creating a SERVICE:
+2- Expose a POD by creating a SERVICE:
 
 
 
@@ -126,7 +126,7 @@ if we were in a cloud service provider, we would see the externap IP instead of 
 
 
 
-
+-------------------------------------------------------
 
 
 
