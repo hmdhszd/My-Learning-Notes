@@ -1,0 +1,95 @@
+
+
+
+
+
+
+1- we can use Environment Variable in our program:  (process.env.STORY_FOLDER)
+
+
+
+we change this line:
+
+const filePath = path.join(__dirname, 'story', 'text.txt');
+
+
+
+
+to this line:
+
+const filePath = path.join(__dirname, process.env.STORY_FOLDER, 'text.txt');
+
+
+
+
+
+
+----------------------------------------------------
+
+
+
+
+
+2- Then we have to change "deployment.yaml" file and add the Variables:
+
+
+
+
+
+
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: story-deployment
+spec: 
+  replicas: 2
+  selector:
+    matchLabels:
+      app: story
+  template:
+    metadata:
+      labels:
+        app: story
+    spec:
+      containers:
+        - name: story
+          image: hamidhszd/kub-data-demo:2
+          env:
+            - name: STORY_FOLDER
+              value: 'story'
+          volumeMounts:
+            - mountPath: /app/story
+              name: story-volume
+      volumes:
+        - name: story-volume
+          # emptyDir: {}
+          persistentVolumeClaim:
+            claimName: host-pvc
+
+
+
+
+----------------------------------------------------
+
+
+
+
+
+we added this part:
+
+
+
+          env:
+            - name: STORY_FOLDER
+              value: 'story'
+
+
+
+
+
+----------------------------------------------------
+
+
+
