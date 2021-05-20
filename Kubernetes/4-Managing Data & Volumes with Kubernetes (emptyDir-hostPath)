@@ -1,0 +1,323 @@
+
+
+▶ docker build -t hamidhszd/kub-data-demo kub-data-demo/.
+
+
+▶ docker push hamidhszd/kub-data-demo
+
+
+-----------------------------------------------
+
+
+
+
+
+▶ kubectl apply -f=service.yaml -f=deployment.yaml 
+
+service/story-service created
+deployment.apps/story-deployment created
+
+
+
+
+
+-----------------------------------------------
+
+
+
+
+
+
+▶ kubectl apply -f=service.yaml -f=deployment.yaml 
+
+service/story-service created
+deployment.apps/story-deployment created
+
+
+
+
+
+▶ kubectl get pods
+
+NAME                                READY   STATUS    RESTARTS   AGE
+story-deployment-5554f7878b-6z7c2   1/1     Running   0          6s
+
+
+
+
+
+▶ kubectl get deployments
+
+NAME               READY   UP-TO-DATE   AVAILABLE   AGE
+story-deployment   1/1     1            1           13s
+
+
+
+
+
+▶ kubectl get services   
+
++NAME            TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE
+kubernetes      ClusterIP      10.96.0.1       <none>        443/TCP        45h
+story-service   LoadBalancer   10.99.205.221   <pending>     80:32460/TCP   17s
+
+
+
+
+
+
+
+▶ minikube service story-service
+
+|-----------|---------------|-------------|---------------------------|
+| NAMESPACE |     NAME      | TARGET PORT |            URL            |
+|-----------|---------------|-------------|---------------------------|
+| default   | story-service |          80 | http://192.168.49.2:32460 |
+|-----------|---------------|-------------|---------------------------|
+🎉  Opening service default/story-service in default browser...
+
+
+
+
+
+-----------------------------------------------
+-----------------------------------------------
+-----------------------------------------------
+-----------------------------------------------
+-----------------------------------------------
+1- emptyDir
+
+
+
+emptyDir  is dedicated with only ONE POD
+
+
+
+
+
+
+for adding "emptyDir" volume in the container, we should change "deployment.yaml" file like this:
+
+
+
+
+
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: story-deployment
+spec: 
+  replicas: 1
+  selector:
+    matchLabels:
+      app: story
+  template:
+    metadata:
+      labels:
+        app: story
+    spec:
+      containers:
+        - name: story
+          image: academind/kub-data-demo:1
+          volumeMounts:
+            - mountPath: /app/story
+              name: story-volume
+      volumes:
+        - name: story-volume
+          emptyDir: {}
+
+
+
+
+
+
+
+
+-----------------------------------------------
+
+
+
+
+
+
+
+the container INTERNAL path  ->  - mountPath: /app/story
+
+
+
+
+
+
+
+
+
+
+Define the TYPE of volume:   (emptyDir)
+
+      volumes:
+        - name: story-volume
+          emptyDir: {}
+
+
+
+
+
+-----------------------------------------------
+
+
+
+
+
+
+
+***** emptyDir DOES NOT work with multiple replicas (multiple PODs)
+
+
+
+
+
+
+-----------------------------------------------
+-----------------------------------------------
+-----------------------------------------------
+-----------------------------------------------
+-----------------------------------------------
+2- hostPath
+
+
+
+make a PATH in the only ONE host machine (Worker Node)
+
+the data of that PATH will be exposed to different PODS
+
+
+
+
+
+-----------------------------------------------
+
+
+
+
+
+
+
+
+for adding "hostPath" volume in the container, we should change "deployment.yaml" file like this:
+
+
+
+
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: story-deployment
+spec: 
+  replicas: 2
+  selector:
+    matchLabels:
+      app: story
+  template:
+    metadata:
+      labels:
+        app: story
+    spec:
+      containers:
+        - name: story
+          image: hamidhszd/kub-data-demo:1
+          volumeMounts:
+            - mountPath: /app/story
+              name: story-volume
+      volumes:
+        - name: story-volume
+          hostPath:
+            path: /data
+            type: DirectoryOrCreate
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-----------------------------------------------
+
+
+
+
+
+Define the TYPE of volume:   (hostPath)
+
+
+      volumes:
+        - name: story-volume
+          hostPath:
+            path: /data
+            type: DirectoryOrCreate
+
+
+
+
+
+
+
+
+
+
+the PATH in the host machine (Worker Node) where the data should be stored:
+
+            path: /data
+
+
+
+
+
+
+
+
+-----------------------------------------------
+
+
+
+
+
+
+
+***** emptyDir DOES NOT work with multiple Worker Nodes
+
+
+
+
+
+
+-----------------------------------------------
+-----------------------------------------------
+-----------------------------------------------
+-----------------------------------------------
+-----------------------------------------------
+3- CSI (Container Storage Interface)  (AWS EFS CSI)
+-----------------------------------------------
+
+
+
+
+
+
+
+
+
+
+-----------------------------------------------
+
+
