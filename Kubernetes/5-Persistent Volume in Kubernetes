@@ -1,0 +1,217 @@
+
+
+
+PersistentVolume is independent from "Worker Node"
+
+
+
+(standalone resource in the kubernetes cluster)
+
+
+
+------------------------------------------------
+
+
+
+
+
+1- Defining a Persistent Volume,
+
+Create a file: host-pv.yaml
+
+
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: host-pv
+spec:
+  capacity: 
+    storage: 1Gi
+  volumeMode: Filesystem
+  storageClassName: standard
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /data
+    type: DirectoryOrCreate
+
+
+
+
+
+------------------------------------------------
+------------------------------------------------
+
+
+
+
+
+2- Creating a Persistent Volume Claim,
+
+Create a file: host-pvc.yaml
+
+
+
+
+
+
+
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: host-pvc
+spec:
+  volumeName: host-pv
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: standard
+  resources:
+    requests: 
+      storage: 1Gi
+
+
+
+
+
+
+------------------------------------------------
+
+
+
+
+
+Then we have to change volume part of the "Deployment.yaml" file:
+
+
+
+
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: story-deployment
+spec: 
+  replicas: 2
+  selector:
+    matchLabels:
+      app: story
+  template:
+    metadata:
+      labels:
+        app: story
+    spec:
+      containers:
+        - name: story
+          image: hamidhszd/kub-data-demo:1
+          volumeMounts:
+            - mountPath: /app/story
+              name: story-volume
+      volumes:
+        - name: story-volume
+          persistentVolumeClaim:
+            claimName: host-pvc
+
+
+
+
+
+
+
+
+------------------------------------------------
+------------------------------------------------
+------------------------------------------------
+------------------------------------------------
+------------------------------------------------
+
+
+
+
+
+▶ kubectl get sc
+
+NAME                 PROVISIONER                RECLAIMPOLICY   VOLUMEBINDINGMODE   ALLOWVOLUMEEXPANSION   AGE
+standard (default)   k8s.io/minikube-hostpath   Delete          Immediate           false                  2d5h
+
+
+
+
+
+
+------------------------------------------------
+------------------------------------------------
+
+
+
+
+
+▶ kubectl apply -f=host-pv.yaml
+
+persistentvolume/host-pv created
+
+
+
+
+▶ kubectl get pv
+
+NAME      CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM              STORAGECLASS   REASON   AGE
+host-pv   1Gi        RWO            Retain           Bound    default/host-pvc   standard                4m2s
+
+
+
+
+------------------------------------------------
+
+
+
+
+▶ kubectl apply -f=host-pvc.yaml
+
+persistentvolumeclaim/host-pvc created
+
+
+
+
+
+▶ kubectl get pvc
+
+NAME       STATUS   VOLUME    CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+host-pvc   Bound    host-pv   1Gi        RWO            standard       3m59s
+
+
+
+
+
+------------------------------------------------
+------------------------------------------------
+
+
+
+
+
+▶ kubectl apply -f=deployment.yaml 
+
+deployment.apps/story-deployment created
+
+
+
+
+------------------------------------------------
+
+
+
+
+▶ kubectl apply -f=service.yaml
+
+service/story-service created
+
+
+
+
+------------------------------------------------
+
+
+
