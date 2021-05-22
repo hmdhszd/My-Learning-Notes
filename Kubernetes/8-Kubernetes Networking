@@ -1,0 +1,383 @@
+
+
+
+
+
+
+for connecting to other container in the -DIFFERENT PODS- we can define a variable and use "service name + .default"
+
+
+
+
+
+    spec:
+      containers:
+        - name: users
+          image: hamidhszd/kub-demo-users:latest
+          env:
+            - name: AUTH_ADDRESS
+              value: "auth-service.default"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+and 
+we can use "${process.env.AUTH_ADDRESS}" in our program:
+
+
+
+
+
+
+    const hashedPW = await axios.get(`http://${process.env.AUTH_ADDRESS}/hashed-password/` + password);
+
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------
+-------------------------------------------------------
+-------------------------------------------------------
+-------------------------------------------------------
+-------------------------------------------------------
+
+
+
+
+
+for connecting to other container in the -DIFFERENT PODS- we can use: "service name + SERVICE_HOST"
+
+
+
+
+for example we can use "AUTH_SERVICE_SERVICE_HOST" in our program for access "auth-service"
+
+
+
+
+
+
+    `http://${process.env.AUTH_SERVICE_SERVICE_HOST}/token/` + hashedPassword + '/' + password
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------
+-------------------------------------------------------
+-------------------------------------------------------
+-------------------------------------------------------
+-------------------------------------------------------
+
+
+
+
+for connecting to other container in the -SAME POD- we can define a variable and use "localhost"
+
+
+
+    spec:
+      containers:
+        - name: users
+          image: hamidhszd/kub-demo-users:latest
+          env:
+            - name: AUTH_ADDRESS
+              value: localhost
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+and 
+we can use "${process.env.AUTH_ADDRESS}" in our program:
+
+
+
+
+
+
+    const hashedPW = await axios.get(`http://${process.env.AUTH_ADDRESS}/hashed-password/` + password);
+
+
+
+
+
+
+
+-------------------------------------------------------
+-------------------------------------------------------
+-------------------------------------------------------
+-------------------------------------------------------
+-------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+services:
+
+1-give us ip addresses that does not change all the time
+
+		but ip addresss of pods change always
+
+
+2-allow to outside access to container
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------
+
+
+
+
+
+
+  type: ClusterIP           	--->    only reachable from inside the cluster
+
+
+
+  type: LoadBalancer			--->    outside available IP Address access and distributes incoming requests accross all pods 
+
+
+
+
+
+
+
+
+-------------------------------------------------------
+
+
+
+
+
+
+
+
+      port: 8080						-->		outside port that we user to access this service
+
+      targetPort: 8080					-->		insite port of the container
+
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------
+-------------------------------------------------------
+-------------------------------------------------------
+-------------------------------------------------------
+-------------------------------------------------------
+
+
+
+
+make "users-deployment.yaml" file:
+
+
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: users-deployment
+spec:
+  replicas: 1
+  selector: 
+    matchLabels:
+      app: users
+  template:
+    metadata:
+      labels:
+        app: users
+    spec:
+      containers:
+        - name: users
+          image: hamidhszd/kub-demo-users:latest
+          env:
+            - name: AUTH_ADDRESS
+              value: "auth-service.default"
+
+
+
+
+
+
+-------------------------------------------------------
+
+
+
+
+
+
+
+
+make "users-service.yaml" file:
+
+
+
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: users-service
+spec:
+  selector:
+    app: users
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------
+-------------------------------------------------------
+-------------------------------------------------------
+-------------------------------------------------------
+-------------------------------------------------------
+
+
+
+
+make "auth-deployment.yaml" file:
+
+
+
+
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-deployment
+spec:
+  replicas: 1
+  selector: 
+    matchLabels:
+      app: auth
+  template:
+    metadata:
+      labels:
+        app: auth
+    spec:
+      containers:
+        - name: auth
+          image: hamidhszd/kub-demo-auth:latest
+
+
+
+
+
+
+
+-------------------------------------------------------
+
+
+
+
+
+
+
+
+make "auth-service.yaml" file:
+
+
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-service
+spec:
+  selector:
+    app: auth
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+
+
+
+
+
+
+
+
+-------------------------------------------------------
+-------------------------------------------------------
+-------------------------------------------------------
+-------------------------------------------------------
+-------------------------------------------------------
+
+
+
+
+
+
+
+▶ kubectl apply -f=users-deployment.yaml,users-service.yaml
+▶ kubectl apply -f=auth-deployment.yaml,auth-service.yaml
+
+
+
