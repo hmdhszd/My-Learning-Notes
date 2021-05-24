@@ -1,0 +1,87 @@
+
+
+
+
+
+1- first of all we have to create a cluster
+
+2- Create a role in IAM console
+
+	-select EKS service
+	-choose EKS cluster
+
+3- Create a VPC in the network part with "Cloudformation"
+
+
+
+
+
+-------------------------------------------------------------
+
+
+
+
+1- goto "compute" section and "add a node group"
+
+
+2- create another role for "ELS worker policy"
+
+
+3- then create worker nodes (t3.micro)
+
+
+
+
+**** it creates EC2 instances
+
+
+
+
+-------------------------------------------------------------
+
+
+
+
+1- install AWS CLI on the local machine
+
+2- goto AWS account security credential  --->   Create a new access-key  (access-key,secret-key)
+
+3- run this commands to add AWS on your machine:
+
+	$ aws configure
+
+4- update kubectl command for connect to your AWS instead of minikube:
+
+	$ aws eks --region us-east-2 update-kubeconfig --name kub-dep-demo
+
+
+
+
+-------------------------------------------------------------
+
+
+
+
+now we can deploy with kubectl command
+
+
+
+
+-------------------------------------------------------------
+-------------------------------------------------------------
+-------------------------------------------------------------
+-------------------------------------------------------------
+-------------------------------------------------------------
+-------------------------------------------------------------
+-------------------------------------------------------------
+
+
+
+
+CSI Volume type: Container Storage Internal
+
+
+
+-------------------------------------------------------------
+
+
