@@ -50,7 +50,11 @@ sudo service docker start
 
 
 
-ECS = Amazon Elastic Container Service   ---->    for running containers
+ECS = Amazon Elastic Container Service   ---->    Managed service for running containers
+
+
+
+EKS = Amazon Kubernetes Container Service   ---->    Managed service for kubernetes deployment
 
 
 
