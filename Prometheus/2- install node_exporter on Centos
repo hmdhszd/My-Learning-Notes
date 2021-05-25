@@ -1,0 +1,263 @@
+
+
+
+
+
+useradd -M -r -s /bin/false node_exporter
+
+
+
+
+
+---------------------------------------------------
+
+
+
+
+
+
+[hamid@localhost ~]$ mkdir -p ~/Prometheus/node_exporter
+
+[hamid@localhost ~]$ cd ~/Prometheus/node_exporter
+
+
+
+
+
+---------------------------------------------------
+
+
+
+
+
+
+[hamid@localhost node_exporter]$ curl -LO "https://github.com/prometheus/node_exporter/releases/download/v1.1.2/node_exporter-1.1.2.linux-amd64.tar.gz"
+
+
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--100   643  100   643    0     0    648      0 --:--:-- --:--:-- --:--:--   648
+  0     0    0     0    0     0      0      0 --:--:--  0:00:01 --:--:--  0     0    0     0    0     0      0      0 --:--:--  0:00:02 --:--:--  1 2780k    1 30162    0     0   8779      0  0:05:24  0:00:03  0:05:21 19 2780k   19  555k    0     0   125k      0  0:00:22  0:00:04  0:00:18 45 2780k   45 1266k    0     0   232k      0  0:00:11  0:00:05  0:00:06 70 2780k   70 1957k    0     0   304k      0  0:00:09  0:00:06  0:00:03 91 2780k   91 2551k    0     0   342k      0  0:00:08  0:00:07  0:00:01100 2780k  100 2780k    0     0   356k      0  0:00:07  0:00:07 --:--:--  631k
+
+
+
+
+
+---------------------------------------------------
+
+
+
+
+
+
+[hamid@localhost node_exporter]$ tar -zxvf node_exporter-1.1.2.linux-amd64.tar.gz 
+
+
+node_exporter-1.1.2.linux-amd64/
+node_exporter-1.1.2.linux-amd64/LICENSE
+node_exporter-1.1.2.linux-amd64/NOTICE
+node_exporter-1.1.2.linux-amd64/node_exporter
+
+
+
+
+
+
+---------------------------------------------------
+
+
+
+
+
+./node_exporter
+
+
+
+
+
+---------------------------------------------------
+
+
+
+
+
+
+[hamid@localhost ~]$ curl localhost:9100/metrics
+
+
+
+
+
+---------------------------------------------------
+
+
+
+
+
+
+[hamid@localhost ~]$ sudo cp /home/hamid/Prometheus/node_exporter/node_exporter-1.1.2.linux-amd64/node_exporter /usr/local/bin/node_exporter
+
+
+
+
+
+---------------------------------------------------
+
+
+
+
+
+$ sudo vim /etc/systemd/system/node_exporter.service
+
+
+
+[Unit]
+Description=Node Exporter
+
+
+[Service]
+User=node_exporter
+Group=node_exporter
+Type=simple
+ExecStart=/usr/local/bin/node_exporter                    
+
+[Install]
+WantedBy=default.target
+
+
+
+
+
+---------------------------------------------------
+
+
+
+
+
+
+[hamid@localhost ~]$ sudo systemctl daemon-reload
+
+
+
+[hamid@localhost ~]$ sudo systemctl start node_exporter.service
+
+
+
+[hamid@localhost ~]$ sudo systemctl enable  node_exporter.service
+Created symlink from /etc/systemd/system/default.target.wants/node_exporter.service to /etc/systemd/system/node_exporter.service.
+
+
+
+
+[hamid@localhost ~]$ sudo systemctl status node_exporter.service
+● node_exporter.service - Node Exporter
+   Loaded: loaded (/etc/systemd/system/node_exporter.service; disabled; vendor preset: disabled)
+   Active: active (running) since Tue 2021-05-25 08:37:16 EDT; 4s ago
+ Main PID: 1572 (node_exporter)
+   CGroup: /system.slice/node_exporter.service
+           └─1572 /usr/local/bin/node_exporter
+
+May 25 08:37:16 localhost.localdomain node_exporter[1572]: level=info...
+May 25 08:37:16 localhost.localdomain node_exporter[1572]: level=info...
+May 25 08:37:16 localhost.localdomain node_exporter[1572]: level=info...
+May 25 08:37:16 localhost.localdomain node_exporter[1572]: level=info...
+May 25 08:37:16 localhost.localdomain node_exporter[1572]: level=info...
+May 25 08:37:16 localhost.localdomain node_exporter[1572]: level=info...
+May 25 08:37:16 localhost.localdomain node_exporter[1572]: level=info...
+May 25 08:37:16 localhost.localdomain node_exporter[1572]: level=info...
+May 25 08:37:16 localhost.localdomain node_exporter[1572]: level=info...
+May 25 08:37:16 localhost.localdomain node_exporter[1572]: level=info...
+Hint: Some lines were ellipsized, use -l to show in full.
+
+
+
+
+
+---------------------------------------------------
+
+
+
+
+
+
+[hamid@localhost ~]$ sudo systemctl stop firewalld
+
+
+
+
+
+---------------------------------------------------
+---------------------------------------------------
+---------------------------------------------------
+---------------------------------------------------
+---------------------------------------------------
+---------------------------------------------------
+---------------------------------------------------
+---------------------------------------------------
+---------------------------------------------------
+---------------------------------------------------
+---------------------------------------------------
+---------------------------------------------------
+
+
+
+
+
+Go to Prometheus Server to add our linux machine to monitor:
+
+
+
+
+
+---------------------------------------------------
+
+
+
+
+
+
+
+
+[hamid@localhost ~]$ nano /etc/prometheus/prometheus.yml 
+
+
+
+
+  - job_name: 'CentOS'
+    static_configs:
+    - targets: ['192.168.43.232:9100']
+
+
+
+
+
+
+
+---------------------------------------------------
+
+
+
+
+
+get status of jobs:
+
+
+
+query:   		up
+
+
+
+
+if value == 1   then it's ok
+
+
+
+
+---------------------------------------------------
+
+
+
+
+
+
+
