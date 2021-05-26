@@ -1,0 +1,95 @@
+
+
+-----------------------------------
+-----------------------------------
+-----------------------------------
+-----------------------------------
+
+
+
+
+abs()				-->		absolute value
+
+clamp_max()			-->		Retuns values but replace them with a maximum value if they exceed that value
+
+clamp_min()			-->		Retuns values but replace them with a minimum value if they exceed that value
+
+rate()				-->		for alerting when a value increase abnormally quickly
+
+
+
+
+-----------------------------------
+
+
+
+
+
+
+clamp_max(node_cpu_seconds_total,1000)
+
+
+
+
+
+
+{cpu="0", instance="192.168.118.158:9100", job="CentOS", mode="idle"}			1000
+{cpu="0", instance="192.168.118.158:9100", job="CentOS", mode="iowait"}			0.45
+{cpu="0", instance="192.168.118.158:9100", job="CentOS", mode="irq"}			0
+{cpu="0", instance="192.168.118.158:9100", job="CentOS", mode="nice"}			0
+{cpu="0", instance="192.168.118.158:9100", job="CentOS", mode="softirq"}		0.66
+{cpu="0", instance="192.168.118.158:9100", job="CentOS", mode="steal"}			0
+{cpu="0", instance="192.168.118.158:9100", job="CentOS", mode="system"}			13.86
+{cpu="0", instance="192.168.118.158:9100", job="CentOS", mode="user"}			3.32
+
+
+
+
+
+
+
+
+
+any value above 1000 is replaced with 1000
+
+
+
+
+-----------------------------------
+
+
+
+
+
+
+rate(node_cpu_seconds_total[1h])
+
+
+
+
+
+
+
+
+{cpu="0", instance="192.168.118.158:9100", job="CentOS", mode="idle"}			0.9944718601357772
+{cpu="0", instance="192.168.118.158:9100", job="CentOS", mode="iowait"}			0.000027855184239759608
+{cpu="0", instance="192.168.118.158:9100", job="CentOS", mode="irq"}			0
+{cpu="0", instance="192.168.118.158:9100", job="CentOS", mode="nice"}			0
+{cpu="0", instance="192.168.118.158:9100", job="CentOS", mode="softirq"}		0.00006406692375144709
+{cpu="0", instance="192.168.118.158:9100", job="CentOS", mode="steal"}			0
+{cpu="0", instance="192.168.118.158:9100", job="CentOS", mode="system"}			0.0012924805487248454
+{cpu="0", instance="192.168.118.158:9100", job="CentOS", mode="user"}			0.0003147635819092834
+
+
+
+
+
+-----------------------------------
+
+
+
+
+
+
+
+
