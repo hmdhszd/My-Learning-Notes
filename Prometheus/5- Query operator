@@ -1,0 +1,226 @@
+
+operator       calculate metric data:
+
+-----------------------------------
+-----------------------------------
+-----------------------------------
+-----------------------------------
+
+Arithmetic binary operators:
+
+-----------------------------------
+
+
+
+
++
+-
+*
+/
+%
+^
+
+
+
+-----------------------------------
+
+
+
+
+node_cpu_seconds_total * 2
+
+
+
+
+-----------------------------------
+-----------------------------------
+-----------------------------------
+-----------------------------------
+
+Matching Roles:
+
+-----------------------------------
+
+
+
+
+ignoring(<label list>)			ignore a specific label when matching
+
+on(<label list>)				use only a specific label when matching
+
+
+
+
+-----------------------------------
+
+
+
+
+
+node_cpu_seconds_total{mode="system"} + ignoring(mode) node_cpu_seconds_total{mode="user"} 
+
+
+
+{cpu="0", instance="192.168.118.158:9100", job="CentOS"}				5.25
+{cpu="1", instance="192.168.118.158:9100", job="CentOS"}				5.92
+
+
+
+
+-----------------------------------
+
+
+
+
+node_cpu_seconds_total{mode="system"} + on(cpu) node_cpu_seconds_total{mode="user"} 
+
+
+
+{cpu="0"}				5.3
+{cpu="1"}				5.4
+
+
+
+-----------------------------------
+-----------------------------------
+-----------------------------------
+-----------------------------------
+
+Comparison binary operators:
+
+-----------------------------------
+
+
+
+==
+!=
+>
+<
+>=
+<=
+
+
+
+-----------------------------------
+
+
+
+
+node_cpu_seconds_total == 0
+
+
+
+
+
+
+node_cpu_seconds_total{cpu="0", instance="192.168.118.158:9100", job="CentOS", mode="irq"}			0
+node_cpu_seconds_total{cpu="0", instance="192.168.118.158:9100", job="CentOS", mode="nice"}			0
+node_cpu_seconds_total{cpu="0", instance="192.168.118.158:9100", job="CentOS", mode="steal"}		0
+
+
+
+-----------------------------------
+
+
+
+
+node_cpu_seconds_total == bool 0
+
+
+
+
+
+
+
+
+{cpu="0", instance="192.168.118.158:9100", job="CentOS", mode="idle"}			0
+{cpu="0", instance="192.168.118.158:9100", job="CentOS", mode="iowait"}			0
+{cpu="0", instance="192.168.118.158:9100", job="CentOS", mode="irq"}			1
+{cpu="0", instance="192.168.118.158:9100", job="CentOS", mode="nice"}			1
+{cpu="0", instance="192.168.118.158:9100", job="CentOS", mode="softirq"}		0
+{cpu="0", instance="192.168.118.158:9100", job="CentOS", mode="steal"}			1
+{cpu="0", instance="192.168.118.158:9100", job="CentOS", mode="system"}			0
+{cpu="0", instance="192.168.118.158:9100", job="CentOS", mode="user"}			0
+
+
+
+
+-----------------------------------
+-----------------------------------
+-----------------------------------
+-----------------------------------
+
+Logical/Set binary operators:
+
+-----------------------------------
+
+
+
+and
+or
+unless
+
+
+
+-----------------------------------
+
+
+
+
+node_cpu_guest_seconds_total and node_cpu_seconds_total 
+
+
+
+
+node_cpu_guest_seconds_total{cpu="0", instance="192.168.118.158:9100", job="CentOS", mode="nice"}
+0
+node_cpu_guest_seconds_total{cpu="0", instance="192.168.118.158:9100", job="CentOS", mode="user"}
+0
+
+
+
+
+-----------------------------------
+-----------------------------------
+-----------------------------------
+-----------------------------------
+
+Aggregation operators:
+
+-----------------------------------
+
+
+
+sum
+min
+max
+avg
+stddev
+stdvar
+count
+count_values
+bottomk
+topk
+quantile
+
+
+
+-----------------------------------
+
+
+
+
+avg(node_cpu_seconds_total{mode="idle"})
+
+
+
+
+
+{}   8850.65
+
+
+
+-----------------------------------
+
+
+
