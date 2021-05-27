@@ -1,0 +1,146 @@
+
+
+
+
+
+some HTML template using GO template language
+
+
+
+
+
+---------------------------------------------------------
+
+
+
+
+stored in:
+
+[hamid@Prometheus consoles]$ ls /etc/prometheus/consoles
+
+index.html.example  node-cpu.html  node-disk.html  node-overview.html  node.html  prometheus-overview.html  prometheus.html
+
+
+
+---------------------------------------------------------
+
+
+
+
+
+http://192.168.43.246:9090/consoles/index.html.example
+
+
+
+
+---------------------------------------------------------
+---------------------------------------------------------
+---------------------------------------------------------
+
+
+Create a template for monitoring disk i/o
+
+
+---------------------------------------------------------
+
+
+
+
+
+[hamid@Prometheus consoles]$ nano /etc/prometheus/consoles/disk-io.html
+
+
+
+
+{{template "head" .}}
+
+{{template "prom_content_head" .}}
+
+
+<h1>	Disck i/o	</h1>
+<br/>
+Current Disk I/O: {{ template "prom_query_drilldown" (args "rate(node_disk_io_time_seconds_total{job='CentOS'}[5m])") }}
+
+
+
+{{template "prom_content_tail" .}}
+
+{{template "tail"}}
+
+
+
+
+
+
+
+---------------------------------------------------------
+---------------------------------------------------------
+---------------------------------------------------------
+---------------------------------------------------------
+---------------------------------------------------------
+---------------------------------------------------------
+---------------------------------------------------------
+
+
+
+Template Graph Library:		for showing graph in the template
+
+
+
+---------------------------------------------------------
+
+
+
+
+
+
+
+[hamid@Prometheus consoles]$ nano /etc/prometheus/consoles/disk-io-graph.html
+
+
+
+
+
+{{template "head" .}}
+
+{{template "prom_content_head" .}}
+
+
+
+<h1>    Disck i/o	</h1>
+<br/>
+Current Disk I/O: {{ template "prom_query_drilldown" (args "rate(node_disk_io_time_seconds_total{job='CentOS'}[5m])") }}
+<br/>
+<br/>
+
+
+
+
+
+
+<div id="DiskIoGraph"></div>
+
+
+<script>
+new PromConsole.Graph({
+        node: document.querySelector("#DiskIoGraph"),
+        expr: "rate(node_disk_io_time_seconds_total{job='CentOS'}[5m])"
+})
+</script>
+
+
+{{template "prom_content_tail" .}}
+
+{{template "tail"}}
+
+
+
+
+
+
+
+
+
+---------------------------------------------------------
+
+
