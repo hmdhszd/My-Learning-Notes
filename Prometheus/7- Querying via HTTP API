@@ -1,0 +1,74 @@
+
+
+
+URL + /api/v1/query
+
+
+
+
+http://192.168.118.160:9090/api/v1/query?query=node_cpu_seconds_total
+
+
+{"status":"success","data":{"resultType":"vector","result":[{"metric":{"__name__":"node_cpu_seconds_total","cpu":"0","instance":"192.168.118.158:9100","job":"CentOS","mode":"idle"},"value":[1622048829.401,"10561.38"]},{"metric":{"__name__":"node_cpu_seconds_total","cpu":"0","instance":"192.168.118.158:9100","job":"CentOS","mode":"iowait"},"value":[1622048829.401,"0.47"]},{"metric":{"__name__":"node_cpu_seconds_total","cpu":"0","instance":"192.168.118.158:9100","job":"CentOS","mode":"irq"},"value":[1622048829.401,"0"]},{"metric":{"__name__":"node_cpu_seconds_total","cpu":"0","instance":"192.168.118.158:9100","job":"CentOS","mode":"nice"},"value":[1622048829.401,"0"]},{"metric":{"__name__":"node_cpu_seconds_total","cpu":"0","instance":"192.168.118.158:9100","job":"CentOS","mode":"softirq"},"value":[1622048829.401,"0.7"]},{"metric":{"__name__":"node_cpu_seconds_total","cpu":"0","instance":"192.168.118.158:9100","job":"CentOS","mode":"steal"},"value":[1622048829.401,"0"]},{"metric":{"__name__":"node_cpu_seconds_total","cpu":"0","instance":"192.168.118.158:9100","job":"CentOS","mode":"system"},"value":[1622048829.401,"14.77"]},{"metric":{"__name__":"node_cpu_seconds_total","cpu":"0","instance":"192.168.118.158:9100","job":"CentOS","mode":"user"},"value":[1622048829.401,"3.55"]}]}}
+
+
+
+
+
+-------------------------------------------------------
+
+
+
+
+
+[hamid@Prometheus ~]$ curl localhost:9090/api/v1/query?query=node_cpu_seconds_total
+
+{"status":"success","data":{"resultType":"vector","result":[{"metric":{"__name__":"node_cpu_seconds_total","cpu":"0","instance":"192.168.118.158:9100","job":"CentOS","mode":"idle"},"value":[1622049013.881,"10750.41"]},{"metric":{"__name__":"node_cpu_seconds_total","cpu":"0","instance":"192.168.118.158:9100","job":"CentOS","mode":"iowait"},"value":[1622049013.881,"0.48"]},{"metric":{"__name__":"node_cpu_seconds_total","cpu":"0","instance":"192.168.118.158:9100","job":"CentOS","mode":"irq"},"value":[1622049013.881,"0"]},{"metric":{"__name__":"node_cpu_seconds_total","cpu":"0","instance":"192.168.118.158:9100","job":"CentOS","mode":"nice"},"value":[1622049013.881,"0"]},{"metric":{"__name__":"node_cpu_seconds_total","cpu":"0","instance":"192.168.118.158:9100","job":"CentOS","mode":"softirq"},"value":[1622049013.881,"0.71"]},{"metric":{"__name__":"node_cpu_seconds_total","cpu":"0","instance":"192.168.118.158:9100","job":"CentOS","mode":"steal"},"value":[1622049013.881,"0"]},{"metric":{"__name__":"node_cpu_seconds_total","cpu":"0","instance":"192.168.118.158:9100","job":"CentOS","mode":"system"},"value":[1622049013.881,"15.01"]},{"metric":{"__name__":"node_cpu_seconds_total","cpu":"0","instance":"192.168.118.158:9100","job":"CentOS","mode":"user"},"value":[1622049013.881,"3.62"]}]}}
+
+
+
+
+-------------------------------------------------------
+
+
+
+
+
+hamid@Prometheus ~]$ curl localhost:9090/api/v1/query --data-urlencode  "query=node_cpu_seconds_total"
+
+{"status":"success","data":{"resultType":"vector","result":[{"metric":{"__name__":"node_cpu_seconds_total","cpu":"0","instance":"192.168.118.158:9100","job":"CentOS","mode":"idle"},"value":[1622049153.153,"10889.7"]},{"metric":{"__name__":"node_cpu_seconds_total","cpu":"0","instance":"192.168.118.158:9100","job":"CentOS","mode":"iowait"},"value":[1622049153.153,"0.48"]},{"metric":{"__name__":"node_cpu_seconds_total","cpu":"0","instance":"192.168.118.158:9100","job":"CentOS","mode":"irq"},"value":[1622049153.153,"0"]},{"metric":{"__name__":"node_cpu_seconds_total","cpu":"0","instance":"192.168.118.158:9100","job":"CentOS","mode":"nice"},"value":[1622049153.153,"0"]},{"metric":{"__name__":"node_cpu_seconds_total","cpu":"0","instance":"192.168.118.158:9100","job":"CentOS","mode":"softirq"},"value":[1622049153.153,"0.72"]},{"metric":{"__name__":"node_cpu_seconds_total","cpu":"0","instance":"192.168.118.158:9100","job":"CentOS","mode":"steal"},"value":[1622049153.153,"0"]},{"metric":{"__name__":"node_cpu_seconds_total","cpu":"0","instance":"192.168.118.158:9100","job":"CentOS","mode":"system"},"value":[1622049153.153,"15.17"]},{"metric":{"__name__":"node_cpu_seconds_total","cpu":"0","instance":"192.168.118.158:9100","job":"CentOS","mode":"user"},"value":[1622049153.153,"3.65"]}]}}
+
+
+
+
+
+-------------------------------------------------------
+-------------------------------------------------------
+-------------------------------------------------------
+-------------------------------------------------------
+-------------------------------------------------------
+-------------------------------------------------------
+-------------------------------------------------------
+-------------------------------------------------------
+
+
+
+
+
+[hamid@Prometheus ~]$ start=$( date --date '-5 min' +'%Y-%m-%dT%H:%M:%SZ' )
+
+
+[hamid@Prometheus ~]$ end=$( date +'%Y-%m-%dT%H:%M:%SZ' )
+
+
+
+[hamid@Prometheus ~]$ curl "localhost:9090/api/v1/query_range?query=node_cpu_seconds_total&start=$start&end=$end&step=1m"
+
+
+
+
+-------------------------------------------------------
+
+
+
+
