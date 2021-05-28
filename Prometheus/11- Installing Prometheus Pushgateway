@@ -1,0 +1,202 @@
+
+
+
+
+add a user in the Prometheus Server fot pushgateway service:
+
+
+
+
+[hamid@Prometheus ~]$ sudo useradd -M -r -s /bin/false  pushgateway
+
+
+
+
+
+-----------------------------------------------------
+
+
+
+
+
+wget https://github.com/prometheus/pushgateway/releases/download/v1.2.0/pushgateway-1.2.0.linux-amd64.tar.gz
+
+
+
+tar xvfz pushgateway-1.2.0.linux-amd64.tar.gz
+
+
+cp pushgateway-1.2.0.linux-amd64/pushgateway  /usr/local/bin/
+
+
+
+
+sudo chown pushgateway:pushgateway /usr/local/bin/pushgateway
+
+
+
+
+
+
+
+
+-----------------------------------------------------
+
+
+
+
+
+
+
+
+sudo vi /etc/systemd/system/pushgateway.service
+
+
+
+
+[Unit]
+Description=Prometheus Pushgateway
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User=pushgateway
+Group=pushgateway
+Type=simple
+ExecStart=/usr/local/bin/pushgateway
+
+[Install]
+WantedBy=multi-user.target
+
+
+
+
+
+
+
+
+
+-----------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+sudo systemctl enable pushgateway
+
+sudo systemctl start pushgateway
+
+sudo systemctl status pushgateway
+
+● pushgateway.service - Prometheus Pushgateway
+   Loaded: loaded (/etc/systemd/system/pushgateway.service; enabled; vendor preset: disabled)
+   Active: active (running) 
+
+
+
+
+
+curl localhost:9091/metrics
+
+
+
+
+
+
+
+
+-----------------------------------------------------
+-----------------------------------------------------
+-----------------------------------------------------
+-----------------------------------------------------
+-----------------------------------------------------
+-----------------------------------------------------
+-----------------------------------------------------
+
+
+
+
+
+
+
+
+Configure Pushgateway as a Scrape Target for Prometheus Server:
+
+
+
+
+
+
+
+
+
+[hamid@Prometheus ~]$ sudo nano /etc/prometheus/prometheus.yml
+
+
+
+
+
+
+  - job_name: 'Pushgateway'
+  	honor_labels: true
+    static_configs:
+    - targets: ['localhost:9091']
+
+
+
+
+
+-----------------------------------------------------
+
+
+
+
+
+
+
+
+sudo systemctl restart prometheus
+
+
+
+
+
+
+
+
+-----------------------------------------------------
+
+
+
+
+
+
+run this query in the web interface:
+
+
+
+pushgateway_build_info
+
+
+
+
+pushgateway_build_info{branch="HEAD", goversion="go1.13.8", instance="localhost:9091", job="Pushgateway", revision="b7e0167e9574f4f88404dde9653ee1d3c940f2eb", version="1.2.0"}
+
+
+
+
+
+
+-----------------------------------------------------
+
+
+
+
+
+
+
