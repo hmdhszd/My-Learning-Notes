@@ -1,0 +1,72 @@
+
+
+
+
+
+Push Data:
+
+[hamid@Prometheus ~]$ sudo echo "value_of_pi 3.14" | curl --data-binary @- http://localhost:9091/metrics/job/my_job
+ 
+
+
+
+
+
+---------------------------------------------------
+
+
+
+show all data:
+
+[hamid@Prometheus ~]$ curl  http://localhost:9091/metrics
+
+
+
+
+# TYPE value_of_pi untyped
+value_of_pi{instance="",job="my_job"} 3.14
+
+
+
+
+---------------------------------------------------
+---------------------------------------------------
+---------------------------------------------------
+
+
+
+
+
+[hamid@Prometheus ~]$ cat << EOF | curl --data-binary @- http://localhost:9091/metrics/job/my_job/instance/my_instance
+> temperature{location="room1"} 31
+> temperature{location="room2"} 32
+> my_metric 5
+> EOF
+
+
+
+
+
+---------------------------------------------------
+
+
+
+
+
+[hamid@Prometheus ~]$ curl  http://localhost:9091/metrics
+
+
+
+temperature{instance="my_instance",job="my_job",location="room1"} 31
+temperature{instance="my_instance",job="my_job",location="room2"} 32
+my_metric{instance="my_instance",job="my_job"} 5
+
+
+
+
+
+---------------------------------------------------
+
+
+
+
