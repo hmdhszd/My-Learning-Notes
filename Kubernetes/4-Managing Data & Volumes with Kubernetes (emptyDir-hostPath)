@@ -27,16 +27,6 @@ deployment.apps/story-deployment created
 
 
 
-
-▶ kubectl apply -f=service.yaml -f=deployment.yaml 
-
-service/story-service created
-deployment.apps/story-deployment created
-
-
-
-
-
 ▶ kubectl get pods
 
 NAME                                READY   STATUS    RESTARTS   AGE
