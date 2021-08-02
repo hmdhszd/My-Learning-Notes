@@ -1,0 +1,296 @@
+
+
+
+
+make a user for this service:
+
+
+
+[hamid@Prometheus ~]$ sudo useradd -M -r -s /bin/false alertmanager
+
+
+
+
+-----------------------------------------------------
+-----------------------------------------------------
+-----------------------------------------------------
+-----------------------------------------------------
+
+
+
+
+Download Alert Manager:
+
+
+
+
+[hamid@Prometheus ~]$ wget https://github.com/prometheus/alertmanager/releases/download/v0.20.0/alertmanager-0.20.0.linux-amd64.tar.gz
+
+
+
+
+
+
+[hamid@Prometheus ~]$  tar xvzf alertmanager-0.20.0.linux-amd64.tar.gz 
+
+alertmanager-0.20.0.linux-amd64/
+alertmanager-0.20.0.linux-amd64/LICENSE
+alertmanager-0.20.0.linux-amd64/alertmanager
+alertmanager-0.20.0.linux-amd64/amtool
+alertmanager-0.20.0.linux-amd64/NOTICE
+alertmanager-0.20.0.linux-amd64/alertmanager.yml
+
+
+
+
+
+
+-----------------------------------------------------
+
+
+
+
+
+
+[hamid@Prometheus ~]$ sudo cp alertmanager-0.20.0.linux-amd64/{alertmanager,amtool} /usr/local/bin/
+
+
+
+
+[hamid@Prometheus ~]$ sudo chown alertmanager:alertmanager /usr/local/bin/{alertmanager,amtool}
+
+
+
+
+
+
+-----------------------------------------------------
+-----------------------------------------------------
+-----------------------------------------------------
+-----------------------------------------------------
+
+
+
+
+set Config File:
+
+
+
+[hamid@Prometheus ~]$ sudo mkdir /etc/alertmanager
+
+
+
+[hamid@Prometheus ~]$ sudo cp alertmanager-0.20.0.linux-amd64/alertmanager.yml  /etc/alertmanager/
+
+
+
+[hamid@Prometheus ~]$ sudo chown -R alertmanager:alertmanager /etc/alertmanager/
+
+
+
+
+
+-----------------------------------------------------
+-----------------------------------------------------
+-----------------------------------------------------
+-----------------------------------------------------
+
+
+
+
+set Storage Path:
+
+
+
+
+[hamid@Prometheus ~]$ sudo mkdir -p /var/lib/alertmanager
+
+
+[hamid@Prometheus ~]$ sudo chown alertmanager:alertmanager /var/lib/alertmanager/
+
+
+
+
+
+
+-----------------------------------------------------
+-----------------------------------------------------
+-----------------------------------------------------
+-----------------------------------------------------
+
+
+
+
+
+set amtool:
+
+
+
+
+
+[hamid@Prometheus ~]$ sudo mkdir -p /etc/amtool
+
+
+
+
+
+
+
+
+[hamid@Prometheus ~]$ sudo nano /etc/amtool/config.yml
+
+
+
+alertmanager.url: http://localhost:9093
+
+
+
+
+
+-----------------------------------------------------
+-----------------------------------------------------
+-----------------------------------------------------
+-----------------------------------------------------
+
+
+
+
+make service:
+
+
+
+
+
+
+[hamid@Prometheus ~]$ sudo nano /etc/systemd/system/alertmanager.service
+
+
+
+
+[Unit]
+Description=Alert Manager
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User=alertmanager
+Group=alertmanager
+ExecStart=/usr/local/bin/alertmanager \
+  --config.file=/etc/alertmanager/alertmanager.yml \
+  --storage.path=/var/lib/alertmanager
+
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+
+
+
+
+
+-----------------------------------------------------
+-----------------------------------------------------
+-----------------------------------------------------
+-----------------------------------------------------
+
+
+
+
+
+[hamid@Prometheus ~]$ systemctl enable alertmanager.service
+
+
+[hamid@Prometheus ~]$ systemctl start alertmanager.service
+
+
+[hamid@Prometheus ~]$ systemctl status alertmanager.service
+
+
+
+
+-----------------------------------------------------
+-----------------------------------------------------
+-----------------------------------------------------
+-----------------------------------------------------
+
+
+
+
+check to see if AlertManager works:
+
+
+
+[hamid@Prometheus ~]$ curl localhost:9093
+
+
+
+
+-----------------------------------------------------
+
+
+
+
+check to see if amtool works:
+
+
+
+
+[hamid@Prometheus ~]$ amtool config show
+
+
+
+
+-----------------------------------------------------
+-----------------------------------------------------
+-----------------------------------------------------
+-----------------------------------------------------
+-----------------------------------------------------
+-----------------------------------------------------
+
+
+Config Prometheus Server to Communicate with AlertManager:
+
+
+-----------------------------------------------------
+
+
+
+
+[hamid@Prometheus ~]$ sudo nano /etc/prometheus/prometheus.yml 
+
+
+
+
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+  - static_configs:
+    - targets: ["localhost:9093"]
+
+
+
+
+[hamid@Prometheus ~]$ sudo systemctl restart prometheus.service
+
+
+
+
+-----------------------------------------------------
+
+
+
+
+
+check to see if AlertManager works:
+
+
+
+http://192.168.118.160:9090/status
+
+
+
+
+-----------------------------------------------------
+
+

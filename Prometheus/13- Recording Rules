@@ -1,0 +1,89 @@
+
+
+
+Recording Rules:
+
+
+Pre-compute the value of expressions and queriesand save the results as a set od time-series data.
+
+
+
+
+--------------------------------------------------
+
+
+
+
+
+
+[hamid@Prometheus ~]$ sudo mkdir -p /etc/prometheus/rules
+
+
+
+
+
+
+--------------------------------------------------
+
+
+
+
+
+[hamid@Prometheus ~]$ sudo nano /etc/prometheus/prometheus.yml 
+
+
+
+
+rule_files:
+  - "/etc/prometheus/rules/*"
+
+
+
+
+--------------------------------------------------
+
+
+
+
+
+[hamid@Prometheus ~]$ sudo nano  /etc/prometheus/rules/CentOS_rules.yaml
+
+
+
+
+
+groups:
+- name: linux_server
+  interval: 15s
+  rules:
+  - record: CentOS:cpu_usage
+    expr: sum(rate(node_cpu_seconds_total{job="CentOS",mode!='idle'}[5m])) * 100 / 2
+
+
+
+
+
+--------------------------------------------------
+
+
+
+
+
+now use this query to see the results:
+
+
+
+
+CentOS:cpu_usage
+
+
+CentOS:cpu_usage[5m]
+
+
+
+
+
+
+--------------------------------------------------
+
+
