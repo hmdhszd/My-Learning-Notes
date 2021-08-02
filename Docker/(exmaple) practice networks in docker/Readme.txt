@@ -69,6 +69,3 @@ d732488aadd7   mongo            "docker-entrypoint.s…"   About a minute ago   
 
 
 
-
-
-▶  docker 

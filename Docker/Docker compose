@@ -22,6 +22,7 @@ docker-compose down
 
 
 this also deletes volumes:
+
 docker-compose down -v
 
 
@@ -67,6 +68,7 @@ docker-compose run --rm mysql
 
 
 
+
 example:
 
 
@@ -76,10 +78,10 @@ version: "3.8"
 services: 
     mongodb:
         image: mongo
-        volumes: 
+        volumes:
             - data:/data/db
         
-        env_file: 
+        env_file:
             - ./env/mongo.env
 
         #container_name: mongodb

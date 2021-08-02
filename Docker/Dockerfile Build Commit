@@ -218,7 +218,7 @@ hamid.txt
 
 FROM ubuntu
 RUN sh -c "touch /tmp/hamid.txt"
-CMD exho test
+CMD echo test
 CMD ["bash","-c","echo test"]
 
 
@@ -419,14 +419,15 @@ file3
 
 
 
-[root@localhost ~]# cat Dockerfile 
-FROM ubuntu
-COPY test/1 .
-
-
 
 [root@localhost ~]# touch test/1
 
+
+
+
+[root@localhost ~]# cat Dockerfile 
+FROM ubuntu
+COPY test/1 .
 
 
 

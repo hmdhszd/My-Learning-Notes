@@ -1,3 +1,9 @@
+
+
+
+
+
+
 [root@localhost ~]# docker events --help
 
 Usage:  docker events [OPTIONS]
@@ -73,6 +79,3 @@ json output:
 
 
 -------------------------------------------------
-
-
-

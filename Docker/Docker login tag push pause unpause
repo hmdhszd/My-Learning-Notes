@@ -81,6 +81,7 @@ Username:
 
 
 
+
 [root@localhost ~]# docker login docker.jfrog.ir
 Username: 
 
@@ -89,10 +90,6 @@ Username:
 
 
 [root@localhost ~]# docker logout docker.jfrog.ir
-
-
-
-
 
 
 
@@ -130,28 +127,6 @@ Username:
 
 [root@localhost ~]# docker unpause 24b5e10335fe
 24b5e10335fe
-
-
-
-
-
-
--------------------------------------------------
-
-
-
-
-
-
-
-
-
-
-
--------------------------------------------------
-
-
-
 
 
 

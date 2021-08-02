@@ -28,5 +28,3 @@
 
 [root@localhost ~]# docker kill -s 15 test
 
-
-

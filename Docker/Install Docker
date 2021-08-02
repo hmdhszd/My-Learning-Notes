@@ -1,5 +1,6 @@
 
 
+
 [root@localhost ~]# curl -fsSL get.docker.com -o get-docker.sh
 
 [root@localhost ~]# sh ./get-docker.sh

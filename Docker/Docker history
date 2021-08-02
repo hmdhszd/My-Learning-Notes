@@ -1,3 +1,7 @@
+
+
+
+
 [root@localhost ~]# docker history  httpd
 IMAGE          CREATED       CREATED BY                                      SIZE      COMMENT
 0b932df43057   10 days ago   /bin/sh -c #(nop)  CMD ["httpd-foreground"]     0B        
@@ -50,3 +54,6 @@ IMAGE          CREATED       CREATED BY                                      SIZ
 0B
 0B
 69.3MB
+
+
+

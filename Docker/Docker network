@@ -72,7 +72,7 @@ dca31b1e8305   none       null      local
         "EnableIPv6": false,
         "IPAM": {
             "Driver": "default",
-            "Options": null,
+            "Options": null,docker0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DO
             "Config": [
                 {
                     "Subnet": "172.17.0.0/16",
@@ -252,8 +252,7 @@ port 80 inside of the container
 
 
 
-Chain DOCKER (2 refer
-ences)
+Chain DOCKER (2 references)
 target     prot opt source               destination         
 ACCEPT     tcp  --  0.0.0.0/0            172.17.0.2           tcp dpt:80
 
@@ -295,7 +294,6 @@ other host will not have access:
 
 
 [root@localhost ~]# docker run -itd -p 127.0.0.1:80:80 nginx
-d233c789481db39297d7f7395c31ccc31b738504ba7d6d62704ff4beb2a18fce
 
 
 
@@ -429,7 +427,7 @@ nameserver 1.2.3.4
 
 
 
-if we don't assign a DNS,  the container will use internal docker DNS:		27.0.0.11
+if we don't assign a DNS,  the container will use internal docker DNS:		127.0.0.11
 
 
 
@@ -540,6 +538,10 @@ PING 955098db435c (172.19.0.4): 56 data bytes
 ---------------------------------------------------
 
 
+
+
+-d
+--driver=
 
 
 
@@ -689,6 +691,7 @@ connect a container to a network:
 
 
 [root@localhost ~]# docker network  ls --filter driver=bridge
+
 NETWORK ID     NAME        DRIVER    SCOPE
 26fbd6dfad50   MyNetwork   bridge    local
 e20e42383058   bridge      bridge    local
@@ -737,45 +740,6 @@ e20e42383058   bridge      bridge    local
 
 
 use  "docker.host.internal"  inside the container to connect to the host machine  (instead of 127.0.0.1)
-
-
-
-
-
----------------------------------------------------
-
-
-
-
-
-
-
-
-
-
-
-
----------------------------------------------------
-
-
-
-
-
-
-
-
-
-
-
-
----------------------------------------------------
-
-
-
-
-
-
-
 
 
 

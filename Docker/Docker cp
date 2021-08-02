@@ -36,5 +36,3 @@ myfile.txt
 [root@localhost ~]# docker cp stoic_nash:/tmp/myfile.txt .
 
 
-
-
