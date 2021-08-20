@@ -284,7 +284,7 @@ the PATH in the host machine (Worker Node) where the data should be stored:
 
 
 
-***** emptyDir DOES NOT work with multiple Worker Nodes
+***** hostPath DOES NOT work with multiple Worker Nodes
 
 
 
