@@ -65,3 +65,30 @@ Wall helooooooooooooooooo everybody
 
 
 
+Runlevel 0
+
+shuts down the system
+
+Runlevel 1
+
+single-user mode
+
+Runlevel 2
+
+multi-user mode without networking
+
+Runlevel 3
+
+multi-user mode with networking
+
+Runlevel 4
+
+user-definable
+
+Runlevel 5
+
+multi-user mode with networking
+
+Runlevel 6
+
+reboots the system to restart it
