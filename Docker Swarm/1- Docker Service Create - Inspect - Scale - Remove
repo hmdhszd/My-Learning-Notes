@@ -1,0 +1,486 @@
+
+
+
+
+
+
+hamid@DockerSwarm1:~$ docker service create --name TestSwarmService --replicas 1  alpine ping google.com
+
+r7ta9rdpp1p84kfc56ftuu8vr
+overall progress: 1 out of 1 tasks 
+1/1: running   [==================================================>] 
+verify: Service converged 
+
+
+
+
+
+-------------------------------------------------------------------------------
+
+
+
+
+
+hamid@DockerSwarm1:~$ docker service ls
+
+ID             NAME               MODE         REPLICAS   IMAGE           PORTS
+r7ta9rdpp1p8   TestSwarmService   replicated   1/1        alpine:latest  
+
+
+
+
+
+hamid@DockerSwarm1:~$ docker service ps TestSwarmService
+
+ID             NAME                 IMAGE           NODE           DESIRED STATE   CURRENT STATE           ERROR     PORTS
+f0c8k0m5h75v   TestSwarmService.1   alpine:latest   DockerSwarm1   Running         Running 3 minutes ago 
+
+
+
+
+
+hamid@DockerSwarm1:~$ docker ps
+
+
+CONTAINER ID   IMAGE           COMMAND             CREATED         STATUS         PORTS     NAMES
+6036ca2c8127   alpine:latest   "ping google.com"   4 minutes ago   Up 4 minutes             TestSwarmService.1.f0c8k0m5h75vmwx9p0wdfmif0
+
+
+
+
+
+
+
+-------------------------------------------------------------------------------
+
+
+
+
+
+hamid@DockerSwarm1:~$ docker service inspect TestSwarmService
+[
+    {
+        "ID": "r7ta9rdpp1p84kfc56ftuu8vr",
+        "Version": {
+            "Index": 31
+        },
+        "CreatedAt": "2021-08-26T05:37:10.535968803Z",
+        "UpdatedAt": "2021-08-26T05:37:10.535968803Z",
+        "Spec": {
+            "Name": "TestSwarmService",
+            "Labels": {},
+            "TaskTemplate": {
+                "ContainerSpec": {
+                    "Image": "alpine:latest@sha256:eb3e4e175ba6d212ba1d6e04fc0782916c08e1c9d7b45892e9796141b1d379ae",
+                    "Args": [
+                        "ping",
+                        "google.com"
+                    ],
+                    "Init": false,
+                    "StopGracePeriod": 10000000000,
+                    "DNSConfig": {},
+                    "Isolation": "default"
+                },
+                "Resources": {
+                    "Limits": {},
+                    "Reservations": {}
+                },
+                "RestartPolicy": {
+                    "Condition": "any",
+                    "Delay": 5000000000,
+                    "MaxAttempts": 0
+                },
+                "Placement": {
+                    "Platforms": [
+                        {
+                            "Architecture": "amd64",
+                            "OS": "linux"
+                        },
+                        {
+                            "OS": "linux"
+                        },
+                        {
+                            "OS": "linux"
+                        },
+                        {
+                            "Architecture": "arm64",
+                            "OS": "linux"
+                        },
+                        {
+                            "Architecture": "386",
+                            "OS": "linux"
+                        },
+                        {
+                            "Architecture": "ppc64le",
+                            "OS": "linux"
+                        },
+                        {
+                            "Architecture": "s390x",
+                            "OS": "linux"
+                        }
+                    ]
+                },
+                "ForceUpdate": 0,
+                "Runtime": "container"
+            },
+            "Mode": {
+                "Replicated": {
+                    "Replicas": 1
+                }
+            },
+            "UpdateConfig": {
+                "Parallelism": 1,
+                "FailureAction": "pause",
+                "Monitor": 5000000000,
+                "MaxFailureRatio": 0,
+                "Order": "stop-first"
+            },
+            "RollbackConfig": {
+                "Parallelism": 1,
+                "FailureAction": "pause",
+                "Monitor": 5000000000,
+                "MaxFailureRatio": 0,
+                "Order": "stop-first"
+            },
+            "EndpointSpec": {
+                "Mode": "vip"
+            }
+        },
+        "Endpoint": {
+            "Spec": {}
+        }
+    }
+]
+
+
+
+
+
+
+-------------------------------------------------------------------------------
+
+
+
+
+
+hamid@DockerSwarm1:~$ docker service inspect TestSwarmService --pretty
+
+ID:		r7ta9rdpp1p84kfc56ftuu8vr
+Name:		TestSwarmService
+Service Mode:	Replicated
+ Replicas:	1
+Placement:
+UpdateConfig:
+ Parallelism:	1
+ On failure:	pause
+ Monitoring Period: 5s
+ Max failure ratio: 0
+ Update order:      stop-first
+RollbackConfig:
+ Parallelism:	1
+ On failure:	pause
+ Monitoring Period: 5s
+ Max failure ratio: 0
+ Rollback order:    stop-first
+ContainerSpec:
+ Image:		alpine:latest@sha256:eb3e4e175ba6d212ba1d6e04fc0782916c08e1c9d7b45892e9796141b1d379ae
+ Args:		ping google.com 
+ Init:		false
+Resources:
+Endpoint Mode:	vip
+
+
+
+
+
+
+-------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+Scale a service:
+
+
+
+
+
+
+hamid@DockerSwarm1:~$ docker service scale TestSwarmService=2
+
+TestSwarmService scaled to 2
+overall progress: 2 out of 2 tasks 
+1/2: running   [==================================================>] 
+2/2: running   [==================================================>] 
+verify: Service converged 
+
+
+
+
+
+
+
+
+hamid@DockerSwarm1:~$ docker service ls
+
+ID             NAME               MODE         REPLICAS   IMAGE           PORTS
+r7ta9rdpp1p8   TestSwarmService   replicated   2/2        alpine:latest   
+
+
+
+
+
+
+
+hamid@DockerSwarm1:~$ docker service ps TestSwarmService
+
+ID             NAME                 IMAGE           NODE           DESIRED STATE   CURRENT STATE            ERROR     PORTS
+f0c8k0m5h75v   TestSwarmService.1   alpine:latest   DockerSwarm1   Running         Running 29 minutes ago             
+z0u9dc5passx   TestSwarmService.2   alpine:latest   DockerSwarm2   Running         Running 17 seconds ago
+
+
+
+
+
+
+-------------------------------------------------------------------------------
+
+
+
+
+
+hamid@DockerSwarm1:~$ docker ps
+
+CONTAINER ID   IMAGE           COMMAND             CREATED          STATUS          PORTS     NAMES
+6036ca2c8127   alpine:latest   "ping google.com"   31 minutes ago   Up 31 minutes             TestSwarmService.1.f0c8k0m5h75vmwx9p0wdfmif0
+
+
+
+
+
+
+hamid@DockerSwarm2:~$ docker ps
+
+CONTAINER ID   IMAGE           COMMAND             CREATED              STATUS              PORTS     NAMES
+22e3da001fa3   alpine:latest   "ping google.com"   About a minute ago   Up About a minute             TestSwarmService.2.z0u9dc5passxwczfojuabz045
+
+
+
+
+
+
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+Remove a service:
+
+
+
+
+hamid@DockerSwarm1:~$ docker service scale TestSwarmService=0
+
+TestSwarmService scaled to 0
+overall progress: 0 out of 0 tasks 
+verify: Waiting 2 seconds to verify that tasks are stable... 
+verify: Service converged 
+
+
+
+
+hamid@DockerSwarm1:~$ docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+
+
+
+hamid@DockerSwarm1:~$ docker service ps TestSwarmService
+ID        NAME      IMAGE     NODE      DESIRED STATE   CURRENT STATE   ERROR     PORTS
+
+
+
+
+
+-------------------------------------------------------------------------------
+
+
+
+
+
+
+hamid@DockerSwarm1:~$ docker service rm  TestSwarmService
+TestSwarmService
+
+
+hamid@DockerSwarm1:~$ docker service ps TestSwarmService
+no such service: TestSwarmService
+
+
+
+
+
+
+-------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------------------
+
+
+
+
+
