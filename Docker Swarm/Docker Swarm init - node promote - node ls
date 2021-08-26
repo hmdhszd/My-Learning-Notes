@@ -1,0 +1,203 @@
+
+
+
+
+in docker swarm we have 2 rules:
+
+- Manager		---->		
+- Worker		---->		services run on Workers
+
+
+
+
+
+***  a Manager node can be a Worker too at the same time  ***
+
+
+
+
+
+----------------------------------------------------------------------
+
+
+
+
+on every node, we should install Docker:
+
+
+
+curl -fsSL get.docker.com -o get-docker.sh
+sh ./get-docker.sh
+
+
+useradd hamid
+usermod -aG docker hamid
+
+
+/etc/resolv.conf   ---->	nameserver 185.51.200.2
+							nameserver 178.22.122.100
+
+
+systemctl start docker
+systemctl enable docker
+
+
+
+
+
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+Initilize docker swarm and add nodes:
+
+
+
+
+hamid@DockerSwarm1:~$ docker swarm init --advertise-addr 192.168.43.59
+Swarm initialized: current node (oxlx6cm5w1hc5wteetb3ddojs) is now a manager.
+
+To add a worker to this swarm, run the following command:
+
+    docker swarm join --token SWMTKN-1-2akb5ubgm32u62vj8osy1vfs1r4yqffmie1c6kvn5ugfcj5k4o-6petml8brnd6jrkrzm6zazv1n 192.168.43.59:2377
+
+To add a manager to this swarm, run 'docker swarm join-token manager' and follow the instructions.
+
+
+
+
+
+
+
+
+hamid@DockerSwarm1:~$ docker node ls
+ID                            HOSTNAME       STATUS    AVAILABILITY   MANAGER STATUS   ENGINE VERSION
+oxlx6cm5w1hc5wteetb3ddojs *   DockerSwarm1   Ready     Active         Leader           20.10.8
+ow37mv42ff06gbiydfuebnn3t     DockerSwarm2   Ready     Active                          20.10.8
+owllcz48d3r3x22tz17osusii     DockerSwarm3   Ready     Active                          20.10.8
+
+
+
+
+
+----------------------------------------------------------------------
+
+
+
+
+hamid@DockerSwarm2:~$ docker swarm join --token SWMTKN-1-2akb5ubgm32u62vj8osy1vfs1r4yqffmie1c6kvn5ugfcj5k4o-6petml8brnd6jrkrzm6zazv1n 192.168.43.59:2377
+This node joined a swarm as a worker.
+
+
+
+
+
+
+hamid@DockerSwarm2:~$ docker node ls
+Error response from daemon: This node is not a swarm manager. Worker nodes can't be used to view or modify cluster state. Please run this command on a manager node or promote the current node to a manager.
+
+
+
+
+
+----------------------------------------------------------------------
+
+
+
+
+hamid@DockerSwarm3:~$ docker swarm join --token SWMTKN-1-2akb5ubgm32u62vj8osy1vfs1r4yqffmie1c6kvn5ugfcj5k4o-6petml8brnd6jrkrzm6zazv1n 192.168.43.59:2377
+This node joined a swarm as a worker.
+
+
+
+
+
+hamid@DockerSwarm3:~$ docker node ls
+Error response from daemon: This node is not a swarm manager. Worker nodes can't be used to view or modify cluster state. Please run this command on a manager node or promote the current node to a manager.
+
+
+
+
+
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+promote other nodes as Manager:
+
+
+
+hamid@DockerSwarm1:~$ docker node promote DockerSwarm2
+Node DockerSwarm2 promoted to a manager in the swarm.
+
+
+
+hamid@DockerSwarm1:~$ docker node promote DockerSwarm3
+Node DockerSwarm3 promoted to a manager in the swarm.
+
+
+
+hamid@DockerSwarm1:~$ docker node ls
+ID                            HOSTNAME       STATUS    AVAILABILITY   MANAGER STATUS   ENGINE VERSION
+oxlx6cm5w1hc5wteetb3ddojs *   DockerSwarm1   Ready     Active         Leader           20.10.8
+ow37mv42ff06gbiydfuebnn3t     DockerSwarm2   Ready     Active         Reachable        20.10.8
+owllcz48d3r3x22tz17osusii     DockerSwarm3   Ready     Active         Reachable        20.10.8
+
+
+
+
+
+----------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+----------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+----------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+----------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+----------------------------------------------------------------------
+
+
+
+
+
+
+
