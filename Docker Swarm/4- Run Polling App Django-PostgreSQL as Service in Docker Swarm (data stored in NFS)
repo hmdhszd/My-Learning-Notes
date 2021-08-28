@@ -1,0 +1,441 @@
+
+
+
+
+cd /nfs/web
+
+
+
+git clone https://github.com/hmdhszd/Polling-App-in-Django.git
+
+
+
+mv Polling-App-in-Django/* .
+
+
+
+rm -rf Polling-App-in-Django/
+
+
+
+
+
+-----------------------------------------------------------------------
+
+
+
+
+
+change Database in mysite/settings.py:
+
+
+
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'PASSWORD': 'postgres',
+        'HOST': 'pollingservicedb',
+        'PORT': '5432',
+    }
+}
+
+
+
+
+
+
+-----------------------------------------------------------------------
+
+
+
+
+
+
+/nfs/web/Dockerfile:
+
+
+
+
+
+
+# syntax=docker/dockerfile:1
+FROM python:3
+ENV PYTHONUNBUFFERED=1
+WORKDIR /code
+COPY requirements.txt /code/
+RUN pip install -r requirements.txt
+COPY . /code/
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+
+
+
+
+
+-----------------------------------------------------------------------
+
+
+
+
+
+/nfs/web/docker-compose.yaml:
+
+
+
+
+
+
+
+version: "3.9"
+
+services:
+  db:
+    hostname: pollingservicedb
+    image: postgres
+    volumes:
+      - "dbnfs:/var/lib/postgresql/data"
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - PGDATA=/var/lib/postgresql/data/db/
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          cpus: "1.5"
+          memory: "1G"
+        reservations:
+          cpus: "0.5"
+          memory: "512M"
+    networks:
+      pollingservice:
+  web:
+    image: 127.0.0.1:5000/pollingservice:postgres
+    build: .
+    ports:
+      - target: 8000
+        published: 9000
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          cpus: "1.5"
+          memory: "1G"
+        reservations:
+          cpus: "0.5"
+          memory: "512M"
+    depends_on:
+      - db
+    networks:
+      pollingservice:
+
+volumes:
+  dbnfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr=192.168.0.1,rw
+      device: ":/nfs/db/"
+ 
+networks:
+  pollingservice:
+    ipam:
+      config:
+        - subnet: 192.168.20.0/24
+
+
+
+
+
+
+
+-----------------------------------------------------------------------
+
+
+
+
+
+/nfs/web/requirements.txt:
+
+
+
+Django>=3.0,<4.0
+psycopg2-binary>=2.8
+
+
+
+
+
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+
+
+
+
+
+
+install docker-compose:
+
+
+
+sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+
+
+
+sudo chmod +x /usr/local/bin/docker-compose
+
+
+
+docker-compose --version
+
+
+
+
+
+
+
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+
+
+
+
+hamid@DockerSwarm1:/nfs/web$ docker-compose up -d  --build 
+
+
+
+
+WARNING: The following deploy sub-keys are not supported and have been ignored: resources.reservations.cpus
+WARNING: The following deploy sub-keys are not supported and have been ignored: resources.reservations.cpus
+WARNING: The Docker Engine you're using is running in swarm mode.
+
+Compose does not use swarm mode to deploy services to multiple nodes in a swarm. All containers will be scheduled on the current node.
+
+To deploy your application across the swarm, use `docker stack deploy`.
+
+Building web
+Sending build context to Docker daemon  206.3kB
+Step 1/7 : FROM python:3
+ ---> 1e76b28bfd4e
+Step 2/7 : ENV PYTHONUNBUFFERED=1
+ ---> Using cache
+ ---> f4ed6de4086e
+Step 3/7 : WORKDIR /code
+ ---> Using cache
+ ---> eace1fcf1d5a
+Step 4/7 : COPY requirements.txt /code/
+ ---> Using cache
+ ---> 749612a0e259
+Step 5/7 : RUN pip install -r requirements.txt
+ ---> Using cache
+ ---> 9123c71d41b7
+Step 6/7 : COPY . /code/
+ ---> Using cache
+ ---> 0338dabc6174
+Step 7/7 : CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+ ---> Using cache
+ ---> be364732fbc6
+Successfully built be364732fbc6
+Successfully tagged 127.0.0.1:5000/pollingservice:postgres
+Starting web_db_1 ... done
+Starting web_web_1 ... done
+
+
+
+
+-----------------------------------------------------------------------
+
+
+
+
+
+
+
+hamid@DockerSwarm1:/nfs/web$ docker-compose down
+
+
+WARNING: The following deploy sub-keys are not supported and have been ignored: resources.reservations.cpus
+WARNING: The following deploy sub-keys are not supported and have been ignored: resources.reservations.cpus
+Stopping web_web_1 ... done
+Stopping web_db_1  ... done
+Removing web_web_1 ... done
+Removing web_db_1  ... done
+Removing network web_pollingservice
+
+
+
+
+
+
+
+
+
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+
+
+
+
+
+
+
+
+hamid@DockerSwarm1:/nfs/web$ docker service create registry --publish 5000:5000 registry:2 
+
+
+hamid@DockerSwarm1:/nfs/web$ docker-compose push
+
+
+hamid@DockerSwarm1:/nfs/web$ docker stack  deploy --compose-file docker-compose.yaml pollingservice
+
+
+
+
+
+
+
+-----------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+-----------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+-----------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+-----------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+-----------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+-----------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+-----------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+-----------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+-----------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+-----------------------------------------------------------------------
