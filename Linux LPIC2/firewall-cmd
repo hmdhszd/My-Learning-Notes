@@ -295,11 +295,52 @@ root@ubuntu:/home/hamid# iptables -S > FirewallBackup
 
 
 
+rich rules:
+
+
+firewall-cmd --add-rich-rule='rule family="ipv4" source address="192.168.31.113" accept'
+
+firewall-cmd --add-rich-rule='rule family="ipv4" source address="192.168.31.100" drop'
 
 
 
 
 
+
+root@ubuntu:/home/hamid# firewall-cmd --list-all
+
+home (active)
+  target: default
+  icmp-block-inversion: no
+  interfaces: enp0s3
+  sources: 
+  services: dhcpv6-client mdns samba-client ssh
+  ports: 
+  protocols: 
+  masquerade: no
+  forward-ports: 
+  source-ports: 
+  icmp-blocks: 
+  rich rules: 
+	rule family="ipv4" source address="192.168.31.113" accept
+	rule family="ipv4" source address="192.168.31.100" drop
+
+
+
+
+
+
+
+root@ubuntu:/home/hamid# firewall-cmd --list-rich-rules
+
+rule family="ipv4" source address="192.168.31.113" accept
+rule family="ipv4" source address="192.168.31.100" drop
+
+
+
+
+
+---------------------------------------------------------------------
 ---------------------------------------------------------------------
 
 
