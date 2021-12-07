@@ -1,0 +1,643 @@
+
+
+
+
+
+kubectl create  deployment nginx-deployment --image=nginx
+
+
+
+
+
+
+-------------------------------------------------------------------------
+
+
+
+
+
+
+▶ kubectl get pods                      
+NAME                                READY   STATUS    RESTARTS   AGE
+nginx-deployment-6767546888-mjff4   1/1     Running   0          37m
+
+~                                                                                                                             
+▶ kubectl get replicaset
+NAME                          DESIRED   CURRENT   READY   AGE
+nginx-deployment-84cd76b964   1         1         1       79m
+
+~                                                                                                                             
+▶ kubectl get deployments
+NAME               READY   UP-TO-DATE   AVAILABLE   AGE
+nginx-deployment   1/1     1            1           79m
+
+
+
+
+
+-------------------------------------------------------------------------
+-------------------------------------------------------------------------
+
+
+
+
+export EDITOR='code --wait'
+
+
+
+kubectl edit deployment nginx-deployment
+
+change replica to 3
+
+
+
+-------------------------------------------------------------------------
+
+
+
+
+
+~                                                                                                                             
+▶ kubectl get pods                      
+NAME                                READY   STATUS    RESTARTS   AGE
+nginx-deployment-6767546888-7hqnz   1/1     Running   0          36m
+nginx-deployment-6767546888-d6hzx   1/1     Running   0          36m
+nginx-deployment-6767546888-mjff4   1/1     Running   0          37m
+
+~                                                                                                                             
+▶ kubectl get replicaset
+NAME                          DESIRED   CURRENT   READY   AGE
+nginx-deployment-6767546888   3         3         3       37m
+nginx-deployment-84cd76b964   0         0         0       79m
+
+~                                                                                                                             
+▶ kubectl get deployments
+NAME               READY   UP-TO-DATE   AVAILABLE   AGE
+nginx-deployment   3/3     3            3           79m
+
+
+
+
+
+
+-------------------------------------------------------------------------
+-------------------------------------------------------------------------
+
+
+
+
+
+kubectl create  deployment mongo-depl --image=mongo
+
+
+
+
+
+-------------------------------------------------------------------------
+
+
+
+
+
+▶ kubectl get pods
+NAME                                READY   STATUS    RESTARTS   AGE
+mongo-dep-f4fb7cd6d-m48hg           1/1     Running   0          37m
+nginx-deployment-6767546888-7hqnz   1/1     Running   0          40m
+nginx-deployment-6767546888-d6hzx   1/1     Running   0          40m
+nginx-deployment-6767546888-mjff4   1/1     Running   0          42m
+
+~                                                                                                                             
+▶ kubectl get replicasets
+NAME                          DESIRED   CURRENT   READY   AGE
+mongo-dep-f4fb7cd6d           1         1         1       37m
+nginx-deployment-6767546888   3         3         3       42m
+nginx-deployment-84cd76b964   0         0         0       83m
+
+~                                                                                                                             
+▶ kubectl get deployments
+NAME               READY   UP-TO-DATE   AVAILABLE   AGE
+mongo-dep          1/1     1            1           37m
+nginx-deployment   3/3     3            3           84m
+
+
+
+
+
+
+-------------------------------------------------------------------------
+-------------------------------------------------------------------------
+
+
+
+
+
+▶ kubectl exec -it mongo-dep-f4fb7cd6d-m48hg -- bin/bash
+root@mongo-dep-f4fb7cd6d-m48hg:/# 
+root@mongo-dep-f4fb7cd6d-m48hg:/# 
+root@mongo-dep-f4fb7cd6d-m48hg:/# ls
+bin   data  docker-entrypoint-initdb.d  home        lib    lib64   media  opt   root  sbin  sys  usr
+boot  dev   etc                         js-yaml.js  lib32  libx32  mnt    proc  run   srv   tmp  var
+ 
+
+
+
+
+
+
+-------------------------------------------------------------------------
+-------------------------------------------------------------------------
+
+
+
+
+
+
+▶ kubectl delete deployment nginx-deployment 
+deployment.apps "nginx-deployment" deleted
+
+~                                                                                                                                                
+▶ kubectl get pods                           
+NAME                                READY   STATUS        RESTARTS   AGE
+mongo-dep-f4fb7cd6d-m48hg           1/1     Running       0          45m
+nginx-deployment-6767546888-7hqnz   0/1     Terminating   0          48m
+nginx-deployment-6767546888-d6hzx   0/1     Terminating   0          48m
+nginx-deployment-6767546888-mjff4   0/1     Terminating   0          49m
+
+~                                                                                                                                                
+▶ kubectl get deployments                    
+NAME        READY   UP-TO-DATE   AVAILABLE   AGE
+mongo-dep   1/1     1            1           45m
+
+~                                                                                                                                                
+▶ kubectl get replicasets
+NAME                  DESIRED   CURRENT   READY   AGE
+mongo-dep-f4fb7cd6d   1         1         1       45m
+
+
+
+
+
+
+-------------------------------------------------------------------------
+-------------------------------------------------------------------------
+
+
+
+
+nginx-deployment.yaml:
+
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: nginx-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-app
+  template:
+    metadata:
+      labels:
+        app: nginx-app
+    spec:
+      containers:
+        - name: nginx-container
+          image: nginx:1.16
+          ports:
+           - containerPort: 80
+
+
+
+
+
+-------------------------------------------------------------------------
+
+
+
+
+
+▶ kubectl apply -f nginx-deployment.yaml
+deployment.apps/nginx-deployment created
+
+
+
+▶ kubectl get deployments            
+\NAME               READY   UP-TO-DATE   AVAILABLE   AGE
+nginx-deployment   1/1     1            1           111s
+
+
+
+▶ kubectl get pods                   
+NAME                                READY   STATUS    RESTARTS   AGE
+nginx-deployment-779bf46875-r8p2m   1/1     Running   0          115
+
+
+
+▶ kubectl get replicasets
+NAME                          DESIRED   CURRENT   READY   AGE
+nginx-deployment-779bf46875   1         1         1       2m1s
+
+
+
+
+
+-------------------------------------------------------------------------
+-------------------------------------------------------------------------
+
+
+
+
+change replicas to 2 in the deployment yaml file:
+
+
+
+▶ kubectl apply -f nginx-deployment.yaml
+deployment.apps/nginx-deployment configured
+
+
+
+▶ kubectl get pods                      
+NAME                                READY   STATUS    RESTARTS   AGE
+nginx-deployment-779bf46875-gfj5j   1/1     Running   0          2s
+nginx-deployment-779bf46875-r8p2m   1/1     Running   0          3m8s
+
+
+
+
+-------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------------
