@@ -1,0 +1,51 @@
+sudo useradd --no-create-home --shell /bin/false node_exporter
+
+
+wget https://github.com/prometheus/node_exporter/releases/download/v1.2.2/node_exporter-1.2.2.linux-amd64.tar.gz
+
+
+
+tar xvf node_exporter-1.2.2.linux-amd64.tar.gz 
+
+
+
+sudo cp node_exporter-1.2.2.linux-amd64/node_exporter /usr/local/bin
+
+sudo chown node_exporter:node_exporter /usr/local/bin/node_exporter
+
+
+
+sudo mkdir -p /prometheus/metrics
+
+sudo chown node_exporter:node_exporter /prometheus/metrics
+
+
+
+sudo nano /lib/systemd/system/node_exporter.service
+
+
+
+
+[Unit]
+Description=Prometheus
+Wants=network-online.target
+After=network-online.target 
+
+[Service]
+Type=simple
+User=node_exporter
+Group=node_exporter
+ExecStart=/usr/local/bin/node_exporter --collector.textfile.directory=/prometheus/metrics
+Restart=always
+RestartSec=10s
+NotifyAccess=all 
+
+[Install]
+WantedBy=multi-user.target
+
+
+
+
+sudo systemctl enable node_exporter
+sudo systemctl start  node_exporter
+sudo systemctl status  node_exporter
