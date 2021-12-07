@@ -1,0 +1,68 @@
+# Create Kubernetes Cluster
+
+## 1. Install Kubernetes
+**first [install docker](https://docs.docker.com/engine/install/ubuntu/)**
+```shell script
+cat <<EOF | sudo tee /etc/modules-load.d/k8s.conf
+br_netfilter
+EOF
+
+cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf
+net.bridge.bridge-nf-call-ip6tables = 1
+net.bridge.bridge-nf-call-iptables = 1
+EOF
+sudo sysctl --system
+
+sudo apt update && \
+sudo apt install resolvconf && \
+echo -e "nameserver 178.22.122.100\nnameserver 185.51.200.2" | sudo tee -a /etc/resolvconf/resolv.conf.d/head && \
+sudo systemctl restart resolvconf && \
+sudo apt-get install \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    gnupg-agent \
+    software-properties-common -y && \
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - && \
+sudo add-apt-repository \
+   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   stable" && \
+sudo apt update && \
+sudo apt-get install docker-ce docker-ce-cli containerd.io -y && \
+sudo usermod -aG docker ${USER} && \
+exit
+
+
+cat <<EOF | sudo tee /etc/docker/daemon.json
+{
+  "exec-opts": ["native.cgroupdriver=systemd"],
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-size": "100m"
+  },
+  "storage-driver": "overlay2"
+}
+EOF
+sudo mkdir -p /etc/systemd/system/docker.service.d
+sudo systemctl daemon-reload
+sudo systemctl restart docker
+sudo systemctl enable docker
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add
+sudo apt-add-repository "deb http://apt.kubernetes.io/ kubernetes-xenial main"
+sudo apt install kubeadm -y
+sudo swapoff -a
+```
+## 2. Init master node
+```shell script
+sudo kubeadm init --pod-network-cidr=10.244.0.0/16
+# write down the output (join token)
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+# now you can join any node by join command
+```
+## 3. Install flannel on all nodes
+```shell script
+sudo kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+```
