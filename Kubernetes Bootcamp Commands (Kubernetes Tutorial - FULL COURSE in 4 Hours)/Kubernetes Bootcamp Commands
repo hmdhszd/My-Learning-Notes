@@ -829,13 +829,88 @@ Default Type = ClusterIP     (Only Internal IP Address)
 
 
 -------------------------------------------------------------------------
+-------------------------------------------------------------------------
+-------------------------------------------------------------------------
+-------------------------------------------------------------------------
+Ingress:
+-------------------------------------------------------------------------
+
+
+
+we use internal service (without the nodePort)
+
+
+
+and we also use Default Type (ClusterIP)          instead of LoadBalancer
+
+
+
+-------------------------------------------------------------------------
+
+
+
+Enable Ingress in Minikube:
+
+
+
+
+▶ minikube addons enable ingress
+    ▪ Using image k8s.gcr.io/ingress-nginx/kube-webhook-certgen:v1.0
+    ▪ Using image k8s.gcr.io/ingress-nginx/controller:v1.0.0-beta.3
+    ▪ Using image k8s.gcr.io/ingress-nginx/kube-webhook-certgen:v1.0
+🔎  Verifying ingress addon...
+ 🌟  The 'ingress' addon is enabled
 
 
 
 
 
+▶ kubectl get pods --all-namespaces  | grep ingress
+ingress-nginx          ingress-nginx-admission-create-zkkgl         0/1     Completed   0          4m1s
+ingress-nginx          ingress-nginx-admission-patch-zqjdh          0/1     Completed   1          4m1s
+ingress-nginx          ingress-nginx-controller-7cb59cb879-crz2f    1/1     Running     0          4m1s
 
 
+
+
+
+-------------------------------------------------------------------------
+-------------------------------------------------------------------------
+
+
+
+
+Create an Ingress rule for accessing Kubernetes Dashboard:
+
+
+
+dashboard-ingress.yaml:
+
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: dashboard-ingress
+  namespace: kubernetes-dashboard
+spec:
+  rules:
+    - host: dashboard.com
+      http:
+        paths:
+          - backend:
+              serviceName: kubernetes-dashboard
+              servicePort: 80
+
+
+
+
+-------------------------------------------------------------------------
+
+
+
+
+▶ kubectl apply -f dashboard-ingress.yaml
+Warning: networking.k8s.io/v1beta1 Ingress is deprecated in v1.19+, unavailable in v1.22+; use networking.k8s.io/v1 Ingress
+ingress.networking.k8s.io/dashboard-ingress configured
 
 
 
@@ -846,48 +921,16 @@ Default Type = ClusterIP     (Only Internal IP Address)
 
 
 
-
-
-
-
-
-
--------------------------------------------------------------------------
-
-
-
-
-
-
+▶ kubectl get ingress -n kubernetes-dashboard
+NAME                CLASS   HOSTS           ADDRESS        PORTS   AGE
+dashboard-ingress   nginx   dashboard.com   192.168.49.2   80      2m50s
 
 
 
 
 
 -------------------------------------------------------------------------
-
-
-
-
-
-
-
-
-
-
-
 -------------------------------------------------------------------------
-
-
-
-
-
-
-
-
-
-
-
 -------------------------------------------------------------------------
 
 
