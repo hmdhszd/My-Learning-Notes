@@ -935,7 +935,23 @@ dashboard-ingress   nginx   dashboard.com   192.168.49.2   80      2m50s
 -------------------------------------------------------------------------
 
 
+
 Helm package manager od K8s:
+ 
+1-
+  - Public Registries
+  - Private Registries
+
+2-
+  Templating Engine:
+    1) Define a common blueprint
+    2) Dynamic values are replaced by placeholders
+
+3- 
+  Deploy the same application across different environments
+
+4-
+  Release Management
 
 
 -------------------------------------------------------------------------
@@ -943,22 +959,31 @@ Helm package manager od K8s:
 
 
 
+Heml V2:
+
+  Helm Client (Heml CLI)
+  Helm Server (Tiller)
 
 
+
+in the Helm V3, Tiller is removed.
 
 
 
 
 
 -------------------------------------------------------------------------
+-------------------------------------------------------------------------
+-------------------------------------------------------------------------
+-------------------------------------------------------------------------
 
 
 
-
-
-
-
-
+Persist Data in Kubernetes:
+  - Persistent Volume
+  - Persistent Volume Claim
+  - Storage Class:
+      Storage Class provisions Persistent Volumes dynamically, when PersistentVolumeClaim claims it!
 
 
 
