@@ -983,8 +983,18 @@ Persist Data in Kubernetes:
   - Persistent Volume
   - Persistent Volume Claim
   - Storage Class:
-      Storage Class provisions Persistent Volumes dynamically, when PersistentVolumeClaim claims it!
+    Storage Class provisions Persistent Volumes dynamically, when PersistentVolumeClaim claims it!
 
+
+
+
+-------------------------------------------------------------------------
+-------------------------------------------------------------------------
+-------------------------------------------------------------------------
+-------------------------------------------------------------------------
+
+
+StatefulSet for stateful applications:
 
 
 -------------------------------------------------------------------------
@@ -992,47 +1002,49 @@ Persist Data in Kubernetes:
 
 
 
+Stateful applications:    Deploy using Deployment
+  - Databases: MySQL, mongoDB, ElasticSearch...
+  - Any application that stores the data
 
 
+*Stateful applications are not perfect for containerized environments
 
 
+Stateless applications:    Deploy using StatefulSet 
+  - Do NOT keep record of state
+  - each request in completely new
 
+
+ 
+
+
+-------------------------------------------------------------------------
+-------------------------------------------------------------------------
+-------------------------------------------------------------------------
+-------------------------------------------------------------------------
+
+Services:  load balance the data to pods (use selector to find whith pods to forward request to)
+
+
+  - ClusterIP (Default) (internal service)  -->   we should use Ingress to access this service from outside of the cluster.
+
+  - Headless Service:  (Usecase: MySQL, mongoDB, ElasticSearch)
+    - Client wants to communicate with 1 specific pod directly
+    - Pods want to talk directly with specific Pod
+  
+  *in Headless Service, Pod replicas are not identical
 
 
 -------------------------------------------------------------------------
 
 
 
+3 Service Type Attributes:
 
-
-
-
-
-
-
-
--------------------------------------------------------------------------
-
-
-
-
-
-
-
-
-
-
-
--------------------------------------------------------------------------
-
-
-
-
-
-
-
-
-
+  - ClusterIP
+  - NodePort  -->   Creates a Service that is accessible on a static port on each worker node in the cluster (Without Ingress)
+  - LoadBalancer  -->  Service is accessible through cloud provider load balancer
+    *when we create a load balancer service, NodePort and ClusterIP services are created automatically
 
 
 -------------------------------------------------------------------------
