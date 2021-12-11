@@ -1,0 +1,195 @@
+
+####################################################################
+Setup Module:
+	This module is automatically called by playbooks to gather useful variables about remote hosts that can be used in playbooks. It can also be executed directly by ansible command to find out the variables available to a host.
+####################################################################
+
+
+
+ansible centos2 -m setup
+
+
+
+####################################################################
+File Module:
+	Ansible file module is used to deal with the files, directories, and symlinks. You can create or remove files, symlinks or directories on the remote hosts using the Ansible file module. It is also used to change the file ownership, group and permissions. Ansible file module performs all tasks on the remote hosts.
+####################################################################
+
+
+
+
+ansible ubuntu-c -m file -a 'path=/tmp/test state=touch'
+
+ubuntu-c | CHANGED => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3"
+    },
+    "changed": true,
+    "dest": "/tmp/test",
+    "gid": 1000,
+    "group": "ansible",
+    "mode": "0664",
+    "owner": "ansible",
+    "size": 0,
+    "state": "file",
+    "uid": 1000
+}
+
+
+
+
+
+ll /tmp/test
+-rw-rw-r-- 1 ansible ansible 0 Dec 11 11:35 /tmp/test
+
+
+
+
+--------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+ansible ubuntu-c -m file -a 'path=/tmp/test state=file mode=600'
+
+ubuntu-c | CHANGED => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3"
+    },
+    "changed": true,
+    "gid": 1000,
+    "group": "ansible",
+    "mode": "0600",
+    "owner": "ansible",
+    "path": "/tmp/test",
+    "size": 0,
+    "state": "file",
+    "uid": 1000
+}
+
+
+
+
+
+ll /tmp/test
+
+-rw------- 1 ansible ansible 0 Dec 11 11:35 /tmp/test
+
+
+
+
+
+####################################################################
+idempotency:
+	The resource models are idempotent meaning change commands are not run unless needed, and Ansible will bring the system back to a desired state regardless of the actual state – rather than you having to tell it how to get to the state.
+####################################################################
+
+
+
+
+
+touch /tmp/x
+
+ansible all -m copy -a 'src=/tmp/x dest=/tmp/x'
+
+ubuntu-c | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3"
+    },
+    "changed": false,
+    "checksum": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+    "dest": "/tmp/x",
+    "gid": 1000,
+    "group": "ansible",
+    "mode": "0664",
+    "owner": "ansible",
+    "path": "/tmp/x",
+    "size": 0,
+    "state": "file",
+    "uid": 1000
+}
+
+centos2 | CHANGED => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/libexec/platform-python"
+    },
+    "changed": true,
+    "checksum": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+    "dest": "/tmp/x",
+    "gid": 0,
+    "group": "root",
+    "md5sum": "d41d8cd98f00b204e9800998ecf8427e",
+    "mode": "0644",
+    "owner": "root",
+    "size": 0,
+    "src": "/root/.ansible/tmp/ansible-tmp-1639224831.6102874-1448-83615810738911/source",
+    "state": "file",
+    "uid": 0
+}
+
+
+
+
+####################################################################
+Command Module:
+	Ansible Command module is used to execute commands on a remote node.
+	(Default Module of Ansible)
+####################################################################
+
+
+
+
+ansible all -a 'hostname' -o
+
+ubuntu-c | CHANGED | rc=0 | (stdout) ubuntu-c
+centos1 | CHANGED | rc=0 | (stdout) centos1
+ubuntu1 | CHANGED | rc=0 | (stdout) ubuntu1
+centos3 | CHANGED | rc=0 | (stdout) centos3
+centos2 | CHANGED | rc=0 | (stdout) centos2
+ubuntu2 | CHANGED | rc=0 | (stdout) ubuntu2
+ubuntu3 | CHANGED | rc=0 | (stdout) ubuntu3
+
+  
+
+
+####################################################################
+Fetch Module:
+	Ansible fetch module is a file-based module, which is intended to work on files. This module is similar to Ansible copy module, but by default works in Reverse Order, in terms of source and destination.
+####################################################################
+
+
+
+
+
+ansible all -m fetch -a 'src=/tmp/test_modules.txt dest=/tmp/' -o
+
+ubuntu-c | CHANGED => {"changed": true,"checksum": "da39a3ee5e6b4b0d3255bfef95601890afd80709","dest": "/tmp/ubuntu-c/tmp/test_modules.txt","md5sum": "d41d8cd98f00b204e9800998ecf8427e","remote_checksum": "da39a3ee5e6b4b0d3255bfef95601890afd80709","remote_md5sum": null}
+centos1 | CHANGED => {"changed": true,"checksum": "da39a3ee5e6b4b0d3255bfef95601890afd80709","dest": "/tmp/centos1/tmp/test_modules.txt","md5sum": "d41d8cd98f00b204e9800998ecf8427e","remote_checksum": "da39a3ee5e6b4b0d3255bfef95601890afd80709","remote_md5sum": null}
+centos3 | CHANGED => {"changed": true,"checksum": "da39a3ee5e6b4b0d3255bfef95601890afd80709","dest": "/tmp/centos3/tmp/test_modules.txt","md5sum": "d41d8cd98f00b204e9800998ecf8427e","remote_checksum": "da39a3ee5e6b4b0d3255bfef95601890afd80709","remote_md5sum": null}
+centos2 | CHANGED => {"changed": true,"checksum": "da39a3ee5e6b4b0d3255bfef95601890afd80709","dest": "/tmp/centos2/tmp/test_modules.txt","md5sum": "d41d8cd98f00b204e9800998ecf8427e","remote_checksum": "da39a3ee5e6b4b0d3255bfef95601890afd80709","remote_md5sum": null}
+ubuntu1 | CHANGED => {"changed": true,"checksum": "da39a3ee5e6b4b0d3255bfef95601890afd80709","dest": "/tmp/ubuntu1/tmp/test_modules.txt","md5sum": "d41d8cd98f00b204e9800998ecf8427e","remote_checksum": "da39a3ee5e6b4b0d3255bfef95601890afd80709","remote_md5sum": null}
+ubuntu2 | CHANGED => {"changed": true,"checksum": "da39a3ee5e6b4b0d3255bfef95601890afd80709","dest": "/tmp/ubuntu2/tmp/test_modules.txt","md5sum": "d41d8cd98f00b204e9800998ecf8427e","remote_checksum": "da39a3ee5e6b4b0d3255bfef95601890afd80709","remote_md5sum": null}
+ubuntu3 | CHANGED => {"changed": true,"checksum": "da39a3ee5e6b4b0d3255bfef95601890afd80709","dest": "/tmp/ubuntu3/tmp/test_modules.txt","md5sum": "d41d8cd98f00b204e9800998ecf8427e","remote_checksum": "da39a3ee5e6b4b0d3255bfef95601890afd80709","remote_md5sum": null}
+
+
+
+
+--------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------
+
+
+
+to get info of Modules     ==>     use ansible-doc
+
+
+ex:
+	ansible-doc file
+	ansible-doc fetch
+
+
+
+
+--------------------------------------------------------------------------------------------------------------------

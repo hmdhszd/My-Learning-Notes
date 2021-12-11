@@ -1,0 +1,394 @@
+
+
+ansible@ubuntu-c:~$ ansible -i,ubuntu1,ubuntu2,ubuntu3,centos1,centos2,centos3  all -m ping
+
+
+ubuntu1 | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+ubuntu2 | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+ubuntu3 | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+centos2 | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/libexec/platform-python"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+centos1 | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/libexec/platform-python"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+centos3 | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/libexec/platform-python"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+
+
+
+
+
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+ansible@ubuntu-c:~/diveintoansible$ ansible --version
+
+ansible [core 2.11.6] 
+  config file = None
+  configured module search path = ['/home/ansible/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
+  ansible python module location = /usr/local/lib/python3.8/dist-packages/ansible
+  ansible collection location = /home/ansible/.ansible/collections:/usr/share/ansible/collections
+  executable location = /usr/local/bin/ansible
+  python version = 3.8.10 (default, Sep 28 2021, 16:10:42) [GCC 9.3.0]
+  jinja version = 3.0.3
+  libyaml = True
+
+
+
+
+--------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+cat ansible.cfg 
+
+[defaults]
+inventory = hosts
+host_key_checking = False
+
+
+
+
+
+cat hosts 
+[centos]
+centos1
+centos2
+centos3
+
+[ubuntu]
+ubuntu1
+ubuntu2
+ubuntu3
+
+
+
+
+
+
+
+ansible centos -m ping
+
+centos2 | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/libexec/platform-python"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+centos1 | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/libexec/platform-python"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+centos3 | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/libexec/platform-python"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+
+
+
+
+
+
+ansible ubuntu -m ping
+
+ubuntu3 | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+ubuntu2 | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+ubuntu1 | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+ansible centos --list-hosts
+  hosts (3):
+    centos1
+    centos2
+    centos3
+
+
+
+
+ansible ubuntu  --list-hosts
+  hosts (3):
+    ubuntu1
+    ubuntu2
+    ubuntu3
+
+
+
+
+ansible all --list-hosts
+  hosts (6):
+    centos1
+    centos2
+    centos3
+    ubuntu1
+    ubuntu2
+    ubuntu3
+
+
+
+
+--------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+ansible all -m ping -o
+
+ubuntu2 | SUCCESS => {"ansible_facts": {"discovered_interpreter_python": "/usr/bin/python3"},"changed": false,"ping": "pong"}
+ubuntu1 | SUCCESS => {"ansible_facts": {"discovered_interpreter_python": "/usr/bin/python3"},"changed": false,"ping": "pong"}
+centos2 | SUCCESS => {"ansible_facts": {"discovered_interpreter_python": "/usr/libexec/platform-python"},"changed": false,"ping": "pong"}
+centos3 | SUCCESS => {"ansible_facts": {"discovered_interpreter_python": "/usr/libexec/platform-python"},"changed": false,"ping": "pong"}
+centos1 | SUCCESS => {"ansible_facts": {"discovered_interpreter_python": "/usr/libexec/platform-python"},"changed": false,"ping": "pong"}
+ubuntu3 | SUCCESS => {"ansible_facts": {"discovered_interpreter_python": "/usr/bin/python3"},"changed": false,"ping": "pong"}
+
+
+
+
+
+--------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+ansible ~.*3 --list-hosts
+  hosts (2):
+    centos3
+    ubuntu3
+
+
+
+
+--------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+ansible all -a 'id' -o
+
+centos1 | CHANGED | rc=0 | (stdout) uid=0(root) gid=0(root) groups=0(root)
+ubuntu2 | CHANGED | rc=0 | (stdout) uid=0(root) gid=0(root) groups=0(root)
+centos3 | CHANGED | rc=0 | (stdout) uid=0(root) gid=0(root) groups=0(root)
+ubuntu1 | CHANGED | rc=0 | (stdout) uid=0(root) gid=0(root) groups=0(root)
+centos2 | CHANGED | rc=0 | (stdout) uid=0(root) gid=0(root) groups=0(root)
+ubuntu3 | CHANGED | rc=0 | (stdout) uid=0(root) gid=0(root) groups=0(root)
+
+
+
+
+--------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+cat hosts:
+
+
+
+[control]
+ubuntu-c ansible_connection=local
+
+[centos]
+centos1 ansible_port=2222
+centos[2:3]
+
+[centos:vars]
+ansible_user=root
+
+[ubuntu]
+ubuntu[1:3]
+
+[ubuntu:vars]
+ansible_become=true
+ansible_become_pass=password
+
+[linux:children]
+centos
+ubuntu
+
+[all:vars]
+ansible_port=1234
+
+
+
+
+--------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+cat hosts.yaml
+
+
+---
+control:
+  hosts:
+    ubuntu-c:
+      ansible_connection: local
+centos:
+  hosts:
+    centos1:
+      ansible_port: 2222
+    centos2:
+    centos3:
+  vars:
+    ansible_user: root
+ubuntu:
+  hosts:
+    ubuntu1:
+    ubuntu2:
+    ubuntu3:
+  vars:
+    ansible_become: true
+    ansible_become_pass: password
+linux:
+  children:
+    centos:
+    ubuntu:
+...
+
+
+
+
+--------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+cat hosts.json
+
+
+{
+    "control": {
+        "hosts": {
+            "ubuntu-c": {
+                "ansible_connection": "local"
+            }
+        }
+    },
+    "centos": {
+        "hosts": {
+            "centos1": {
+                "ansible_port": 2222
+            },
+            "centos2": null,
+            "centos3": null
+        },
+        "vars": {
+            "ansible_user": "root"
+        }
+    },
+    "ubuntu": {
+        "hosts": {
+            "ubuntu1": null,
+            "ubuntu2": null,
+            "ubuntu3": null
+        },
+        "vars": {
+            "ansible_become": true,
+            "ansible_become_pass": "password"
+        }
+    },
+    "linux": {
+        "children": { 
+            "centos": null,
+            "ubuntu": null
+        }
+    }
+
+
+
+
+
+--------------------------------------------------------------------------------------------------------------------
+
+
+
