@@ -1,0 +1,741 @@
+
+
+
+▶ helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+
+
+▶ helm repo update
+Hang tight while we grab the latest from your chart repositories...
+...Successfully got an update from the "prometheus-community" chart repository
+Update Complete. ⎈Happy Helming!⎈
+
+
+
+-------------------------------------------------------------------------------------
+
+
+
+
+
+▶ helm install my-prometheus-on-kubernetes prometheus-community/kube-prometheus-stack
+
+NAME: my-prometheus-on-kubernetes
+LAST DEPLOYED: Fri Dec 10 18:26:28 2021
+NAMESPACE: default
+STATUS: deployed
+REVISION: 1
+NOTES:
+kube-prometheus-stack has been installed. Check its status by running:
+  kubectl --namespace default get pods -l "release=my-prometheus-on-kubernetes"
+
+Visit https://github.com/prometheus-operator/kube-prometheus for instructions on how to create & configure Alertmanager and Prometheus instances using the Operator.
+
+
+
+
+
+
+-------------------------------------------------------------------------------------
+
+
+
+
+
+▶ kubectl --namespace default get all -l "release=my-prometheus-on-kubernetes"
+
+
+NAME                                                             READY   STATUS    RESTARTS   AGE
+pod/my-prometheus-on-kubernete-operator-dd768d7fc-wc6b7          1/1     Running   0          55s
+pod/my-prometheus-on-kubernetes-prometheus-node-exporter-gs2wq   1/1     Running   0          55s
+
+
+NAME                                                           TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
+service/my-prometheus-on-kubernete-alertmanager                ClusterIP   10.98.153.254    <none>        9093/TCP   55s
+service/my-prometheus-on-kubernete-operator                    ClusterIP   10.106.151.86    <none>        443/TCP    55s
+service/my-prometheus-on-kubernete-prometheus                  ClusterIP   10.100.110.236   <none>        9090/TCP   56s
+service/my-prometheus-on-kubernetes-prometheus-node-exporter   ClusterIP   10.97.249.145    <none>        9100/TCP   55s
+
+
+NAME                                                                  DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR   AGE
+daemonset.apps/my-prometheus-on-kubernetes-prometheus-node-exporter   1         1         1       1            1           <none>          55s
+
+
+NAME                                                  READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/my-prometheus-on-kubernete-operator   1/1     1            1           55s
+
+
+NAME                                                            DESIRED   CURRENT   READY   AGE
+replicaset.apps/my-prometheus-on-kubernete-operator-dd768d7fc   1         1         1       55s
+
+
+NAME                                                                    READY   AGE
+statefulset.apps/alertmanager-my-prometheus-on-kubernete-alertmanager   1/1     50s
+statefulset.apps/prometheus-my-prometheus-on-kubernete-prometheus       1/1     48s
+
+
+
+
+
+
+-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------
+
+
+
+
+
+Access Grafana: 
+
+	- on real kubernetes cluster we should use "Ingress"
+	- on Minikube, we user port forwarding:
+
+
+▶ kubectl get pods | grep grafana
+my-prometheus-on-kubernetes-grafana-8d995c966-qstpf               2/2     Running   0          2m9s
+
+
+
+▶ kubectl port-forward my-prometheus-on-kubernetes-grafana-8d995c966-qstpf 3000
+
+Forwarding from 127.0.0.1:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+
+
+
+
+
+
+
+http://localhost:3000
+
+user: admin
+pass: prom-operator
+
+
+
+
+
+
+-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------
+
+
+
+
+
+
+Access Prometheus:
+
+
+
+▶ kubectl describe pod prometheus-my-prometheus-on-kubernete-prometheus-0 | grep Port
+    Port:          9090/TCP
+
+
+
+
+▶ kubectl port-forward prometheus-my-prometheus-on-kubernete-prometheus-0 9090
+
+
+
+
+http://localhost:9090
+
+
+
+
+
+
+
+-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------
+
+
+
+
+
+
+Access AlertManager:
+
+
+
+▶ kubectl describe pod alertmanager-my-prometheus-on-kubernete-alertmanager-0 | grep Port
+    Ports:         9093/TCP, 9094/TCP, 9094/UD
+
+
+
+
+http://localhost:9093
+
+
+
+
+
+
+-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------
+
+
+
+
+
+▶ helm ls
+
+NAME                       	NAMESPACE	REVISION	UPDATED                                  	STATUS  	CHART                       	APP VERSION
+my-prometheus-on-kubernetes	default  	1       	2021-12-10 18:26:28.701944464 +0330 +0330	deployed	kube-prometheus-stack-23.1.6	0.52.1
+
+
+
+
+
+-------------------------------------------------------------------------------------
+
+
+
+
+
+▶ kubectl get servicemonitor
+
+NAME                                                 AGE
+my-prometheus-on-kubernete-alertmanager              14h
+my-prometheus-on-kubernete-apiserver                 14h
+my-prometheus-on-kubernete-coredns                   14h
+my-prometheus-on-kubernete-grafana                   14h
+my-prometheus-on-kubernete-kube-controller-manager   14h
+my-prometheus-on-kubernete-kube-etcd                 14h
+my-prometheus-on-kubernete-kube-proxy                14h
+my-prometheus-on-kubernete-kube-scheduler            14h
+my-prometheus-on-kubernete-kube-state-metrics        14h
+my-prometheus-on-kubernete-kubelet                   14h
+my-prometheus-on-kubernete-node-exporter             14h
+my-prometheus-on-kubernete-operator                  14h
+my-prometheus-on-kubernete-prometheus                14h
+
+
+
+
+-------------------------------------------------------------------------------------
+
+
+
+
+
+▶ kubectl get servicemonitor my-prometheus-on-kubernete-grafana -o yaml
+
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  annotations:
+    meta.helm.sh/release-name: my-prometheus-on-kubernetes
+    meta.helm.sh/release-namespace: default
+  creationTimestamp: "2021-12-10T14:56:45Z"
+  generation: 1
+  labels:
+    app: kube-prometheus-stack-grafana
+    app.kubernetes.io/instance: my-prometheus-on-kubernetes
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: kube-prometheus-stack
+    app.kubernetes.io/version: 23.1.6
+    chart: kube-prometheus-stack-23.1.6
+    heritage: Helm
+    release: my-prometheus-on-kubernetes
+  name: my-prometheus-on-kubernete-grafana
+  namespace: default
+  resourceVersion: "412598"
+  uid: a74d5b70-d868-4a5c-917a-1152b6837aab
+spec:
+  endpoints:
+  - path: /metrics
+    port: http-web
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: my-prometheus-on-kubernetes
+      app.kubernetes.io/name: grafana
+
+
+
+
+
+-------------------------------------------------------------------------------------
+
+
+
+
+
+  labels:
+    release: my-prometheus-on-kubernetes
+
+
+
+
+
+
+-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------
+
+
+
+
+
+▶ kubectl get crd
+NAME                                        CREATED AT
+alertmanagerconfigs.monitoring.coreos.com   2021-12-10T14:03:47Z
+alertmanagers.monitoring.coreos.com         2021-12-10T14:03:47Z
+podmonitors.monitoring.coreos.com           2021-12-10T14:03:47Z
+probes.monitoring.coreos.com                2021-12-10T14:03:48Z
+prometheuses.monitoring.coreos.com          2021-12-10T14:03:48Z
+prometheusrules.monitoring.coreos.com       2021-12-10T14:03:48Z
+servicemonitors.monitoring.coreos.com       2021-12-10T14:03:48Z
+thanosrulers.monitoring.coreos.com          2021-12-10T14:03:48Z
+
+
+
+
+-------------------------------------------------------------------------------------
+
+
+
+
+
+▶ kubectl get prometheuses.monitoring.coreos.com -o yaml
+
+apiVersion: v1
+items:
+- apiVersion: monitoring.coreos.com/v1
+  kind: Prometheus
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: my-prometheus-on-kubernetes
+      meta.helm.sh/release-namespace: default
+    creationTimestamp: "2021-12-10T14:56:42Z"
+    generation: 1
+    labels:
+      app: kube-prometheus-stack-prometheus
+      app.kubernetes.io/instance: my-prometheus-on-kubernetes
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/part-of: kube-prometheus-stack
+      app.kubernetes.io/version: 23.1.6
+      chart: kube-prometheus-stack-23.1.6
+      heritage: Helm
+      release: my-prometheus-on-kubernetes
+    name: my-prometheus-on-kubernete-prometheus
+    namespace: default
+    resourceVersion: "412528"
+    uid: 5e9db869-14d6-4c56-ba23-55f8569719bb
+  spec:
+    alerting:
+      alertmanagers:
+      - apiVersion: v2
+        name: my-prometheus-on-kubernete-alertmanager
+        namespace: default
+        pathPrefix: /
+        port: http-web
+    enableAdminAPI: false
+    externalUrl: http://my-prometheus-on-kubernete-prometheus.default:9090
+    image: quay.io/prometheus/prometheus:v2.31.1
+    listenLocal: false
+    logFormat: logfmt
+    logLevel: info
+    paused: false
+    podMonitorNamespaceSelector: {}
+    podMonitorSelector:
+      matchLabels:
+        release: my-prometheus-on-kubernetes
+    portName: http-web
+    probeNamespaceSelector: {}
+    probeSelector:
+      matchLabels:
+        release: my-prometheus-on-kubernetes
+    replicas: 1
+    retention: 10d
+    routePrefix: /
+    ruleNamespaceSelector: {}
+    ruleSelector:
+      matchLabels:
+        app: kube-prometheus-stack
+        release: my-prometheus-on-kubernetes
+    securityContext:
+      fsGroup: 2000
+      runAsGroup: 2000
+      runAsNonRoot: true
+      runAsUser: 1000
+    serviceAccountName: my-prometheus-on-kubernete-prometheus
+    serviceMonitorNamespaceSelector: {}
+    serviceMonitorSelector:
+      matchLabels:
+        release: my-prometheus-on-kubernetes
+    shards: 1
+    version: v2.31.1
+kind: List
+metadata:
+  resourceVersion: ""
+  selfLink: ""
+
+
+
+
+
+-------------------------------------------------------------------------------------
+
+
+
+
+
+    serviceMonitorSelector:
+      matchLabels:
+        release: my-prometheus-on-kubernetes
+
+
+
+
+-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------
+#####################################################################################
+
+
+
+
+	Deploy mongoDB
+
+
+
+
+-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------
+
+
+
+
+mongo.yaml:
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb-deployment
+  labels:
+    app: mongodb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongodb
+  template:
+    metadata:
+      labels:
+        app: mongodb
+    spec:
+      containers:
+      - name: mongodb
+        image: mongo
+        ports:
+        - containerPort: 27017
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb-service
+spec:
+  selector:
+    app: mongodb
+  ports:
+    - protocol: TCP
+      port: 27017
+      targetPort: 27017  
+
+
+
+
+
+-------------------------------------------------------------------------------------
+
+
+
+
+
+▶ kubectl apply -f mongo.yaml 
+
+deployment.apps/mongodb-deployment created
+service/mongodb-service created
+
+
+
+▶ kubectl get pods | grep mongo
+
+mongodb-deployment-79c8fcfd4-h22qp                                1/1     Running   0          13s
+
+
+
+▶ kubectl get services | grep mongo
+
+mongodb-service                                        ClusterIP   10.109.21.221    <none>        27017/TCP                    20s
+
+
+
+
+
+-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------
+
+
+
+
+	Use Exporter to monitor mongodb 				using Helm Chart
+
+
+
+
+-------------------------------------------------------------------------------------
+
+
+
+
+
+
+▶ helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+
+"prometheus-community" already exists with the same configuration, skipping
+
+
+▶ helm repo update
+
+Hang tight while we grab the latest from your chart repositories...
+...Successfully got an update from the "prometheus-community" chart repository
+Update Complete. ⎈Happy Helming!⎈
+
+
+
+
+
+
+-------------------------------------------------------------------------------------
+
+
+
+
+
+▶ helm show values prometheus-community/prometheus-mongodb-exporter
+
+affinity: {}
+
+annotations: {}
+
+extraArgs:
+- --collect.collection
+- --collect.database
+- --collect.indexusage
+- --collect.topmetrics
+- --collect.connpoolstats
+
+fullnameOverride: ""
+
+image:
+  pullPolicy: IfNotPresent
+  repository: ssheehy/mongodb-exporter
+  tag: 0.10.0
+
+imagePullSecrets: []
+
+livenessProbe:
+  httpGet:
+    path: /
+    port: metrics
+  initialDelaySeconds: 10
+
+# [mongodb[+srv]://][user:pass@]host1[:port1][,host2[:port2],...][/database][?options]
+mongodb:
+  uri: ""
+
+# Name of an externally managed secret (in the same namespace) containing the connection uri as key `mongodb-uri`.
+# If this is provided, the value mongodb.uri is ignored.
+existingSecret:
+  name: ""
+  key: "mongodb-uri"
+
+nameOverride: ""
+
+nodeSelector: {}
+
+podAnnotations: {}
+#  prometheus.io/scrape: "true"
+#  prometheus.io/port: "metrics"
+
+port: "9216"
+
+priorityClassName: ""
+
+readinessProbe:
+  httpGet:
+    path: /
+    port: metrics
+  initialDelaySeconds: 10
+
+replicas: 1
+
+resources: {}
+# limits:
+#   cpu: 250m
+#   memory: 192Mi
+# requests:
+#   cpu: 100m
+#   memory: 128Mi
+
+# Extra environment variables that will be passed into the exporter pod
+env: {}
+
+securityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop: ["all"]
+  readOnlyRootFilesystem: true
+  runAsGroup: 10000
+  runAsNonRoot: true
+  runAsUser: 10000
+
+service:
+  labels: {}
+  annotations: {}
+  port: 9216
+  type: ClusterIP
+
+serviceAccount:
+  create: true
+  # If create is true and name is not set, then a name is generated using the
+  # fullname template.
+  name:
+
+serviceMonitor:
+  enabled: true
+  interval: 30s
+  scrapeTimeout: 10s
+  namespace:
+  additionalLabels: {}
+  targetLabels: []
+  metricRelabelings: []
+
+tolerations: []
+
+
+
+
+
+
+-------------------------------------------------------------------------------------
+
+
+
+
+
+ values.yaml:
+
+
+mongodb:
+  uri: "mongodb://mongodb-service:27017"
+
+serviceMonitor:
+  additionalLabels:
+    release: my-prometheus-on-kubernetes
+
+
+
+
+
+-------------------------------------------------------------------------------------
+
+
+
+
+
+                                                                                                                                             
+▶ helm install mongodb-exporter prometheus-community/prometheus-mongodb-exporter -f values.yaml 
+
+NAME: mongodb-exporter
+LAST DEPLOYED: Sat Dec 11 11:38:24 2021
+NAMESPACE: default
+STATUS: deployed
+REVISION: 1
+NOTES:
+Verify the application is working by running these commands:
+
+  kubectl port-forward service/mongodb-exporter-prometheus-mongodb-exporter 9216
+  curl http://127.0.0.1:9216/metrics
+
+
+
+▶ helm ls
+
+NAME                       	NAMESPACE	REVISION	UPDATED                                  	STATUS  	CHART                            	APP VERSION
+mongodb-exporter           	default  	1       	2021-12-11 11:38:24.345918267 +0330 +0330	deployed	prometheus-mongodb-exporter-2.8.1	v0.10.0    
+my-prometheus-on-kubernetes	default  	1       	2021-12-10 18:26:28.701944464 +0330 +0330	deployed	kube-prometheus-stack-23.1.6     	0.52.1     
+
+
+
+
+
+
+-------------------------------------------------------------------------------------
+
+
+
+
+
+
+▶ kubectl get pods | grep mongo
+mongodb-deployment-79c8fcfd4-h22qp                                1/1     Running   0          132m
+mongodb-exporter-prometheus-mongodb-exporter-6f546b47b7-45spr     1/1     Running   0          2m9s
+
+
+
+▶ kubectl get services | grep mongo
+mongodb-exporter-prometheus-mongodb-exporter           ClusterIP   10.110.28.140    <none>        9216/TCP                     2m15s
+mongodb-service                                        ClusterIP   10.109.21.221    <none>        27017/TCP                    133m
+
+
+
+▶ kubectl get servicemonitor | grep mongo
+mongodb-exporter-prometheus-mongodb-exporter         2m43s
+
+
+
+
+▶ kubectl get servicemonitor mongodb-exporter-prometheus-mongodb-exporter -o yaml | grep release
+
+    release: my-prometheus-on-kubernetes
+
+
+
+
+
+
+-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------
+
+
+
+
+
+▶ kubectl port-forward deployment/my-prometheus-on-kubernetes-grafana 3000
+
+Forwarding from 127.0.0.1:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+
+
+
+-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------
+
+
+
