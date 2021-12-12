@@ -1,0 +1,247 @@
+
+Get Info:
+_________________________________________________________________________________
+#################################################################################
+
+
+
+
+
+
+ansible centos2 -m setup
+
+
+
+ansible centos2 -m setup -a 'gather_subset=network'
+
+
+
+ansible centos2 -m setup -a 'gather_subset=!all,!min,network'
+
+
+
+
+
+_________________________________________________________________________________
+#################################################################################
+
+
+
+
+
+
+
+
+
+$ ansible centos2 -m setup -a 'filter=ansible_memfree_mb'
+
+
+centos2 | SUCCESS => {
+    "ansible_facts": {
+        "ansible_memfree_mb": 629,
+        "discovered_interpreter_python": "/usr/libexec/platform-python"
+    },
+    "changed": false
+}
+
+
+
+
+
+
+
+
+_________________________________________________________________________________
+#################################################################################
+
+
+
+
+
+
+
+
+$ ansible centos2 -m setup -a 'filter=ansible_mem*'
+
+centos2 | SUCCESS => {
+    "ansible_facts": {
+        "ansible_memfree_mb": 590,
+        "ansible_memory_mb": {
+            "nocache": {
+                "free": 2924,
+                "used": 4944
+            },
+            "real": {
+                "free": 590,
+                "total": 7868,
+                "used": 7278
+            },
+            "swap": {
+                "cached": 103,
+                "free": 640,
+                "total": 2047,
+                "used": 1407
+            }
+        },
+        "ansible_memtotal_mb": 7868,
+        "discovered_interpreter_python": "/usr/libexec/platform-python"
+    },
+    "changed": false
+}
+
+
+
+
+
+
+
+
+_________________________________________________________________________________
+#################################################################################
+
+
+
+
+
+ 
+show ip of all hosts:
+
+
+
+
+
+
+---
+ 
+-
+ 
+  hosts: all
+
+  tasks:
+    - name: Show IP Address
+      debug:
+        msg: "{{ ansible_default_ipv4.address }}"
+
+...
+
+
+
+
+
+
+
+
+
+_________________________________________________________________________________
+#################################################################################
+#################################################################################
+
+
+
+
+
+
+Run a script:
+
+
+
+
+
+
+getdate1.fact:
+
+#!/bin/bash
+echo {\""date\"" : \""`date`\""}
+
+
+
+
+
+
+cat getdate2.fact:
+
+#!/bin/bash
+echo [date]
+echo date=`date`
+
+
+
+
+
+
+
+sudo mkdir -p /etc/ansible/facts.d
+sudo cp * /etc/ansible/facts.d/
+
+
+
+
+
+
+
+
+
+ansible ubuntu-c -m setup -a 'filter=ansible_local'
+
+ubuntu-c | SUCCESS => {
+    "ansible_facts": {
+        "ansible_local": {
+            "getdate1": {
+                "date": "Sun Dec 12 06:23:10 UTC 2021"
+            },
+            "getdate2": {
+                "date": {
+                    "date": "Sun Dec 12 06:23:10 UTC 2021"
+                }
+            }
+        },
+        "discovered_interpreter_python": "/usr/bin/python3"
+    },
+    "changed": false
+}
+
+
+
+
+
+
+
+_________________________________________________________________________________
+#################################################################################
+
+
+
+
+
+
+
+
+---
+
+-
+
+  hosts: all
+
+  tasks:
+    - name: Show IP Address
+      debug:
+        msg: "{{ ansible_default_ipv4.address }}"
+
+    - name: Show Custom Fact 1
+      debug:
+        msg: "{{ ansible_local.getdate1.date }}"
+
+    - name: Show Custom Fact 2
+      debug:
+        msg: "{{ ansible_local.getdate2.date.date }}"
+
+...
+
+
+
+
+
+
+
+
+
