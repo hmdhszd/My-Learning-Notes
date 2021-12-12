@@ -1,0 +1,459 @@
+
+
+
+
+
+
+
+---
+ 
+-
+ 
+  hosts: centos1
+  gather_facts: False
+ 
+  vars:
+    example_key: example value
+ 
+  tasks:
+    - name: Test dictionary key value
+      debug:
+        msg: "{{ example_key }}"
+ 
+...
+
+
+
+
+
+
+
+
+_________________________________________________________________________________
+#################################################################################
+
+
+
+
+
+
+
+
+
+---
+ 
+-
+ 
+  hosts: centos1
+  gather_facts: False
+ 
+  vars:
+    dict:
+      dict_key: This is a dictionary value
+ 
+  tasks:
+    - name: Test named dictionary dictionary
+      debug:
+        msg: "{{ dict }}"
+ 
+    - name: Test named dictionary dictionary key value with dictionary dot notation
+      debug:
+        msg: "{{ dict.dict_key }}"
+ 
+    - name: Test named dictionary dictionary key value with python brackets notation
+      debug:
+        msg: "{{ dict['dict_key'] }}"
+ 
+...
+
+
+
+
+
+
+
+_________________________________________________________________________________
+#################################################################################
+
+
+
+
+
+
+
+
+---
+ 
+-
+ 
+  hosts: centos1
+  gather_facts: False
+ 
+  vars:
+    inline_dict:
+      {inline_dict_key: This is an inline dictionary value}
+ 
+  tasks:
+    - name: Test named inline dictionary dictionary
+      debug:
+        msg: "{{ inline_dict }}"
+ 
+    - name: Test named inline dictionary dictionary key value with dictionary dot notation
+      debug:
+        msg: "{{ inline_dict.inline_dict_key }}"
+ 
+    - name: Test named inline dictionary dictionary key value with brackets notation
+      debug:
+        msg: "{{ inline_dict['inline_dict_key'] }}"
+ 
+...
+
+
+
+
+
+
+
+
+_________________________________________________________________________________
+#################################################################################
+
+
+
+
+
+
+
+
+
+---
+ 
+-
+ 
+  hosts: centos1
+  gather_facts: False
+ 
+  vars:
+    named_list:
+      - item1
+      - item2
+      - item3
+      - item4
+ 
+  tasks:
+    - name: Test named list
+      debug:
+        msg: "{{ named_list }}"
+ 
+    - name: Test named list first item dot notation
+      debug:
+        msg: "{{ named_list.0 }}"
+ 
+    - name: Test named list first item brackets notation
+      debug:
+        msg: "{{ named_list[0] }}"
+ 
+...
+
+
+
+
+
+
+
+_________________________________________________________________________________
+#################################################################################
+
+
+
+
+
+
+
+
+
+---
+ 
+-
+ 
+  hosts: centos1
+  gather_facts: False
+ 
+  vars:
+    inline_named_list:
+      [ item1, item2, item3, item4 ]
+ 
+  tasks:
+    - name: Test inline named list
+      debug:
+        msg: "{{ inline_named_list }}"
+ 
+    - name: Test inline named list first item dot notation
+      debug:
+        msg: "{{ inline_named_list.0 }}"
+ 
+    - name: Test inline named list first item brackets notation
+      debug:
+        msg: "{{ inline_named_list[0] }}"
+ 
+...
+
+
+
+
+
+
+
+_________________________________________________________________________________
+#################################################################################
+
+
+
+
+
+
+
+external_vars.yaml:
+
+---
+external_example_key: example value
+
+external_dict:
+   dict_key: This is a dictionary value
+
+external_inline_dict: 
+   {inline_dict_key: This is an inline dictionary value}
+
+external_named_list:
+   - item1
+   - item2
+   - item3
+   - item4
+
+external_inline_named_list:
+   [ item1, item2, item3, item4 ]
+...
+
+
+
+
+
+
+
+-----------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+---
+ 
+-
+ 
+  hosts: centos1
+  gather_facts: False
+ 
+  vars_files:
+    - external_vars.yaml
+ 
+  tasks:
+    - name: Test external dictionary key value
+      debug:
+        msg: "{{ external_example_key }}"
+
+    - name: Test external named dictionary dictionary
+      debug:
+        msg: "{{ external_dict }}"
+
+    - name: Test external named dictionary dictionary key value with dictionary dot notation
+      debug:
+        msg: "{{ external_dict.dict_key }}"
+
+    - name: Test external named dictionary dictionary key value with brackets notation
+      debug:
+        msg: "{{ external_dict['dict_key'] }}"
+ 
+    - name: Test external named inline dictionary dictionary
+      debug:
+        msg: "{{ external_inline_dict }}"
+ 
+    - name: Test external named inline dictionary dictionary key value with dictionary dot notation
+      debug:
+        msg: "{{ external_inline_dict.inline_dict_key }}"
+ 
+    - name: Test external named inline dictionary dictionary key value with brackets notation
+      debug:
+        msg: "{{ external_inline_dict['inline_dict_key'] }}"
+ 
+    - name: Test external named list
+      debug:
+        msg: "{{ external_named_list }}"
+ 
+    - name: Test external named list first item dot notation
+      debug:
+        msg: "{{ external_named_list.0 }}"
+ 
+    - name: Test external named list first item brackets notation
+      debug:
+        msg: "{{ external_named_list[0] }}"
+ 
+    - name: Test external inline named list
+      debug:
+        msg: "{{ external_inline_named_list }}"
+ 
+    - name: Test external inline named list first item dot notation
+      debug:
+        msg: "{{ external_inline_named_list.0 }}"
+ 
+    - name: Test external inline named list first item brackets notation
+      debug:
+        msg: "{{ external_inline_named_list[0] }}"
+
+ 
+...
+
+
+
+
+
+
+
+_________________________________________________________________________________
+#################################################################################
+
+
+
+
+
+
+
+
+
+---
+ 
+-
+ 
+  hosts: centos1
+  gather_facts: False
+ 
+  vars_prompt:
+    - name: username
+      private: False
+ 
+  tasks:
+    - name: Test vars_prompt
+      debug:
+        msg: "{{ username }}"
+ 
+...
+
+
+
+
+
+
+
+_________________________________________________________________________________
+#################################################################################
+
+
+
+
+
+
+
+
+
+---
+ 
+-
+ 
+  hosts: centos1
+  gather_facts: False
+ 
+  vars_prompt:
+    - name: password
+      private: True
+ 
+  tasks:
+    - name: Test vars_prompt
+      debug:
+        msg: "{{ password }}"
+ 
+...
+
+
+
+
+
+
+
+_________________________________________________________________________________
+#################################################################################
+
+
+
+
+
+
+
+
+
+---
+ 
+-
+ 
+  hosts: centos
+  gather_facts: True
+ 
+
+  tasks:
+    - name: Test hostvars with an ansible fact and collect ansible_port, dot notation, default if not found
+      debug:
+        msg: "{{ hostvars[ansible_hostname].ansible_port | default('22') }}"
+
+    - name: Test hostvars with an ansible fact and collect ansible_port, dict notation, default if not found
+      debug:
+        msg: "{{ hostvars[ansible_hostname]['ansible_port'] | default('22') }}"
+ 
+...
+
+
+
+
+
+
+
+_________________________________________________________________________________
+#################################################################################
+
+
+
+
+
+
+
+
+---
+ 
+-
+ 
+  hosts: centos
+  gather_facts: True
+ 
+
+  tasks:
+    - name: Test groupvars
+      debug:
+        msg: "{{ ansible_user }}"
+
+...
+
+
+
+
+
+
+
