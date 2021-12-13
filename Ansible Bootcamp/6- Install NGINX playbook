@@ -1,0 +1,189 @@
+_________________________________________________________________________________
+#################################################################################
+
+
+
+
+Install NGINX using "apt" and "yum"
+
+
+
+
+
+---
+
+-
+
+  hosts: linux
+  
+
+  tasks:
+    - name: Install EPEL
+      yum:
+        name: epel-release
+        update_cache: yes
+        state: latest
+      when: ansible_distribution == 'CentOS'
+
+    - name: Install Nginx CentOS
+      yum:
+        name: nginx
+        update_cache: yes
+        state: latest
+      when: ansible_distribution == 'CentOS'
+
+    - name: Install Nginx Ubuntu
+      apt:
+        name: nginx
+        update_cache: yes
+        state: latest
+      when: ansible_distribution == 'Ubuntu'
+
+
+...
+
+
+
+
+
+
+
+
+_________________________________________________________________________________
+#################################################################################
+
+
+
+
+
+Install NGINX using "package"
+
+
+
+
+
+
+---
+
+-
+
+  hosts: linux
+  
+
+  tasks:
+    - name: Install EPEL
+      yum:
+        name: epel-release
+        update_cache: yes
+        state: latest
+      when: ansible_distribution == 'CentOS'
+
+    - name: Install Nginx
+      package:
+        name: nginx
+        state: latest
+
+
+...
+
+
+
+
+
+
+
+_________________________________________________________________________________
+#################################################################################
+#################################################################################
+#################################################################################
+
+
+
+
+
+
+
+---
+
+-
+
+  hosts: linux
+  
+  vars_files:
+    - vars/logos.yaml
+
+  tasks:
+    - name: Install EPEL
+      yum:
+        name: epel-release
+        update_cache: yes
+        state: latest
+      when: ansible_distribution == 'CentOS'
+
+    - name: Install Nginx
+      package:
+        name: nginx
+        state: latest
+
+    - name: Restart nginx
+      service:
+        name: nginx
+        state: restarted
+      notify: Check HTTP Service
+
+    - name: Template index.html-easter_egg.j2 to index.html on target
+      template:
+        src: index.html-easter_egg.j2
+        dest: "{{ nginx_root_location }}/index.html"
+        mode: 0644
+
+    - name: Install unzip
+      package:
+        name: unzip
+        state: latest
+
+    - name: Unarchive playbook stacker game
+      unarchive:
+        src: playbook_stacker.zip
+        dest: "{{ nginx_root_location }}"
+        mode: 0755
+
+  handlers:
+    - name: Check HTTP Service
+      uri:
+        url: http://{{ ansible_default_ipv4.address }}
+        status_code: 200 
+
+...
+
+
+
+
+
+
+_________________________________________________________________________________
+
+
+
+
+
+
+
+inside of templates/index.html-logos.j2 :
+
+
+
+
+
+<img src="
+                              {%- if ansible_distribution == 'CentOS' -%}
+                              {{ centos_logo }}
+                              {%- elif ansible_distribution == 'Ubuntu' -%}
+                              {{ ubuntu_logo }}
+                              {%- endif %}
+" class="intro" alt="mainpic">
+
+
+
+
+
