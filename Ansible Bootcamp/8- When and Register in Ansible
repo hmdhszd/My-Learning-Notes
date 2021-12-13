@@ -1,0 +1,142 @@
+
+_________________________________________________________________________________
+#################################################################################
+
+
+
+
+
+
+
+
+---
+
+-
+
+  hosts: linux
+
+  tasks:
+    - name: Exploring register
+      command: hostname -s
+      register: hostname_output
+
+    - name: Show hostname_output
+      debug:
+        var: hostname_output.stdout
+
+...
+
+
+
+
+
+
+
+
+_________________________________________________________________________________
+#################################################################################
+
+
+
+
+
+
+
+
+
+AND statement:
+
+
+
+
+
+
+---
+
+-
+
+  hosts: linux
+
+  tasks:
+    - name: Exploring register
+      command: hostname -s
+      when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "8"
+
+...
+
+
+
+
+
+_________________________________________________________________________________
+
+
+
+
+---
+
+-
+
+  hosts: linux
+
+  tasks:
+    - name: Exploring register
+      command: hostname -s
+      when: 
+        - ansible_distribution == "CentOS" 
+        - ansible_distribution_major_version | int >= 8
+
+...
+
+
+
+
+
+
+
+
+_________________________________________________________________________________
+#################################################################################
+
+
+
+
+
+
+
+
+
+---
+
+-
+
+  hosts: linux
+
+  tasks:
+    - name: Exploring register
+      command: hostname -s
+      when: 
+        - ansible_distribution == "CentOS" 
+        - ansible_distribution_major_version | int >= 8
+      register: command_register
+
+    - name: Install patch_of_centos when changed
+      yum:
+        name: patch_of_centos
+        state: present
+      when: command_register.changed
+      #when: command_register is changed
+
+    - name: Install patch_of_other_distros when skipped
+      apt:
+        name: patch_of_other_distros
+        state: present
+      when: command_register is skipped
+
+...
+
+
+
+
+
+
