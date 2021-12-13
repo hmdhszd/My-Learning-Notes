@@ -1,0 +1,261 @@
+
+_________________________________________________________________________________
+#################################################################################
+
+Set_Fact Module:
+_________________________________________________________________________________
+#################################################################################
+
+
+
+
+
+
+
+
+---
+
+-
+
+  hosts: ubuntu3,centos3
+
+  tasks:
+    - name: Set a fact
+      set_fact:
+        our_fact: Ansible Rocks!
+        ansible_distribution: "{{ ansible_distribution | upper }}"
+
+    - name: Show our_fact
+      debug:
+        msg: "{{ our_fact }}"
+
+    - name: Show ansible_distribution
+      debug:
+        msg: "{{ ansible_distribution }}"
+
+...
+
+
+
+
+
+
+
+
+_________________________________________________________________________________
+#################################################################################
+
+
+
+
+
+
+
+
+
+---
+
+-
+
+  hosts: ubuntu3,centos3
+
+  tasks:
+    - name: Set our installation variables for CentOS
+      set_fact:
+        webserver_application_port: 80
+        webserver_application_path: /usr/share/nginx/html
+        webserver_application_user: root
+      when: ansible_distribution == 'CentOS'
+
+    - name: Set our installation variables for Ubuntu
+      set_fact:
+        webserver_application_port: 8080
+        webserver_application_path: /var/www/html
+        webserver_application_user: nginx
+      when: ansible_distribution == 'Ubuntu'
+
+    - name: Show pre-set distribution based facts
+      debug:
+        msg: "webserver_application_port:{{ webserver_application_port }} webserver_application_path:{{ webserver_application_path }} webserver_application_user:{{ webserver_application_user }}"
+
+... 
+
+
+
+
+
+
+
+
+_________________________________________________________________________________
+#################################################################################
+
+Pause Module:
+
+Wait_For Module:
+_________________________________________________________________________________
+#################################################################################
+
+
+
+
+
+
+
+
+---
+
+-
+
+  hosts: ubuntu3,centos3
+
+  tasks:
+    - name: Pause our playbook for 10 seconds 
+      pause:
+        seconds: 10
+
+...
+
+
+
+
+
+
+
+
+_________________________________________________________________________________
+#################################################################################
+
+
+
+
+
+
+
+
+---
+
+-
+
+  hosts: ubuntu3,centos3
+
+  tasks:
+    - name: Prompt user to verify before continue
+      pause:
+        prompt: Please check that the webserver is running, press enter to continue
+
+...
+
+
+
+
+
+
+
+
+_________________________________________________________________________________
+#################################################################################
+
+
+
+
+
+
+
+
+
+---
+
+-
+
+  hosts: ubuntu3,centos3
+
+  tasks:
+    - name: Wait for the webserver to be running on port 80
+      wait_for:
+        port: 80
+
+...
+
+
+
+
+
+
+
+_________________________________________________________________________________
+#################################################################################
+
+Group_By Module:
+_________________________________________________________________________________
+#################################################################################
+
+
+
+
+
+
+
+
+---
+
+-
+
+  hosts: all
+
+  tasks:
+    - name: Create group based on ansible_distribution
+      group_by:
+        key: "custom_{{ ansible_distribution | lower }}"
+
+-
+
+  hosts: custom_centos
+
+  tasks:
+    - name: Ping all in custom_centos
+      ping:
+
+...
+
+
+
+
+
+
+
+
+_________________________________________________________________________________
+#################################################################################
+
+Fetch Module:
+_________________________________________________________________________________
+#################################################################################
+
+
+
+
+
+
+
+
+---
+
+-
+
+  hosts: centos
+
+  tasks:
+    - name: Fetch /etc/redhat-release
+      fetch:
+        src: /etc/redhat-release
+        dest: /tmp/redhat-release
+
+...
+
+
+
+
+
+
+
