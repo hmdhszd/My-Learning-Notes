@@ -1,0 +1,105 @@
+
+
+
+▶ cat psql_user.txt 
+dbuser
+
+
+
+
+▶ docker secret create psql_user psql_user.txt
+ixng0ai65w3tgbi9xlrqrqvvq
+
+
+
+
+
+▶ echo "myDBpassWORD" | docker secret create psql_pass -
+cnh6ayffditdjtw88up9a2yly
+
+
+
+
+
+
+▶ docker secret ls                                      
+ID                          NAME        DRIVER    CREATED              UPDATED
+cnh6ayffditdjtw88up9a2yly   psql_pass             2 seconds ago        2 seconds ago
+ixng0ai65w3tgbi9xlrqrqvvq   psql_user             About a minute ago   About a minute ago
+
+
+
+
+
+
+
+▶ docker secret inspect psql_user 
+[
+    {
+        "ID": "ixng0ai65w3tgbi9xlrqrqvvq",
+        "Version": {
+            "Index": 233
+        },
+        "CreatedAt": "2022-01-06T11:12:17.067807543Z",
+        "UpdatedAt": "2022-01-06T11:12:17.067807543Z",
+        "Spec": {
+            "Name": "psql_user",
+            "Labels": {}
+        }
+    }
+]
+
+
+
+
+
+
+▶ docker secret inspect psql_pass 
+[
+    {
+        "ID": "cnh6ayffditdjtw88up9a2yly",
+        "Version": {
+            "Index": 234
+        },
+        "CreatedAt": "2022-01-06T11:13:26.129656452Z",
+        "UpdatedAt": "2022-01-06T11:13:26.129656452Z",
+        "Spec": {
+            "Name": "psql_pass",
+            "Labels": {}
+        }
+    }
+]
+
+
+
+
+
+
+-------------------------------------------------------------------------------
+
+
+
+
+
+
+
+▶ docker service create --name psql --secret psql_user --secret psql_pass -e POSTGRES_PASSWORD_FILE=/run/secrets/psql_pass -e POSTGRES_USER_FILE=/run/secrets/psql_user postgres
+5udckrkevfogy7b8x1enh2otj
+overall progress: 1 out of 1 tasks 
+1/1: running   
+verify: Service converged
+
+
+
+
+
+
+-------------------------------------------------------------------------------
+
+
+
+
+
+
+
+ 

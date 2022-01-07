@@ -1,0 +1,19 @@
+version: "3.9"
+services:
+  web:
+    image: nginx:alpine
+    ports:
+      - 8080:80
+    networks:
+      - net
+    configs:
+      - source: nginx_root_doc
+        target: /usr/share/nginx/html/index.html
+
+configs:
+  nginx_root_doc:
+    file: ./index.html
+
+networks:
+  net:
+    driver: overlay

@@ -1,0 +1,1 @@
+docker service create --name psql --health-cmd="pg_isready -U postgres || exit 1" postgres

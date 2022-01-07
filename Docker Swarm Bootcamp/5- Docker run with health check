@@ -1,0 +1,13 @@
+docker run -d \
+ --health-cmd="curl -f localhost:9200/_cluster/health || false"\
+ --health-interval=5s \
+ --health-retries=3 \
+ --health-timeout=2s \
+ --health-start-period=15s \
+ elasticsearch:2
+
+
+
+ ▶ docker ps
+CONTAINER ID   IMAGE             COMMAND                  CREATED          STATUS                    PORTS                NAMES
+8bdf63026ef0   elasticsearch:2   "/docker-entrypoint.…"   13 seconds ago   Up 13 seconds (healthy)   9200/tcp, 9300/tcp   jovial_nightingale
