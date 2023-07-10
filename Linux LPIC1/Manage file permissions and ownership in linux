@@ -253,7 +253,7 @@ only the owner of the file can delete it:
 
 suid 	4000 	u+s 	▶ chmod 4755 myfile
 guid 	2000 	g+s 	▶ chmod 2755 myfile
-sticky 	1000 	t   	▶ chmod 1755 myfile
+sticky 	1000 	o+t   	▶ chmod 1755 myfile
 
 
 
